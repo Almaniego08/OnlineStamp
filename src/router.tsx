@@ -65,77 +65,89 @@ const router = createBrowserRouter([
         }),
       },
       {
-        path: 'apps',
+        path: 'nap',
         lazy: async () => ({
-          Component: (await import('@/pages/apps')).default,
+          Component: (await import('@/pages/nap')).default,
         }),
       },
-      {
-        path: 'users',
+      { 
+        path: 'automation',
         lazy: async () => ({
-          Component: (await import('@/components/coming-soon')).default,
+          Component: (await import('@/pages/automation')).default,
         }),
       },
-      {
-        path: 'analysis',
-        lazy: async () => ({
-          Component: (await import('@/components/coming-soon')).default,
-        }),
-      },
-      {
-        path: 'extra-components',
-        lazy: async () => ({
-          Component: (await import('@/pages/extra-components')).default,
-        }),
-      },
-      {
-        path: 'settings',
-        lazy: async () => ({
-          Component: (await import('./pages/settings')).default,
-        }),
-        errorElement: <GeneralError />,
-        children: [
-          {
-            index: true,
-            lazy: async () => ({
-              Component: (await import('./pages/settings/profile')).default,
-            }),
-          },
-          {
-            path: 'account',
-            lazy: async () => ({
-              Component: (await import('./pages/settings/account')).default,
-            }),
-          },
-          {
-            path: 'appearance',
-            lazy: async () => ({
-              Component: (await import('./pages/settings/appearance')).default,
-            }),
-          },
-          {
-            path: 'notifications',
-            lazy: async () => ({
-              Component: (await import('./pages/settings/notifications'))
-                .default,
-            }),
-          },
-          {
-            path: 'display',
-            lazy: async () => ({
-              Component: (await import('./pages/settings/display')).default,
-            }),
-          },
-          {
-            path: 'error-example',
-            lazy: async () => ({
-              Component: (await import('./pages/settings/error-example'))
-                .default,
-            }),
-            errorElement: <GeneralError className='h-[50svh]' minimal />,
-          },
-        ],
-      },
+      // {
+      //   path: 'apps',
+      //   lazy: async () => ({
+      //     Component: (await import('@/pages/apps')).default,
+      //   }),
+      // },
+      // {
+      //   path: 'users',
+      //   lazy: async () => ({
+      //     Component: (await import('@/components/coming-soon')).default,
+      //   }),
+      // },
+      // {
+      //   path: 'analysis',
+      //   lazy: async () => ({
+      //     Component: (await import('@/components/coming-soon')).default,
+      //   }),
+      // },
+      // {
+      //   path: 'extra-components',
+      //   lazy: async () => ({
+      //     Component: (await import('@/pages/extra-components')).default,
+      //   }),
+      // },
+      // {
+      //   path: 'settings',
+      //   lazy: async () => ({
+      //     Component: (await import('./pages/settings')).default,
+      //   }),
+      //   errorElement: <GeneralError />,
+      //   children: [
+      //     {
+      //       index: true,
+      //       lazy: async () => ({
+      //         Component: (await import('./pages/settings/profile')).default,
+      //       }),
+      //     },
+      //     {
+      //       path: 'account',
+      //       lazy: async () => ({
+      //         Component: (await import('./pages/settings/account')).default,
+      //       }),
+      //     },
+      //     {
+      //       path: 'appearance',
+      //       lazy: async () => ({
+      //         Component: (await import('./pages/settings/appearance')).default,
+      //       }),
+      //     },
+      //     {
+      //       path: 'notifications',
+      //       lazy: async () => ({
+      //         Component: (await import('./pages/settings/notifications'))
+      //           .default,
+      //       }),
+      //     },
+      //     {
+      //       path: 'display',
+      //       lazy: async () => ({
+      //         Component: (await import('./pages/settings/display')).default,
+      //       }),
+      //     },
+      //     {
+      //       path: 'error-example',
+      //       lazy: async () => ({
+      //         Component: (await import('./pages/settings/error-example'))
+      //           .default,
+      //       }),
+      //       errorElement: <GeneralError className='h-[50svh]' minimal />,
+      //     },
+      //   ],
+      // },
     ],
   },
 
