@@ -17,7 +17,6 @@ export default function Tasks() {
           <UserNav />
         </div>
       </Layout.Header>
-
       <Layout.Body>
         <div className='mb-2 flex items-center justify-between space-y-2'>
           <div>

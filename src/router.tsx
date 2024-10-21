@@ -53,6 +53,12 @@ const router = createBrowserRouter([
         }),
       },
       {
+        path: 'nap',
+        lazy: async () => ({
+          Component: (await import('@/pages/nap')).default,
+        }),
+      },
+      {
         path: 'tasks',
         lazy: async () => ({
           Component: (await import('@/pages/tasks')).default,
@@ -65,12 +71,6 @@ const router = createBrowserRouter([
         }),
       },
       {
-        path: 'nap',
-        lazy: async () => ({
-          Component: (await import('@/pages/nap')).default,
-        }),
-      },
-      { 
         path: 'automation',
         lazy: async () => ({
           Component: (await import('@/pages/automation')).default,
