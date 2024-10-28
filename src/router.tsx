@@ -76,6 +76,12 @@ const router = createBrowserRouter([
           Component: (await import('@/pages/automation')).default,
         }),
       },
+      {
+        path: 'stamping',
+        lazy: async () => ({
+          Component: (await import('@/pages/stamping')).default,
+        }),
+      },
       // {
       //   path: 'apps',
       //   lazy: async () => ({

@@ -21,44 +21,44 @@ export interface SideLink extends NavLink {
 }
 
 export const sidelinks: SideLink[] = [
-  {
-    title: 'Dashboard',
-    label: '',
-    href: '/',
-    icon: <IconLayoutDashboard size={18} />,
-  },
-  {
-    title: 'NAP',
-    label: '1',
-    href: '/nap',
-    icon: <IconCheckupList size={18} />,
-  },
-  {
-    title: 'RCS Team',
-    label: '',
-    href: '',
-    icon: <IconUsersGroup size={18} />,
-    sub: [
-      {
-        title: 'Chats',
-        label: '3',
-        href: '/chats',
-        icon: <IconMessages size={18} />,
-      },
-      {
-        title: 'Tasks',
-        label: '3',
-        href: '/tasks',
-        icon: <IconChecklist size={18} />,
-      }
-    ]
-  },
-  {
-    title: 'Automations',
-    label: '1',
-    href: '/automation',
-    icon: <IconAutomaticGearbox size={18} />,
-  },
+  // {
+  //   title: 'Dashboard',
+  //   label: '',
+  //   href: '/',
+  //   icon: <IconLayoutDashboard size={18} />,
+  // },
+  // {
+  //   title: 'NAP',
+  //   label: '1',
+  //   href: '/nap',
+  //   icon: <IconCheckupList size={18} />,
+  // },
+  // {
+  //   title: 'RCS Team',
+  //   label: '',
+  //   href: '',
+  //   icon: <IconUsersGroup size={18} />,
+  //   sub: [
+  //     {
+  //       title: 'Chats',
+  //       label: '3',
+  //       href: '/chats',
+  //       icon: <IconMessages size={18} />,
+  //     },
+  //     {
+  //       title: 'Tasks',
+  //       label: '3',
+  //       href: '/tasks',
+  //       icon: <IconChecklist size={18} />,
+  //     }
+  //   ]
+  // },
+  // {
+  //   title: 'Automations',
+  //   label: '1',
+  //   href: '/automation',
+  //   icon: <IconAutomaticGearbox size={18} />,
+  // },
   {
     title: 'Mini-Tools',
     label: '',
