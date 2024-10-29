@@ -34,7 +34,7 @@ export function Text({ addItem, state }: IAppProps) {
             isShown: true,
             color: rgb(190 / 255, 101 / 255, 120 / 255),
             type: 'text',
-            size: 16,
+            size: 13,
             content: '',
         }
         addItem(text)

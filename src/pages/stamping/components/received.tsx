@@ -38,7 +38,7 @@ export function Received({ addItem,state }: IAppProps) {
             isShown: true,
             color: rgb(190 / 255, 101 / 255, 120 / 255),
             type: 'text',
-            size: 16,
+            size: 13,
             content: '',
         };
 
@@ -52,7 +52,7 @@ export function Received({ addItem,state }: IAppProps) {
             isShown: true,
             color: rgb(190 / 255, 101 / 255, 120 / 255),
             type: 'text',
-            size: 16,
+            size: 13,
             content: '',
         }
         const time = {
@@ -65,7 +65,7 @@ export function Received({ addItem,state }: IAppProps) {
             isShown: true,
             color: rgb(190 / 255, 101 / 255, 120 / 255),
             type: 'text',
-            size: 16,
+            size: 13,
             content: '',
         }
 
@@ -85,8 +85,8 @@ export function Received({ addItem,state }: IAppProps) {
         const stamp = {
             id: id,
             component: 'StampReceivedForm',
-            height: 100,
-            width: 150,
+            height: 110,
+            width: 170,
             x: 25,
             y: 25,
             isShown: true,
