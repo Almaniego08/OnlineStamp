@@ -47,10 +47,10 @@ export function PositioningButton({ dispatch, id }: Props) {
         <div className='flex flex-wrap gap-2'>
             <div className='flex-1 flex flex-nowrap gap-2'>
                 <Button onClick={() => updatePositionY('+', 10)} className='flex-1' variant='ghost'>
-                    <IconChevronUp />
+                    <IconChevronDown />
                 </Button>
                 <Button onClick={() => updatePositionY('-', 10)} className='flex-1' variant='ghost'>
-                    <IconChevronDown />
+                    <IconChevronUp />
                 </Button>
                 <Button onClick={() => updatePositionX('-', 10)} className='flex-1' variant='ghost'>
                     <IconChevronLeft />

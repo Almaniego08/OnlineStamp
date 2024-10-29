@@ -2,7 +2,7 @@ import StampReceivedForm from './stamp-received-form';
 import StampCtcForm from './stamp-ctc-form';
 import AddTextForm from './add-text-form';
 import AddDateForm from './add-date-form';
-import AddTimeForm from './add-text-form';
+import AddTimeForm from './add-time-form';
 import { State, Item } from '../util/stamps-reducer-types'
 
 // Define the props that each component will receive

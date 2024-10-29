@@ -14,7 +14,7 @@ export interface Subcomponent {
     color?: RGB;
     type?: string;
     size?: number;
-    content?: string | HTMLImageElement | { title: string; src: string };
+    content: string | HTMLImageElement | { title: string; src: string };
 }
 
 // Update the main Item interface to use the Subcomponent type
@@ -29,7 +29,7 @@ export interface Item {
     color?: RGB;
     type?: string;
     size?: number;
-    content?: string | HTMLImageElement | { title: string; src: string };
+    content: string | HTMLImageElement | { title: string; src: string };
     subcomponents?: Subcomponent[];
 }
 

@@ -51,7 +51,7 @@ export function Received({ addItem,state }: IAppProps) {
             y: 25,
             isShown: true,
             color: rgb(190 / 255, 101 / 255, 120 / 255),
-            type: 'date',
+            type: 'text',
             size: 16,
             content: '',
         }
@@ -64,7 +64,7 @@ export function Received({ addItem,state }: IAppProps) {
             y: 25,
             isShown: true,
             color: rgb(190 / 255, 101 / 255, 120 / 255),
-            type: 'time',
+            type: 'text',
             size: 16,
             content: '',
         }
@@ -86,7 +86,7 @@ export function Received({ addItem,state }: IAppProps) {
             id: id,
             component: 'StampReceivedForm',
             height: 100,
-            width: 170,
+            width: 150,
             x: 25,
             y: 25,
             isShown: true,

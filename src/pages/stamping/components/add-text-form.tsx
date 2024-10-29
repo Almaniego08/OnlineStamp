@@ -1,10 +1,8 @@
-import { useEffect } from 'react';
 import { PositioningButton } from './positioning-button';
 import { Button } from "@/components/custom/button";
 import { IconTrash } from '@tabler/icons-react';
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
-import { timeNowConvert, timeString } from '../util/format-date-time'
 import { useState } from "react";
 import { IconLetterCase } from '@tabler/icons-react';
 type Props = {
@@ -13,29 +11,20 @@ type Props = {
     dispatch: (action: any) => void;
 }
 
-export default function AddTimeForm({ removeItem, id, dispatch }: Props) {
-    const [time, setTime] = useState<string | undefined>(undefined);
+export default function AddTextForm({ removeItem, id, dispatch }: Props) {
+    const [text, setText] = useState<string>('');
 
 
 
-    const handleTimeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const newTime = e.target.value;
-        const timestring = timeString(newTime)
-        setTime(newTime);
+    const handleTextChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const new_value = e.target.value;
+        setText(new_value);
         dispatch({
             type: 'updateTextDetails',
-            payload: { id: id, value: timestring }
+            payload: { id: id, value: new_value }
         });
     };
-    useEffect(() => {
-        const newDate = new Date()
-        const { military_time, ante_meridiem } = timeNowConvert(newDate)
-        setTime(military_time)
-        dispatch({
-            type: 'updateTextDetails',
-            payload: { id: id, value: ante_meridiem }
-        });
-    }, []);
+
     return (
         <div className="flex flex-col gap-3 border rounded-md p-[10px]">
             <div className="flex flex-row justify-between">
@@ -51,9 +40,9 @@ export default function AddTimeForm({ removeItem, id, dispatch }: Props) {
                 <Label className='w-fit' htmlFor="time">Time</Label>
                 <Input
                     id="time"
-                    type="time"
-                    value={time}
-                    onChange={handleTimeChange}
+                    type="text"
+                    value={text}
+                    onChange={(e) => handleTextChange(e)}
                     className="w-full"
                 />
             </div>

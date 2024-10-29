@@ -31,27 +31,27 @@ export default function Tasks() {
   }, [stampsState])
   //  PDF
   const { component: AddFileButton, pdfFile, setPdfFile } = useAddFileButton();
-  const [pdfHeight, setPdfHeight] = useState<number>(0)
-  const [pdfWidth, setPdfWidth] = useState<number>(0)
-  const [pdfPages, setPdfPages] = useState<number>(0)
-  const [pdfCurrentPage, setPdfCurrentPage] = useState<number>(1)
+    const [pdfHeight, setPdfHeight] = useState<number>(0)
+    const [pdfWidth, setPdfWidth] = useState<number>(0)
+    const [pdfPages, setPdfPages] = useState<number>(0)
+    const [pdfCurrentPage, setPdfCurrentPage] = useState<number>(1)
 
 
-  useEffect(() => {
-    async function loadFile() {
-      if (pdfFile) {
-        const pdfBytes = await pdfFile.arrayBuffer();
-        const pdfDoc = await PDFDocument.load(pdfBytes);
+    useEffect(() => {
+      async function loadFile() {
+        if (pdfFile) {
+          const pdfBytes = await pdfFile.arrayBuffer();
+          const pdfDoc = await PDFDocument.load(pdfBytes);
 
-        const page = pdfDoc.getPages()[pdfCurrentPage - 1];
-        setPdfPages(pdfDoc.getPageCount())
+          const page = pdfDoc.getPages()[pdfCurrentPage - 1];
+          setPdfPages(pdfDoc.getPageCount())
 
-        setPdfHeight(page.getHeight())
-        setPdfWidth(page.getWidth())
+          setPdfHeight(page.getHeight())
+          setPdfWidth(page.getWidth())
+        }
       }
-    }
-    loadFile()
-  }, [pdfFile])
+      loadFile()
+    }, [pdfFile])
 
   return (
     <Layout>

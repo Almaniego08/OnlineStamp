@@ -32,7 +32,7 @@ export function Date({ addItem, state }: IAppProps) {
             y: 25,
             isShown: true,
             color: rgb(190 / 255, 101 / 255, 120 / 255),
-            type: 'date',
+            type: 'text',
             size: 16,
             content: '',
         }

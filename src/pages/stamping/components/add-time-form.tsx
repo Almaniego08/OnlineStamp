@@ -27,7 +27,7 @@ export default function AddTimeForm({ removeItem, id, dispatch }: Props) {
     const [date, setDate] = useState<Date | undefined>(undefined);
 
 
-    const handleDateChange = (selectedDate: any) => {
+    const handleTimeChange = (selectedDate: any) => {
         const dateText = formatDate(selectedDate)
         setDate(selectedDate);
         dispatch({
@@ -76,7 +76,7 @@ export default function AddTimeForm({ removeItem, id, dispatch }: Props) {
                             <Calendar
                                 mode="single"
                                 onSelect={(selectedDate) => {
-                                    handleDateChange(selectedDate); // Handle date selection
+                                    handleTimeChange(selectedDate); // Handle date selection
                                 }}
                                 initialFocus
                             />
