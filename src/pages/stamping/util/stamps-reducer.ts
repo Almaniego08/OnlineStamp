@@ -14,6 +14,71 @@ export const reducer = (state: State, action: Action): State => {
                     item.id === action.payload.id ? { ...item, ...action.payload } : item
                 )
             };
+
+        case 'updatePositionY':
+            return {
+                ...state,
+                items: state.items.map(item => {
+                    if (item.id === action.payload.id) {
+                        return {
+                            ...item,
+                            y: (item.y ?? 0) + (action.payload.operator === '+' ? action.payload.value : -action.payload.value)
+                        };
+                    }
+                    return item;
+                })
+            };
+
+        case 'updatePositionX':
+            return {
+                ...state,
+                items: state.items.map(item => {
+                    if (item.id === action.payload.id) {
+                        return {
+                            ...item,
+                            x: (item.x ?? 0) + (action.payload.operator === '+' ? action.payload.value : -action.payload.value)
+                        };
+                    }
+                    return item;
+                })
+            };
+
+        case 'updateReceiveStampDetails':
+            return {
+                ...state,
+                items: state.items.map(item => {
+                    if (item.id === action.payload.id) {
+                        const updatedSubcomponents = item.subcomponents?.map(sub => {
+                            if (sub.id === action.payload.subId) {
+                                return {
+                                    ...sub,
+                                    content: action.payload.value
+                                };
+                            }
+                            return sub;
+                        });
+                        return {
+                            ...item,
+                            subcomponents: updatedSubcomponents
+                        };
+                    }
+                    return item;
+                })
+            };
+        case 'updateTextDetails':
+            return {
+                ...state,
+                items: state.items.map((item) => {
+                    if (item.id === action.payload.id) {
+                        return {
+                            ...item,
+                            content: action.payload.value
+                        };
+                    }
+                    return item;
+                })
+            }
+
         // case 'updateReceiveStampDetails':
         //     return {
         //         ...state,

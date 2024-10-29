@@ -1,19 +1,17 @@
 import { IconRubberStamp } from '@tabler/icons-react';
 import { Button } from '@/components/custom/button';
 import { State, Item } from '../util/stamps-reducer-types';
-import { receivedImg } from '../data/images'
+import { receivedImg, initialMaricelImg } from '../data/images'
 import { rgb } from 'pdf-lib';
 
 
 export interface IAppProps {
     addItem: (item: Item) => void;
     state: State;
-    pdfHeight: number;
-    pdfWidth: number;
 }
 
 
-export function Received({ addItem, pdfHeight, pdfWidth, state }: IAppProps) {
+export function Received({ addItem,state }: IAppProps) {
 
 
 
@@ -33,46 +31,62 @@ export function Received({ addItem, pdfHeight, pdfWidth, state }: IAppProps) {
         const trackingNo = {
             id: '1',
             component: 'StampReceivedForm',
-            height: pdfHeight,
-            width: pdfWidth,
+            height: 0,
+            width: 0,
             x: 25,
             y: 25,
             isShown: true,
             color: rgb(190 / 255, 101 / 255, 120 / 255),
             type: 'text',
+            size: 16,
             content: '',
         };
 
         const date = {
             id: '2',
             component: 'StampReceivedForm',
-            height: pdfHeight,
-            width: pdfWidth,
+            height: 0,
+            width: 0,
             x: 25,
             y: 25,
             isShown: true,
             color: rgb(190 / 255, 101 / 255, 120 / 255),
             type: 'date',
+            size: 16,
             content: '',
         }
         const time = {
             id: '3',
             component: 'StampReceivedForm',
-            height: pdfHeight,
-            width: pdfWidth,
+            height: 0,
+            width: 0,
             x: 25,
             y: 25,
             isShown: true,
             color: rgb(190 / 255, 101 / 255, 120 / 255),
             type: 'time',
+            size: 16,
             content: '',
+        }
+
+        const initial = {
+            id: '3',
+            component: 'StampReceivedForm',
+            height: 70,
+            width: 100,
+            x: 25,
+            y: 25,
+            isShown: true,
+            color: rgb(190 / 255, 101 / 255, 120 / 255),
+            type: 'image',
+            content: initialMaricelImg,
         }
 
         const stamp = {
             id: id,
             component: 'StampReceivedForm',
-            height: pdfHeight,
-            width: pdfWidth,
+            height: 100,
+            width: 170,
             x: 25,
             y: 25,
             isShown: true,
@@ -82,6 +96,7 @@ export function Received({ addItem, pdfHeight, pdfWidth, state }: IAppProps) {
                 trackingNo,
                 date,
                 time,
+                initial
             ]
         };
         addItem(stamp)

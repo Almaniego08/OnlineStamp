@@ -1,4 +1,8 @@
 import StampReceivedForm from './stamp-received-form';
+import StampCtcForm from './stamp-ctc-form';
+import AddTextForm from './add-text-form';
+import AddDateForm from './add-date-form';
+import AddTimeForm from './add-text-form';
 import { State, Item } from '../util/stamps-reducer-types'
 
 // Define the props that each component will receive
@@ -20,6 +24,10 @@ type ComponentMap = {
 
 const componentMap: ComponentMap = {
   StampReceivedForm,
+  StampCtcForm,
+  AddTextForm,
+  AddDateForm,
+  AddTimeForm,
 };
 
 export default function DynamicComponentRenderer({ state, dispatch }: Props) {

@@ -14,12 +14,17 @@ import { format } from "date-fns";
 import { IconRubberStamp } from '@tabler/icons-react';
 import { PositioningButton } from './positioning-button';
 import { IconTrash } from '@tabler/icons-react';
+// import { Action } from "../util/stamps-reducer-types";
+import ModalImageView from "./modal-image-view";
+import { initialMaricelImg, receivedImg } from "../data/images";
+import { timeNowConvert, timeString, formatDate } from '../util/format-date-time'
 
 type Props = {
     removeItem: (id: string) => void;
     id: string;
     dispatch: (action: any) => void;
 }
+interface imagePreviewDataTypes { src?: string; title?: string }
 
 function StampReceivedForm({ removeItem, id, dispatch }: Props) {
     const [trackingNo, setTrackingNo] = useState<string>('');
@@ -29,42 +34,53 @@ function StampReceivedForm({ removeItem, id, dispatch }: Props) {
     const updateReceiveStampDetails = (
         id: string,
         subId: string, // This is the id of the subcomponent being updated
-        trackingNo: string,
-        date: Date | undefined,
-        time: string
+        value: string,
     ) => ({
         type: 'updateReceiveStampDetails',
-        payload: { id, subId, trackingNo, date, time },
+        payload: { id, subId, value },
     });
 
     const handleTrackingNoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const newTrackingNo = e.target.value;
-        setTrackingNo(newTrackingNo); // Update local state
-        dispatch(updateReceiveStampDetails(id, '1', newTrackingNo, date, time)); // Use id prop instead of item.id
+        setTrackingNo(newTrackingNo);
+        dispatch(updateReceiveStampDetails(id, '1', newTrackingNo));
     };
 
     const handleDateChange = (selectedDate: any) => {
-        setDate(selectedDate); // Update local state
-        dispatch(updateReceiveStampDetails(id, '2', trackingNo, selectedDate, time)); // Use id prop instead of item.id
+        const dateText = selectedDate ? format(selectedDate, "MMM dd yyyy").toUpperCase() : new Date().toLocaleDateString();
+        setDate(selectedDate);
+        dispatch(updateReceiveStampDetails(id, '2', dateText));
     };
 
     const handleTimeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const newTime = e.target.value;
-        setTime(newTime); // Update local state
-        dispatch(updateReceiveStampDetails(id, '3', trackingNo, date, newTime)); // Use id prop instead of item.id
+        const timestring = timeString(newTime)
+        setTime(newTime);
+        dispatch(updateReceiveStampDetails(id, '3', timestring));
     };
 
     useEffect(() => {
         const currentDate = new Date();
+        const formattedDate = formatDate(currentDate)
         setDate(currentDate);
+        dispatch(updateReceiveStampDetails(id, '2', formattedDate));
     }, []);
 
     useEffect(() => {
-        const now = new Date();
-        const hours = String(now.getHours()).padStart(2, '0'); // Format hours
-        const minutes = String(now.getMinutes()).padStart(2, '0'); // Format minutes
-        setTime(`${hours}:${minutes}`);
+        const newDate = new Date()
+        const { military_time, ante_meridiem } = timeNowConvert(newDate)
+        setTime(military_time)
+        dispatch(updateReceiveStampDetails(id, '3', ante_meridiem));
     }, []);
+
+    const [imagePreviewData, setImagePreviewData] = useState<imagePreviewDataTypes>();
+
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const handleOpenModal = (image: imagePreviewDataTypes) => {
+        setIsModalOpen(true)
+        setImagePreviewData(image)
+    };
+    const handleCloseModal = () => setIsModalOpen(false);
 
     return (
         <div className="flex flex-col gap-3 border rounded-md p-[10px]">
@@ -101,7 +117,6 @@ function StampReceivedForm({ removeItem, id, dispatch }: Props) {
                         <PopoverContent className="w-auto p-0">
                             <Calendar
                                 mode="single"
-                                selected={date}
                                 onSelect={(selectedDate) => {
                                     handleDateChange(selectedDate); // Handle date selection
                                 }}
@@ -121,7 +136,27 @@ function StampReceivedForm({ removeItem, id, dispatch }: Props) {
                     />
                 </div>
             </div>
-            <PositioningButton />
+            <div>
+                <Button onClick={() => handleOpenModal(receivedImg)} variant='link'>
+                    View Received Stamp
+                </Button>
+                <Button onClick={() => handleOpenModal(initialMaricelImg)} variant='link'>
+                    View Initial
+                </Button>
+            </div>
+            <PositioningButton
+                dispatch={dispatch}
+                id={id}
+            />
+            <ModalImageView
+                isOpen={isModalOpen}
+                onClose={handleCloseModal}
+                title={imagePreviewData?.title}
+            >
+                <div className="w-full h-[150px] flex items-center justify-center overflow-hidden p-[10px]">
+                    <img className="h-full  object-cover" src={imagePreviewData?.src} alt={imagePreviewData?.title} />
+                </div>
+            </ModalImageView>
         </div>
     );
 }
