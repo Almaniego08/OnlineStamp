@@ -11,7 +11,7 @@ export interface IAppProps {
 }
 
 
-export function Received({ addItem,state }: IAppProps) {
+export function Received({ addItem, state }: IAppProps) {
 
 
 
@@ -33,41 +33,41 @@ export function Received({ addItem,state }: IAppProps) {
             component: 'StampReceivedForm',
             height: 0,
             width: 0,
-            x: 25,
-            y: 25,
+            x: 50,
+            y: 103,
             isShown: true,
             color: rgb(190 / 255, 101 / 255, 120 / 255),
             type: 'text',
             size: 13,
             content: '',
         };
-
-        const date = {
-            id: '2',
-            component: 'StampReceivedForm',
-            height: 0,
-            width: 0,
-            x: 25,
-            y: 25,
-            isShown: true,
-            color: rgb(190 / 255, 101 / 255, 120 / 255),
-            type: 'text',
-            size: 13,
-            content: '',
-        }
         const time = {
             id: '3',
             component: 'StampReceivedForm',
             height: 0,
             width: 0,
-            x: 25,
-            y: 25,
+            x: 50,
+            y: 93,
             isShown: true,
             color: rgb(190 / 255, 101 / 255, 120 / 255),
             type: 'text',
             size: 13,
             content: '',
         }
+        const date = {
+            id: '2',
+            component: 'StampReceivedForm',
+            height: 0,
+            width: 0,
+            x: 43,
+            y: 55,
+            isShown: true,
+            color: rgb(190 / 255, 101 / 255, 120 / 255),
+            type: 'text',
+            size: 13,
+            content: '',
+        }
+
 
         const initial = {
             id: '3',

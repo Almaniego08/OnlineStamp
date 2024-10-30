@@ -8,8 +8,8 @@ export interface Subcomponent {
     component: string;
     height?: number;
     width?: number;
-    x?: number;
-    y?: number;
+    x: number;
+    y: number;
     isShown?: boolean;
     color?: RGB;
     type?: string;

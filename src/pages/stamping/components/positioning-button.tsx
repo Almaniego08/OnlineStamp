@@ -22,14 +22,6 @@ type Props = {
 
 export function PositioningButton({ dispatch, id }: Props) {
 
-    const updateReceiveStampDetails = (
-        id: string,
-        operator: string, // This is the id of the subcomponent being updated
-        value: number,
-    ) => ({
-        type: 'updatePositionY',
-        payload: { id, operator, value },
-    });
 
     const updatePositionY = (operator: string, value: number) =>
         dispatch({

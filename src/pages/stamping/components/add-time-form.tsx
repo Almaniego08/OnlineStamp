@@ -17,6 +17,8 @@ import {
 } from "@/components/ui/popover";
 import { useState } from "react";
 import { IconLetterCase } from '@tabler/icons-react';
+import AddTextForm from './add-text-form';
+import TextSizeButton from './text-size-button';
 type Props = {
     removeItem: (id: string) => void;
     id: string;
@@ -57,37 +59,40 @@ export default function AddTimeForm({ removeItem, id, dispatch }: Props) {
                 </Button>
             </div>
             <div>
-                <div className='flex flex-col justify-start gap-[10px]'>
-                    <Label className='w-fit' htmlFor="date">Date</Label>
-                    <Popover>
-                        <PopoverTrigger id='date' asChild>
-                            <Button
-                                variant={"outline"}
-                                className={cn(
-                                    "w-full justify-start text-left font-normal",
-                                    !date && "text-muted-foreground"
-                                )}
-                            >
-                                <IconCalendarMonth className="mr-2 h-4 w-4" />
-                                {date ? format(date, "PPP") : <span>Pick a date</span>}
-                            </Button>
-                        </PopoverTrigger>
-                        <PopoverContent className="w-auto p-0">
-                            <Calendar
-                                mode="single"
-                                onSelect={(selectedDate) => {
-                                    handleTimeChange(selectedDate); // Handle date selection
-                                }}
-                                initialFocus
-                            />
-                        </PopoverContent>
-                    </Popover>
+                <div className='flex flex-row-gap-[10px items-end gap-[10px]'>
+                    <div className='flex flex-col justify-start  flex-1'>
+                        <Label className='w-fit' htmlFor="date">Date</Label>
+                        <Popover>
+                            <PopoverTrigger id='date' asChild>
+                                <Button
+                                    variant={"outline"}
+                                    className={cn(
+                                        "w-full justify-start text-left font-normal",
+                                        !date && "text-muted-foreground"
+                                    )}
+                                >
+                                    <IconCalendarMonth className="mr-2 h-4 w-4" />
+                                    {date ? format(date, "PPP") : <span>Pick a date</span>}
+                                </Button>
+                            </PopoverTrigger>
+                            <PopoverContent className="w-auto p-0">
+                                <Calendar
+                                    mode="single"
+                                    onSelect={(selectedDate) => {
+                                        handleTimeChange(selectedDate); // Handle date selection
+                                    }}
+                                    initialFocus
+                                />
+                            </PopoverContent>
+                        </Popover>
+                    </div>
+                    <TextSizeButton />
+                    </div>
                 </div>
+                <PositioningButton
+                    dispatch={dispatch}
+                    id={id}
+                />
             </div>
-            <PositioningButton
-                dispatch={dispatch}
-                id={id}
-            />
-        </div>
-    )
+            )
 }

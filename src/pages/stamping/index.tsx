@@ -9,7 +9,7 @@ import { Time } from './components/time'
 import { NoFileAddedDisplay } from './components/no-file-added-display'
 import { AddFileButton as useAddFileButton } from './components/add-file-button';
 import { PDFDocument } from 'pdf-lib';
-
+import { Button } from '@/components/custom/button'
 // USE REDUCER FOR ADD STAMPS
 import { useReducer } from 'react';
 import { initialState } from './util/stamps-reducer-initialize';
@@ -17,6 +17,9 @@ import { reducer } from './util/stamps-reducer';
 import { Item } from './util/stamps-reducer-types';
 import DynamicComponentRenderer from './components/dynamic-component-renderer'
 import PdfViewer from './components/pdf-viewer'
+import OutputButton from './components/output-button'
+import PagerButton from './components/pager-button'
+import { Selectfile } from './components/select-image'
 export default function Tasks() {
   // USE REDUCER FOR ADD STAMPS
   const [stampsState, dispatch] = useReducer(reducer, initialState);
@@ -31,27 +34,27 @@ export default function Tasks() {
   }, [stampsState])
   //  PDF
   const { component: AddFileButton, pdfFile, setPdfFile } = useAddFileButton();
-    const [pdfHeight, setPdfHeight] = useState<number>(0)
-    const [pdfWidth, setPdfWidth] = useState<number>(0)
-    const [pdfPages, setPdfPages] = useState<number>(0)
-    const [pdfCurrentPage, setPdfCurrentPage] = useState<number>(1)
+  const [pdfHeight, setPdfHeight] = useState<number>(0)
+  const [pdfWidth, setPdfWidth] = useState<number>(0)
+  const [pdfPages, setPdfPages] = useState<number>(0)
+  const [pdfCurrentPage, setPdfCurrentPage] = useState<number>(1)
 
 
-    useEffect(() => {
-      async function loadFile() {
-        if (pdfFile) {
-          const pdfBytes = await pdfFile.arrayBuffer();
-          const pdfDoc = await PDFDocument.load(pdfBytes);
+  useEffect(() => {
+    async function loadFile() {
+      if (pdfFile) {
+        const pdfBytes = await pdfFile.arrayBuffer();
+        const pdfDoc = await PDFDocument.load(pdfBytes);
 
-          const page = pdfDoc.getPages()[pdfCurrentPage - 1];
-          setPdfPages(pdfDoc.getPageCount())
+        const page = pdfDoc.getPages()[pdfCurrentPage - 1];
+        setPdfPages(pdfDoc.getPageCount())
 
-          setPdfHeight(page.getHeight())
-          setPdfWidth(page.getWidth())
-        }
+        setPdfHeight(page.getHeight())
+        setPdfWidth(page.getWidth())
       }
-      loadFile()
-    }, [pdfFile])
+    }
+    loadFile()
+  }, [pdfFile])
 
   return (
     <Layout>
@@ -69,6 +72,7 @@ export default function Tasks() {
           <div>
             {AddFileButton}
           </div>
+          <PagerButton setPage={setPdfCurrentPage} pdfPages={pdfPages} pdfCurrentPage={pdfCurrentPage} />
           <div className="flex flex-wrap gap-2">
             <div className="flex flex-1 shrink-0 min-w-[150px] items-center justify-center">
               <Received
@@ -95,10 +99,20 @@ export default function Tasks() {
                 addItem={addItem}
                 state={stampsState} />
             </div>
+            <div className="flex flex-1 shrink-0 min-w-[150px] items-center justify-center">
+              <Selectfile
+                addItem={addItem}
+                state={stampsState} />
+
+            </div>
           </div>
           <div className='flex flex-col gap-[20px]'>
             <DynamicComponentRenderer state={stampsState} dispatch={dispatch} />
           </div>
+          <OutputButton
+            pdfFile={pdfFile} currentPage={pdfCurrentPage} rotation={0}
+            component={stampsState}
+          />
           <div className='py-[50px]'>
             {
               pdfFile ? (<PdfViewer state={stampsState} pdfFile={pdfFile} pdfCurrentPage={pdfCurrentPage} />) : (<NoFileAddedDisplay />)

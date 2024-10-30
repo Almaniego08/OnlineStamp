@@ -17,6 +17,7 @@ import {
 } from "@/components/ui/popover";
 import { useState } from "react";
 import { IconLetterCase } from '@tabler/icons-react';
+import TextSizeButton from './text-size-button';
 type Props = {
     removeItem: (id: string) => void;
     id: string;
@@ -55,8 +56,8 @@ export default function AddDateForm({ removeItem, id, dispatch }: Props) {
                     <IconTrash />
                 </Button>
             </div>
-            <div>
-                <div className='flex flex-col justify-start gap-[10px]'>
+            <div className='flex flex-row-gap-[10px items-end gap-[10px]'>
+                <div className='flex flex-col justify-start  flex-1'>
                     <Label className='w-fit' htmlFor="date">Date</Label>
                     <Popover>
                         <PopoverTrigger id='date' asChild>
@@ -82,6 +83,7 @@ export default function AddDateForm({ removeItem, id, dispatch }: Props) {
                         </PopoverContent>
                     </Popover>
                 </div>
+                <TextSizeButton />
             </div>
             <PositioningButton
                 dispatch={dispatch}
