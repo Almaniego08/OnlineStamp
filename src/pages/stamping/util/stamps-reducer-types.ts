@@ -49,22 +49,30 @@ export type Action =
             value: string,
         }
     }
-    | 
+    |
     {
         type: 'updatePositionY';
         payload: dispatchPosition
     }
-    | 
+    |
     {
         type: 'updatePositionX';
         payload: dispatchPosition
     }
-    | 
+    |
     {
         type: 'updateTextDetails',
         payload: {
             id: string;
             value: string;
         },
+    }
+    |
+    {
+        type: 'updateImageUploadDetails',
+        payload: {
+            id: string;
+            value: { title: string; src: string }
+        }
     }
     | { type: 'reset'; };

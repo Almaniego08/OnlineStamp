@@ -15,12 +15,24 @@ type Props = {
 export default function SelectImageForm({ removeItem, id, dispatch }: Props) {
     const [imageFile, setImageFile] = useState<File | null>(null);
     const [imageSrc, setImageSrc] = useState<string | null>(null);
-    
+
     const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
         if (event.target.files) {
             const file = event.target.files[0];
             setImageFile(file);
             setImageSrc(URL.createObjectURL(file)); // Create object URL for the uploaded image
+            const filename = file.name;
+            const imgSrc = URL.createObjectURL(file);
+
+            dispatch({
+                type: 'updateImageUploadDetails',
+                payload: {
+                    id: id, value: {
+                        title: filename,
+                        src: imgSrc,
+                    }
+                }
+            })
         }
     };
 
@@ -34,7 +46,7 @@ export default function SelectImageForm({ removeItem, id, dispatch }: Props) {
     }, [imageSrc]);
 
     console.log('imageFile:', imageFile);
-    console.log('imageSrc:', imageSrc); // The object URL for the image
+    console.log('imageSrc:', imageSrc); // Object URL for the image
     console.log('filename:', imageFile?.name); // The filename
 
     return (
@@ -42,7 +54,7 @@ export default function SelectImageForm({ removeItem, id, dispatch }: Props) {
             <div className="flex flex-row justify-between">
                 <div className="flex flex-row gap-[10px] ">
                     <IconLetterCase />
-                    <p className="text-start font-bold w-full">ADD TEXT</p>
+                    <p className="text-start font-bold w-full">ADD IMAGE</p>
                 </div>
                 <Button onClick={() => removeItem(id)} variant='destructive'>
                     <IconTrash />
@@ -55,12 +67,12 @@ export default function SelectImageForm({ removeItem, id, dispatch }: Props) {
                 </div>
             </div>
             {imageSrc && (
-                <div className="mt-2">
-                    <img src={imageSrc} alt={imageFile?.name} className="w-32 h-32 rounded-md  object-contain" />
+                <div className="">
+                    <img src={imageSrc} alt={imageFile?.name} className="w-32 h-32 rounded-md object-contain" />
                 </div>
             )}
             <PositioningButton
-                dispatch={dispatch} 
+                dispatch={dispatch}
                 id={id}
             />
         </div>
