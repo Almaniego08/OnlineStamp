@@ -23,10 +23,12 @@ type Props = {
     removeItem: (id: string) => void;
     id: string;
     dispatch: (action: any) => void;
+    pdfHeight: number;
+    pdfWidth: number;
 }
 interface imagePreviewDataTypes { src?: string; title?: string }
 
-function StampReceivedForm({ removeItem, id, dispatch }: Props) {
+function StampReceivedForm({ removeItem, id, dispatch, pdfHeight, pdfWidth }: Props) {
     const [trackingNo, setTrackingNo] = useState<string>('');
     const [date, setDate] = useState<Date | undefined>(undefined);
     const [time, setTime] = useState<string>('');
@@ -145,6 +147,8 @@ function StampReceivedForm({ removeItem, id, dispatch }: Props) {
                 </Button>
             </div>
             <PositioningButton
+                pdfHeight={pdfHeight}
+                pdfWidth={pdfWidth}
                 dispatch={dispatch}
                 id={id}
             />

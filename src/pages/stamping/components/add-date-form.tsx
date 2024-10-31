@@ -22,9 +22,11 @@ type Props = {
     removeItem: (id: string) => void;
     id: string;
     dispatch: (action: any) => void;
+    pdfHeight: number;
+    pdfWidth: number;
 }
 
-export default function AddDateForm({ removeItem, id, dispatch }: Props) {
+export default function AddDateForm({ removeItem, id, dispatch, pdfHeight, pdfWidth }: Props) {
     const [date, setDate] = useState<Date | undefined>(undefined);
 
     const handleDateChange = (selectedDate: any) => {
@@ -86,6 +88,8 @@ export default function AddDateForm({ removeItem, id, dispatch }: Props) {
                 <TextSizeButton />
             </div>
             <PositioningButton
+                pdfHeight={pdfHeight}
+                pdfWidth={pdfWidth}
                 dispatch={dispatch}
                 id={id}
             />

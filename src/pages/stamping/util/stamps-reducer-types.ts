@@ -67,6 +67,15 @@ export type Action =
             value: string;
         },
     }
+    | 
+    {
+        type: 'updatePositionTopBottomLeftRight',
+        payload: {
+            id: string;
+            position: string;
+            value: number;
+        },
+    }
     |
     {
         type: 'updateImageUploadDetails',

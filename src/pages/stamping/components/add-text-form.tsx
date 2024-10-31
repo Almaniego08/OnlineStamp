@@ -10,9 +10,11 @@ type Props = {
     removeItem: (id: string) => void;
     id: string;
     dispatch: (action: any) => void;
+    pdfHeight: number;
+    pdfWidth: number;
 }
 
-export default function AddTextForm({ removeItem, id, dispatch }: Props) {
+export default function AddTextForm({ removeItem, id, dispatch, pdfHeight, pdfWidth }: Props) {
     const [text, setText] = useState<string>('');
 
 
@@ -51,6 +53,8 @@ export default function AddTextForm({ removeItem, id, dispatch }: Props) {
                 <TextSizeButton />
             </div>
             <PositioningButton
+                pdfHeight={pdfHeight}
+                pdfWidth={pdfWidth}
                 dispatch={dispatch}
                 id={id}
             />

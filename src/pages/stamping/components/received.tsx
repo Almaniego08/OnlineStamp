@@ -70,12 +70,12 @@ export function Received({ addItem, state }: IAppProps) {
 
 
         const initial = {
-            id: '3',
+            id: '4',
             component: 'StampReceivedForm',
-            height: 70,
-            width: 100,
-            x: 25,
-            y: 25,
+            height: 30,
+            width: 30,
+            x: 150,
+            y: 45,
             isShown: true,
             color: rgb(190 / 255, 101 / 255, 120 / 255),
             type: 'image',

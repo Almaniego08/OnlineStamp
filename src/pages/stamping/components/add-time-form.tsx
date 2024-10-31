@@ -23,28 +23,30 @@ type Props = {
     removeItem: (id: string) => void;
     id: string;
     dispatch: (action: any) => void;
+    pdfHeight: number;
+    pdfWidth: number;
 }
 
-export default function AddTimeForm({ removeItem, id, dispatch }: Props) {
-    const [date, setDate] = useState<Date | undefined>(undefined);
+export default function AddTimeForm({ removeItem, id, dispatch, pdfHeight, pdfWidth }: Props) {
+    const [time, setTime] = useState<string>('');
 
-
-    const handleTimeChange = (selectedDate: any) => {
-        const dateText = formatDate(selectedDate)
-        setDate(selectedDate);
+    const handleTimeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const newTime = e.target.value;
+        const timestring = timeString(newTime)
+        setTime(newTime);
         dispatch({
             type: 'updateTextDetails',
-            payload: { id: id, value: dateText }
+            payload: { id: id, value: timestring }
         });
     };
 
     useEffect(() => {
-        const currentDate = new Date();
-        const formattedDate = formatDate(currentDate)
-        setDate(currentDate);
+        const newDate = new Date()
+        const { military_time, ante_meridiem } = timeNowConvert(newDate)
+        setTime(military_time)
         dispatch({
             type: 'updateTextDetails',
-            payload: { id: id, value: formattedDate }
+            payload: { id: id, value: ante_meridiem }
         });
     }, []);
     return (
@@ -52,7 +54,7 @@ export default function AddTimeForm({ removeItem, id, dispatch }: Props) {
             <div className="flex flex-row justify-between">
                 <div className="flex flex-row gap-[10px] ">
                     <IconLetterCase />
-                    <p className="text-start font-bold w-full">ADD DATE</p>
+                    <p className="text-start font-bold w-full">ADD TIME</p>
                 </div>
                 <Button onClick={() => removeItem(id)} variant='destructive'>
                     <IconTrash />
@@ -60,39 +62,25 @@ export default function AddTimeForm({ removeItem, id, dispatch }: Props) {
             </div>
             <div>
                 <div className='flex flex-row-gap-[10px items-end gap-[10px]'>
-                    <div className='flex flex-col justify-start  flex-1'>
-                        <Label className='w-fit' htmlFor="date">Date</Label>
-                        <Popover>
-                            <PopoverTrigger id='date' asChild>
-                                <Button
-                                    variant={"outline"}
-                                    className={cn(
-                                        "w-full justify-start text-left font-normal",
-                                        !date && "text-muted-foreground"
-                                    )}
-                                >
-                                    <IconCalendarMonth className="mr-2 h-4 w-4" />
-                                    {date ? format(date, "PPP") : <span>Pick a date</span>}
-                                </Button>
-                            </PopoverTrigger>
-                            <PopoverContent className="w-auto p-0">
-                                <Calendar
-                                    mode="single"
-                                    onSelect={(selectedDate) => {
-                                        handleTimeChange(selectedDate); // Handle date selection
-                                    }}
-                                    initialFocus
-                                />
-                            </PopoverContent>
-                        </Popover>
+                    <div className='flex flex-col justify-start gap-[10px] w-full'>
+                        <Label className='w-fit' htmlFor="time">Time</Label>
+                        <Input
+                            id="time"
+                            type="time"
+                            value={time}
+                            onChange={handleTimeChange}
+                            className="w-full"
+                        />
                     </div>
                     <TextSizeButton />
-                    </div>
                 </div>
-                <PositioningButton
-                    dispatch={dispatch}
-                    id={id}
-                />
             </div>
-            )
+            <PositioningButton
+                pdfHeight={pdfHeight}
+                pdfWidth={pdfWidth}
+                dispatch={dispatch}
+                id={id}
+            />
+        </div>
+    )
 }

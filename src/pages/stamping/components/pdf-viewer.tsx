@@ -44,15 +44,15 @@ const PdfViewer: React.FC<{ pdfFile: any; pdfCurrentPage: any; state: State }> =
 
     const renderComponent = (component: any, offsetX = 0, offsetY = 0) => {
         const { x, y, type, content } = component;
-        const scaledX = (x + offsetX) * scaleFactor;
-        const scaledY = (y + offsetY) * scaleFactor;
+        const scaledX = (x + offsetX ) * scaleFactor; // Keep the scaling consistent for X
+        const scaledY = (y + offsetY  - 14) * scaleFactor; // Keep the scaling consistent for Y
         const compHeight = (component.height || 0) * scaleFactor; // Scale height
         const compWidth = ((component.width ?? 0) * scaleFactor) || imageWidth;
-
+    
         if (type === 'image') {
             const imageSrc = typeof content === 'string' ? content : content.src;
             const imageTitle = typeof content === 'string' ? '' : content.title;
-
+    
             return (
                 <img
                     key={component.id}
@@ -70,7 +70,7 @@ const PdfViewer: React.FC<{ pdfFile: any; pdfCurrentPage: any; state: State }> =
             );
         } else if (type === 'text') {
             const textContent = typeof content === 'string' ? content : String(content);
-
+    
             return (
                 <p
                     className='text-nowrap'
@@ -78,12 +78,13 @@ const PdfViewer: React.FC<{ pdfFile: any; pdfCurrentPage: any; state: State }> =
                     style={{
                         position: 'absolute',
                         left: `${scaledX}px`,
-                        top: `${scaledY}px`,
-                        fontSize: component.size || fontSize,
+                        top: `${scaledY}px`, // Keep Y positioning consistent
+                        fontSize: component.size ? component.size * scaleFactor : fontSize * scaleFactor, // Scale font size
                         color: component.color
                             ? `rgb(${component.color.red * 255}, ${component.color.green * 255}, ${component.color.blue * 255})`
                             : 'black',
-                        margin: 0,
+                        margin: 0, // Remove default margins
+                        padding: 0, // Ensure no padding is applied
                         zIndex: 2,
                     }}
                 >
@@ -91,9 +92,10 @@ const PdfViewer: React.FC<{ pdfFile: any; pdfCurrentPage: any; state: State }> =
                 </p>
             );
         }
-
+    
         return null;
     };
+    
 
     return (
         <div className="m-auto border-[2px] border-green-500 w-fit flex flex-col items-center relative">
@@ -111,7 +113,7 @@ const PdfViewer: React.FC<{ pdfFile: any; pdfCurrentPage: any; state: State }> =
                                 <div key={component.id}>
                                     {mainComponent}
                                     {component.subcomponents.map((subcomponent) => {
-                                        return renderComponent(subcomponent, component.x, component.y);
+                                        return renderComponent(subcomponent, component.x, component.y - 15);
                                     })}
                                 </div>
                             );

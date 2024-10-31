@@ -107,7 +107,11 @@ export default function Tasks() {
             </div>
           </div>
           <div className='flex flex-col gap-[20px]'>
-            <DynamicComponentRenderer state={stampsState} dispatch={dispatch} />
+            <DynamicComponentRenderer
+              pdfHeight={pdfHeight}
+              pdfWidth={pdfWidth}
+              state={stampsState} 
+              dispatch={dispatch} />
           </div>
           <OutputButton
             pdfFile={pdfFile} currentPage={pdfCurrentPage} rotation={0}

@@ -79,6 +79,54 @@ export const reducer = (state: State, action: Action): State => {
                 })
             }
 
+        case 'updatePositionTopBottomLeftRight':
+            return {
+                ...state,
+                items: state.items.map(item => {
+                    if (item.height && item.width || item.type === 'text') {
+                        if (item.id === action.payload.id) {
+                            if (action.payload.position === 'top') {
+                                return {
+                                    ...item,
+                                    y: item.y = action.payload.value
+                                }
+                            } else if (action.payload.position === 'bottom') {
+                                return {
+                                    ...item,
+                                    y: item.y = action.payload.value - (item.width ?? 0)
+                                }
+                            }
+                            else if (action.payload.position === 'left') {
+                                return {
+                                    ...item,
+                                    x: item.x = action.payload.value
+                                }
+                            }
+                            else if (action.payload.position === 'right') {
+                                return {
+                                    ...item,
+                                    x: item.x = action.payload.value - (item.width ?? 0)
+                                }
+                            }
+
+                        }
+                    }
+                    return item;
+                })
+            }
+        case 'updateImageUploadDetails':
+            return {
+                ...state,
+                items: state.items.map((item) => {
+                    if (item.id === action.payload.id) {
+                        return {
+                            ...item,
+                            content: action.payload.value
+                        };
+                    }
+                    return item;
+                })
+            }
         // case 'updateReceiveStampDetails':
         //     return {
         //         ...state,

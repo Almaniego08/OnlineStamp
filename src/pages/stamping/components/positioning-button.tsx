@@ -16,11 +16,13 @@ import { dispatchPosition } from '../util/stamps-reducer-dispatch'
 type Props = {
     dispatch: (action: any) => void;
     id: string;
+    pdfHeight: number;
+    pdfWidth: number;
 }
 
 
 
-export function PositioningButton({ dispatch, id }: Props) {
+export function PositioningButton({ dispatch, id, pdfHeight, pdfWidth }: Props) {
 
 
     const updatePositionY = (operator: string, value: number) =>
@@ -34,6 +36,25 @@ export function PositioningButton({ dispatch, id }: Props) {
             type: 'updatePositionX',
             payload: { id, operator, value },
         });
+
+    const updatePositionTopBottomLeftRight = (position: string,) => {
+        const x = 0;
+        const y = 0;
+        let value = 0;
+        if (position === 'top') {
+            value = y
+        } else if (position === 'bottom') {
+            value = pdfHeight - y
+        } else if (position === 'left') {
+            value = x;
+        } else if (position === 'right') {
+            value = pdfWidth - x;
+        }
+        dispatch({
+            type: 'updatePositionTopBottomLeftRight',
+            payload: { id, position, value },
+        });
+    }
 
     return (
         <div className='flex flex-wrap gap-2'>
@@ -52,17 +73,17 @@ export function PositioningButton({ dispatch, id }: Props) {
                 </Button>
             </div>
             <div className='flex-1 flex flex-nowrap gap-2'>
-                <Button className='flex-1' variant='ghost'>
+                <Button onClick={() => updatePositionTopBottomLeftRight('top')} className='flex-1' variant='ghost'>
                     <IconLayoutAlignTop />
                 </Button>
-                <Button className='flex-1' variant='ghost'>
+                <Button onClick={() => updatePositionTopBottomLeftRight('bottom')} className='flex-1' variant='ghost'>
                     <IconLayoutAlignBottom />
                 </Button>
-                <Button className='flex-1' variant='ghost'>
-                    <IconLayoutAlignRight />
-                </Button>
-                <Button className='flex-1' variant='ghost'>
+                <Button onClick={() => updatePositionTopBottomLeftRight('left')} className='flex-1' variant='ghost'>
                     <IconLayoutAlignLeft />
+                </Button>
+                <Button onClick={() => updatePositionTopBottomLeftRight('right')} className='flex-1' variant='ghost'>
+                    <IconLayoutAlignRight />
                 </Button>
             </div>
 

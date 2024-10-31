@@ -11,11 +11,15 @@ type ComponentProps = {
   removeItem: (id: string) => void;
   id: string; // Include the id prop
   dispatch: (action: any) => void;
+  pdfHeight: number;
+  pdfWidth: number;
 };
 
 type Props = {
   state: State;
   dispatch: any;
+  pdfHeight: number;
+  pdfWidth: number;
 }
 
 // Update the ComponentMap to use the new ComponentProps type
@@ -30,15 +34,18 @@ const componentMap: ComponentMap = {
   AddDateForm,
   AddTimeForm,
   SelectImageForm,
+
 };
 
-export default function DynamicComponentRenderer({ state, dispatch }: Props) {
+export default function DynamicComponentRenderer({ state, dispatch, pdfHeight, pdfWidth }: Props) {
   return (
     <>
       {state.items.map((item) => {
         const Component = componentMap[item?.component];
         return Component ? (
           <Component
+            pdfHeight={pdfHeight}
+            pdfWidth={pdfWidth}
             key={item.id}
             id={item.id!}
             dispatch={dispatch}

@@ -10,9 +10,11 @@ type Props = {
     removeItem: (id: string) => void;
     id: string;
     dispatch: (action: any) => void;
+    pdfHeight: number;
+    pdfWidth: number;
 }
 
-export default function StampCtcForm({ removeItem, id, dispatch }: Props) {
+export default function StampCtcForm({ removeItem, id, dispatch, pdfHeight, pdfWidth }: Props) {
     return (
         <div className="flex flex-col gap-3 border rounded-md p-[10px] ">
             <div className="flex flex-row justify-between">
@@ -33,8 +35,10 @@ export default function StampCtcForm({ removeItem, id, dispatch }: Props) {
                     <img className="object-contain w-auto h-[70px]" src={signitureMaricelImg.src} alt={signitureMaricelImg.title} />
                     <p className="text-nowrap font-regular md:font-semibold lg:font-bold">Signature</p>
                 </div>
-            </div>  
+            </div>
             <PositioningButton
+                pdfHeight={pdfHeight}
+                pdfWidth={pdfWidth}
                 dispatch={dispatch}
                 id={id}
             />
