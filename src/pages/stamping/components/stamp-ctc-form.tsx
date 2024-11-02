@@ -1,4 +1,4 @@
-import { signitureMaricelImg, receivedImg } from "../data/images";
+import { signitureMaricelImg, ctcImage } from "../data/images";
 import { PositioningButton } from './positioning-button';
 import { Button } from "@/components/custom/button";
 import { IconTrash } from '@tabler/icons-react';
@@ -37,7 +37,7 @@ export default function StampCtcForm({ removeItem, id, dispatch, pdfHeight, pdfW
             </div>
             <div className="flex flex-wrap gap-[10px] items-stretch justify-center">
                 <div className="flex-1 flex flex-col items-center justify-center border w-auto p-[10px]">
-                    <img className="object-contain w-auto h-[70px]" src={receivedImg.src} alt={receivedImg.title} />
+                    <img className="object-contain w-auto h-[70px]" src={ctcImage.src} alt={ctcImage.title} />
                     <p className="text-nowrap font-regular md:font-semibold lg:font-bold">Certified True Copy</p>
                 </div>
                 <div className="flex-1 flex flex-col items-center justify-center border w-auto p-[10px]">
