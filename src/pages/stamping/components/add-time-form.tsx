@@ -3,21 +3,12 @@ import { PositioningButton } from './positioning-button';
 import { Button } from "@/components/custom/button";
 import { IconTrash } from '@tabler/icons-react';
 import { Label } from "@/components/ui/label";
-import { cn } from "@/lib/utils";
 import { Input } from "@/components/ui/input";
-import { IconCalendarMonth } from '@tabler/icons-react';
-import { Calendar } from "@/components/ui/calendar";
-import { format } from "date-fns";
-import { timeNowConvert, timeString, formatDate } from '../util/format-date-time'
+import { timeNowConvert, timeString } from '../util/format-date-time'
+import { IconCurrentLocation, IconX } from '@tabler/icons-react';
 
-import {
-    Popover,
-    PopoverContent,
-    PopoverTrigger,
-} from "@/components/ui/popover";
 import { useState } from "react";
 import { IconLetterCase } from '@tabler/icons-react';
-import AddTextForm from './add-text-form';
 import TextSizeButton from './text-size-button';
 type Props = {
     removeItem: (id: string) => void;
@@ -25,9 +16,11 @@ type Props = {
     dispatch: (action: any) => void;
     pdfHeight: number;
     pdfWidth: number;
+    isEditing: string;
+    setIsEditingPosition: (id: string) => void;
 }
 
-export default function AddTimeForm({ removeItem, id, dispatch, pdfHeight, pdfWidth }: Props) {
+export default function AddTimeForm({ removeItem, id, dispatch, pdfHeight, pdfWidth, isEditing, setIsEditingPosition }: Props) {
     const [time, setTime] = useState<string>('');
 
     const handleTimeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -56,9 +49,17 @@ export default function AddTimeForm({ removeItem, id, dispatch, pdfHeight, pdfWi
                     <IconLetterCase />
                     <p className="text-start font-bold w-full">ADD TIME</p>
                 </div>
-                <Button onClick={() => removeItem(id)} variant='destructive'>
-                    <IconTrash />
-                </Button>
+                <div>
+                    <Button onClick={() => setIsEditingPosition(id)} variant='ghost'>
+                        <IconCurrentLocation
+                            style={{
+                                color: isEditing === id ? 'green' : 'red'
+                            }} />
+                    </Button>
+                    <Button onClick={() => removeItem(id)} variant='ghost'>
+                        <IconTrash style={{ color: 'red' }} />
+                    </Button>
+                </div>
             </div>
             <div>
                 <div className='flex flex-row-gap-[10px items-end gap-[10px]'>
@@ -72,15 +73,33 @@ export default function AddTimeForm({ removeItem, id, dispatch, pdfHeight, pdfWi
                             className="w-full"
                         />
                     </div>
-                    <TextSizeButton />
+                    <TextSizeButton dispatch={dispatch} id={id} />
                 </div>
             </div>
-            <PositioningButton
-                pdfHeight={pdfHeight}
-                pdfWidth={pdfWidth}
-                dispatch={dispatch}
-                id={id}
-            />
+            <div
+                className={`bg-background bg-opacity-50 rounded-md p-[5px] flex flex-row items-center transition-all duration-300 ${isEditing === id ? 'fixed' : 'relative'
+                    }`}
+                style={{
+                    width: isEditing === id ? 'fit-content' : '100%',
+                    bottom: '5px',
+                    left: isEditing === id ? '50%' : '0%',
+                    transform: isEditing === id ? 'translateX(-50%) scale(1)' : 'translateX(0) scale(0.95)',
+                    opacity: isEditing === id ? 1 : 0.95,
+                    zIndex: isEditing === id ? 50 : 1,
+                }}
+            >
+                <PositioningButton
+                    pdfHeight={pdfHeight}
+                    pdfWidth={pdfWidth}
+                    dispatch={dispatch}
+                    id={id}
+                />
+                {isEditing === id ? (
+                    <Button onClick={() => setIsEditingPosition('')} className="text-red-500 h-full" variant="ghost">
+                        <IconX />
+                    </Button>
+                ) : null}
+            </div>
         </div>
     )
 }

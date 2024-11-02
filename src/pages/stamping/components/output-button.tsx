@@ -7,17 +7,18 @@ type Props = {
     currentPage: number;
     rotation: number;
     component: State;
+    downloadFileName: string;
 }
 
-export default function OutputButton({ pdfFile, currentPage, rotation, component }: Props) {
+export default function OutputButton({ pdfFile, currentPage, rotation, component, downloadFileName }: Props) {
 
     const handleStamp = async () => {
-        await addStamp(pdfFile, currentPage, rotation, component);
+        await addStamp(pdfFile, currentPage, rotation, component,downloadFileName);
     };
 
     return (
-        <div className='w-full flex items-center justify-center'>
-            <Button onClick={handleStamp} className='' variant='destructive'>Download Output</Button>
+        <div className='w-full flex items-center justify-center w-full'>
+            <Button onClick={handleStamp} className='w-full border' variant='ghost'>Download Output</Button>
         </div>
     );
 }

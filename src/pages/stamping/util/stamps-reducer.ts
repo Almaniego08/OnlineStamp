@@ -78,6 +78,19 @@ export const reducer = (state: State, action: Action): State => {
                     return item;
                 })
             }
+        case 'updateTextColor':
+            return {
+                ...state,
+                items: state.items.map((item) => {
+                    if (item.id === action.payload.id) {
+                        return {
+                            ...item,
+                            color: action.payload.value
+                        };
+                    }
+                    return item;
+                })
+            }
 
         case 'updatePositionTopBottomLeftRight':
             return {
@@ -121,39 +134,53 @@ export const reducer = (state: State, action: Action): State => {
                     if (item.id === action.payload.id) {
                         return {
                             ...item,
-                            content: action.payload.value
+                            width: action.payload.width,  // Set width directly on the item
+                            height: action.payload.height, // Set height directly on the item
+                            content: {
+                                title: action.payload.value.title, // Only include title
+                                src: action.payload.value.src,     // Only include src
+                            },
                         };
+                    }
+                    return item; // Return unchanged item if id does not match
+                }),
+            };
+
+
+        case 'handleTextSizeButtonClick':
+            return {
+                ...state,
+                items: state.items.map((item) => {
+
+                    if (item.id === action.payload.id) {
+                        if (item.type === 'text' && item.size) {
+                            return {
+                                ...item,
+                                size: action.payload.operator === '+' ? item.size + 1 : item.size - 1
+                            }
+                        }
                     }
                     return item;
                 })
             }
-        // case 'updateReceiveStampDetails':
-        //     return {
-        //         ...state,
-        //         items: state.items.map(item => {
-        //             if (item.id === action.payload.id) {
-        //                 return {
-        //                     ...item,
-        //                     subcomponents: item.subcomponents?.map(sub => {
-        //                         if (sub.id === action.payload.subId) {
-        //                             return {
-        //                                 ...sub,
-        //                                 content: {
-        //                                     trackingNo: action.payload.trackingNo,
-        //                                     date: action.payload.date,
-        //                                     time: action.payload.time,
-        //                                 } as Content, // Explicitly cast to ensure type safety
-        //                             };
-        //                         }
-        //                         return sub;
-        //                     }) || [], // Fallback to empty array if subcomponents is undefined
-        //                 };
-        //             }
-        //             return item;
-        //         }),
-        //     };
+        case 'handleImageSizeButtonClick':
+            return {
+                ...state,
+                items: state.items.map((item) => {
 
+                    if (item.id === action.payload.id) {
+                        if (item.type === 'image' && item.height && item.width) {
+                            return {
+                                ...item,
+                                width: action.payload.operator === '+' ? item.width + 5 : item.width - 5,
+                                height: action.payload.operator === '+' ? item.height + 5 : item.height - 5
 
+                            }
+                        }
+                    }
+                    return item;
+                })
+            }
 
         case 'toggleVisibility':
             return {

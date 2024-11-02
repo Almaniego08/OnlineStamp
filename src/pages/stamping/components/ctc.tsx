@@ -56,7 +56,7 @@ export function CTC({ addItem, state }: CTC) {
     }
     // StampCtcForm
     return (
-        <Button onClick={handleAddItems} variant='ghost' className='flex gap-[10px] border px-4 py-4 w-full'>
+        <Button onClick={handleAddItems} variant='ghost' className='flex justify-start gap-[10px] border px-4 py-4 w-full'>
             <IconRubberStamp />
             <p>ADD CTC</p>
         </Button>

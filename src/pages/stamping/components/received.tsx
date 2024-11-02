@@ -36,9 +36,9 @@ export function Received({ addItem, state }: IAppProps) {
             x: 50,
             y: 103,
             isShown: true,
-            color: rgb(190 / 255, 101 / 255, 120 / 255),
             type: 'text',
-            size: 13,
+            color: rgb(0.345, 0.137, 0.655),
+            size: 11,
             content: '',
         };
         const time = {
@@ -49,9 +49,9 @@ export function Received({ addItem, state }: IAppProps) {
             x: 50,
             y: 93,
             isShown: true,
-            color: rgb(190 / 255, 101 / 255, 120 / 255),
             type: 'text',
-            size: 13,
+            color: rgb(0.345, 0.137, 0.655),
+            size: 11,
             content: '',
         }
         const date = {
@@ -77,7 +77,6 @@ export function Received({ addItem, state }: IAppProps) {
             x: 150,
             y: 45,
             isShown: true,
-            color: rgb(190 / 255, 101 / 255, 120 / 255),
             type: 'image',
             content: initialMaricelImg,
         }
@@ -104,7 +103,7 @@ export function Received({ addItem, state }: IAppProps) {
 
     return (
         <Button onClick={handleAddItems}
-            variant='ghost' className='flex gap-[10px] border px-4 py-4 w-full'>
+            variant='ghost' className='flex justify-start gap-[10px] border px-4 py-4 w-full'>
             <IconRubberStamp />
             <p>ADD RECEIVED</p>
         </Button>

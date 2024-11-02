@@ -1,5 +1,5 @@
 import { RGB } from "pdf-lib";
-import { dispatchPosition, dispatchTextDetails } from './stamps-reducer-dispatch'
+import { dispatchPosition,  } from './stamps-reducer-dispatch'
 
 
 // Define a subcomponent type to avoid duplication
@@ -67,7 +67,7 @@ export type Action =
             value: string;
         },
     }
-    | 
+    |
     {
         type: 'updatePositionTopBottomLeftRight',
         payload: {
@@ -81,7 +81,31 @@ export type Action =
         type: 'updateImageUploadDetails',
         payload: {
             id: string;
-            value: { title: string; src: string }
+            value: { title: string; src: string },
+            width: number,
+            height: number,
+        }
+    }
+    | {
+        type: 'handleTextSizeButtonClick',
+        payload: {
+            id: string;
+            operator: string
+        }
+    }
+    | {
+        type: 'handleImageSizeButtonClick',
+        payload: {
+            id: string;
+            operator: string
+        }
+    }
+    |
+    {
+        type: 'updateTextColor',
+        payload: {
+            id: string;
+            value: RGB
         }
     }
     | { type: 'reset'; };

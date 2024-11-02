@@ -1,7 +1,7 @@
 import { PDFDocument, rgb, degrees } from 'pdf-lib';
 import { State } from './stamps-reducer-types';
 
-export const addStamp = async (pdfFile: File | null, currentPage: number, rotation: number, components: State) => {
+export const addStamp = async (pdfFile: File | null, currentPage: number, rotation: number, components: State, downloadFileName: string) => {
     if (!pdfFile) return;
 
     const pdfBytes = await pdfFile.arrayBuffer();
@@ -26,7 +26,7 @@ export const addStamp = async (pdfFile: File | null, currentPage: number, rotati
 
     const link = document.createElement('a');
     link.href = url;
-    link.download = 'stamped_document.pdf';
+    link.download = downloadFileName ?? 'PROCESSED DOCUMENT';
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -36,11 +36,32 @@ export const addStamp = async (pdfFile: File | null, currentPage: number, rotati
 const pageDraw = async (pdfDoc: any, item: any, page: any, pdfHeight: number, rotation: number, x: number, y: number) => {
     if (item.type === 'image' && item.content && typeof item.content === 'object' && 'src' in item.content) {
         try {
-            const imageResponse = await fetch(item.content.src);
-            const imageBytes = await imageResponse.arrayBuffer();
-            const img = item.content.src.endsWith('.png')
-                ? await pdfDoc.embedPng(imageBytes)
-                : await pdfDoc.embedJpg(imageBytes);
+            let imageBytes;
+
+            // Check if content.src is a File instance
+            if (item.content.src instanceof File) {
+                // If it's a File, read it as an ArrayBuffer
+                imageBytes = await item.content.src.arrayBuffer();
+            } else {
+                // Otherwise, fetch it
+                const imageResponse = await fetch(item.content.src);
+                imageBytes = await imageResponse.arrayBuffer();
+            }
+
+            // Determine the image type based on the src property
+            let img;
+            if (item.content.src instanceof File) {
+                // You can determine the file type using the file's name or type
+                const fileType = item.content.src.type; // Gets the MIME type (e.g., "image/png")
+                img = fileType === 'image/png'
+                    ? await pdfDoc.embedPng(imageBytes)
+                    : await pdfDoc.embedJpg(imageBytes);
+            } else {
+                // If it's a URL, check the extension
+                img = item.content.src.endsWith('.png')
+                    ? await pdfDoc.embedPng(imageBytes)
+                    : await pdfDoc.embedJpg(imageBytes);
+            }
 
             // Use scaled height for positioning
             page.drawImage(img, {

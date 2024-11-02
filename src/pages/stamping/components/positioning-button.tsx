@@ -9,7 +9,6 @@ import {
     IconLayoutAlignRight,
     IconLayoutAlignLeft
 } from '@tabler/icons-react';
-import { dispatchPosition } from '../util/stamps-reducer-dispatch'
 
 
 
@@ -44,7 +43,7 @@ export function PositioningButton({ dispatch, id, pdfHeight, pdfWidth }: Props) 
         if (position === 'top') {
             value = y
         } else if (position === 'bottom') {
-            value = pdfHeight - y
+            value = pdfHeight + y
         } else if (position === 'left') {
             value = x;
         } else if (position === 'right') {
@@ -57,18 +56,18 @@ export function PositioningButton({ dispatch, id, pdfHeight, pdfWidth }: Props) 
     }
 
     return (
-        <div className='flex flex-wrap gap-2'>
+        <div className='flex flex-wrap gap-2 w-full'>
             <div className='flex-1 flex flex-nowrap gap-2'>
-                <Button onClick={() => updatePositionY('+', 10)} className='flex-1' variant='ghost'>
-                    <IconChevronDown />
-                </Button>
-                <Button onClick={() => updatePositionY('-', 10)} className='flex-1' variant='ghost'>
+                <Button onClick={() => updatePositionY('-', 5)} className='flex-1' variant='ghost'>
                     <IconChevronUp />
                 </Button>
-                <Button onClick={() => updatePositionX('-', 10)} className='flex-1' variant='ghost'>
+                <Button onClick={() => updatePositionY('+', 5)} className='flex-1' variant='ghost'>
+                    <IconChevronDown />
+                </Button>
+                <Button onClick={() => updatePositionX('-', 5)} className='flex-1' variant='ghost'>
                     <IconChevronLeft />
                 </Button>
-                <Button onClick={() => updatePositionX('+', 10)} className='flex-1' variant='ghost'>
+                <Button onClick={() => updatePositionX('+', 5)} className='flex-1' variant='ghost'>
                     <IconChevronRight />
                 </Button>
             </div>

@@ -18,7 +18,7 @@ export function AddFileButton() {
     };
 
     const component = (
-        <div className='border-gray-200 border-[1px] rounded-md'>
+        <div className='border rounded-md'>
             <Button variant='link' onClick={handleClick} className="flex flex-row gap-[10px] w-full py-[15px] md:py-[20px] lg:py-[30px] cursor-pointer ">
                 <IconFileUpload />
                 <p>{pdfFile ? pdfFile?.name : 'Add File'}</p>

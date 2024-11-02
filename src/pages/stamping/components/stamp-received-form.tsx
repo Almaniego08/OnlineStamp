@@ -18,6 +18,7 @@ import { IconTrash } from '@tabler/icons-react';
 import ModalImageView from "./modal-image-view";
 import { initialMaricelImg, receivedImg } from "../data/images";
 import { timeNowConvert, timeString, formatDate } from '../util/format-date-time'
+import { IconCurrentLocation, IconX } from '@tabler/icons-react';
 
 type Props = {
     removeItem: (id: string) => void;
@@ -25,10 +26,12 @@ type Props = {
     dispatch: (action: any) => void;
     pdfHeight: number;
     pdfWidth: number;
+    isEditing: string;
+    setIsEditingPosition: (id: string) => void;
 }
 interface imagePreviewDataTypes { src?: string; title?: string }
 
-function StampReceivedForm({ removeItem, id, dispatch, pdfHeight, pdfWidth }: Props) {
+function StampReceivedForm({ removeItem, id, dispatch, pdfHeight, pdfWidth, isEditing, setIsEditingPosition }: Props) {
     const [trackingNo, setTrackingNo] = useState<string>('');
     const [date, setDate] = useState<Date | undefined>(undefined);
     const [time, setTime] = useState<string>('');
@@ -91,15 +94,23 @@ function StampReceivedForm({ removeItem, id, dispatch, pdfHeight, pdfWidth }: Pr
                     <IconRubberStamp />
                     <p className="text-start font-bold w-full">RECEIVE STAMP</p>
                 </div>
-                <Button onClick={() => removeItem(id)} variant='destructive'>
-                    <IconTrash />
-                </Button>
+                <div>
+                    <Button onClick={() => setIsEditingPosition(id)} variant='ghost'>
+                        <IconCurrentLocation
+                            style={{
+                                color: isEditing === id ? 'green' : 'red'
+                            }} />
+                    </Button>
+                    <Button onClick={() => removeItem(id)} variant='ghost'>
+                        <IconTrash style={{ color: 'red' }} />
+                    </Button>
+                </div>
             </div>
 
             <div className="flex flex-col gap-3 w-50 w-full">
                 <div className='flex flex-col justify-start gap-[10px]'>
-                    <Label className='w-fit' htmlFor="tracking">Tracking #</Label>
-                    <Input id="tracking" type="text" value={trackingNo} onChange={handleTrackingNoChange} />
+                    <Label className='w-fit' htmlFor="tracking">Tracking no.</Label>
+                    <Input placeholder="X-YYYY-####" id="tracking" type="text" value={trackingNo} onChange={handleTrackingNoChange} />
                 </div>
                 <div className='flex flex-col justify-start gap-[10px]'>
                     <Label className='w-fit' htmlFor="date">Date</Label>
@@ -146,12 +157,30 @@ function StampReceivedForm({ removeItem, id, dispatch, pdfHeight, pdfWidth }: Pr
                     View Initial
                 </Button>
             </div>
-            <PositioningButton
-                pdfHeight={pdfHeight}
-                pdfWidth={pdfWidth}
-                dispatch={dispatch}
-                id={id}
-            />
+            <div
+                className={`bg-background bg-opacity-50 rounded-md p-[5px] flex flex-row items-center transition-all duration-300 ${isEditing === id ? 'fixed' : 'relative'
+                    }`}
+                style={{
+                    width: isEditing === id ? 'fit-content' : '100%',
+                    bottom: '5px',
+                    left: isEditing === id ? '50%' : '0%',
+                    transform: isEditing === id ? 'translateX(-50%) scale(1)' : 'translateX(0) scale(0.95)',
+                    opacity: isEditing === id ? 1 : 0.95,
+                    zIndex: isEditing === id ? 50 : 1,
+                }}
+            >
+                <PositioningButton
+                    pdfHeight={pdfHeight}
+                    pdfWidth={pdfWidth}
+                    dispatch={dispatch}
+                    id={id}
+                />
+                {isEditing === id ? (
+                    <Button onClick={() => setIsEditingPosition('')} className="text-red-500 h-full" variant="ghost">
+                        <IconX />
+                    </Button>
+                ) : null}
+            </div>
             <ModalImageView
                 isOpen={isModalOpen}
                 onClose={handleCloseModal}

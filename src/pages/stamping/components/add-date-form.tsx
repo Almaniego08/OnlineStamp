@@ -4,12 +4,10 @@ import { Button } from "@/components/custom/button";
 import { IconTrash } from '@tabler/icons-react';
 import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
-import { Input } from "@/components/ui/input";
-import { IconCalendarMonth } from '@tabler/icons-react';
+import { IconCalendarMonth, IconX } from '@tabler/icons-react';
 import { Calendar } from "@/components/ui/calendar";
 import { format } from "date-fns";
-import { timeNowConvert, timeString, formatDate } from '../util/format-date-time'
-
+import { formatDate } from '../util/format-date-time'
 import {
     Popover,
     PopoverContent,
@@ -18,17 +16,20 @@ import {
 import { useState } from "react";
 import { IconLetterCase } from '@tabler/icons-react';
 import TextSizeButton from './text-size-button';
+import { IconCurrentLocation } from '@tabler/icons-react';
 type Props = {
     removeItem: (id: string) => void;
     id: string;
     dispatch: (action: any) => void;
     pdfHeight: number;
     pdfWidth: number;
+    isEditing: string;
+    setIsEditingPosition: (id: string) => void;
 }
 
-export default function AddDateForm({ removeItem, id, dispatch, pdfHeight, pdfWidth }: Props) {
-    const [date, setDate] = useState<Date | undefined>(undefined);
 
+export default function AddDateForm({ removeItem, id, dispatch, pdfHeight, pdfWidth, isEditing, setIsEditingPosition }: Props) {
+    const [date, setDate] = useState<Date | undefined>(undefined);
     const handleDateChange = (selectedDate: any) => {
         const dateText = formatDate(selectedDate)
         setDate(selectedDate);
@@ -37,7 +38,6 @@ export default function AddDateForm({ removeItem, id, dispatch, pdfHeight, pdfWi
             payload: { id: id, value: dateText }
         });
     };
-
     useEffect(() => {
         const currentDate = new Date();
         const formattedDate = formatDate(currentDate)
@@ -54,12 +54,20 @@ export default function AddDateForm({ removeItem, id, dispatch, pdfHeight, pdfWi
                     <IconLetterCase />
                     <p className="text-start font-bold w-full">ADD DATE</p>
                 </div>
-                <Button onClick={() => removeItem(id)} variant='destructive'>
-                    <IconTrash />
-                </Button>
+                <div>
+                    <Button onClick={() => setIsEditingPosition(id)} variant='ghost'>
+                        <IconCurrentLocation
+                            style={{
+                                color: isEditing === id ? 'green' : 'red'
+                            }} />
+                    </Button>
+                    <Button onClick={() => removeItem(id)} variant='ghost'>
+                        <IconTrash style={{ color: 'red' }} />
+                    </Button>
+                </div>
             </div>
             <div className='flex flex-row-gap-[10px items-end gap-[10px]'>
-                <div className='flex flex-col justify-start  flex-1'>
+                <div className='flex flex-col justify-start gap-[10px] flex-1'>
                     <Label className='w-fit' htmlFor="date">Date</Label>
                     <Popover>
                         <PopoverTrigger id='date' asChild>
@@ -85,14 +93,32 @@ export default function AddDateForm({ removeItem, id, dispatch, pdfHeight, pdfWi
                         </PopoverContent>
                     </Popover>
                 </div>
-                <TextSizeButton />
+                <TextSizeButton dispatch={dispatch} id={id} />
             </div>
-            <PositioningButton
-                pdfHeight={pdfHeight}
-                pdfWidth={pdfWidth}
-                dispatch={dispatch}
-                id={id}
-            />
+            <div
+                className={`bg-background bg-opacity-50 rounded-md p-[5px] flex flex-row items-center transition-all duration-300 ${isEditing === id ? 'fixed' : 'relative'
+                    }`}
+                style={{
+                    width: isEditing === id ? 'fit-content' : '100%',
+                    bottom: '5px',
+                    left: isEditing === id ? '50%' : '0%',
+                    transform: isEditing === id ? 'translateX(-50%) scale(1)' : 'translateX(0) scale(0.95)',
+                    opacity: isEditing === id ? 1 : 0.95,
+                    zIndex: isEditing === id ? 50 : 1,
+                }}
+            >
+                <PositioningButton
+                    pdfHeight={pdfHeight}
+                    pdfWidth={pdfWidth}
+                    dispatch={dispatch}
+                    id={id}
+                />
+                {isEditing === id ? (
+                    <Button onClick={() => setIsEditingPosition('')} className="text-red-500 h-full" variant="ghost">
+                        <IconX />
+                    </Button>
+                ) : null}
+            </div>
         </div>
     )
 }
