@@ -29,7 +29,7 @@ export default function Tasks() {
 
   }, [stampsState])
   //  PDF
-  const { component: AddFileButton, pdfFile,  } = useAddFileButton();
+  const { component: AddFileButton, pdfFile, } = useAddFileButton();
   const [pdfHeight, setPdfHeight] = useState<number>(0)
   const [pdfWidth, setPdfWidth] = useState<number>(0)
   const [pdfPages, setPdfPages] = useState<number>(0)
@@ -52,7 +52,7 @@ export default function Tasks() {
     loadFile()
   }, [pdfFile])
 
-console.log(stampsState)
+  console.log(stampsState)
   return (
     <Layout>
       {/* ===== Top Heading ===== */}
@@ -110,7 +110,9 @@ console.log(stampsState)
               state={stampsState}
               dispatch={dispatch} />
           </div>
-          <PagerButton setPage={setPdfCurrentPage} pdfPages={pdfPages} pdfCurrentPage={pdfCurrentPage} />
+          {
+            pdfFile ? (<PagerButton setPage={setPdfCurrentPage} pdfPages={pdfPages} pdfCurrentPage={pdfCurrentPage} />) : (<div className='py-[20px]'></div>)
+          }
           {
             pdfFile ? (
               <div className='flex flex-col gap-[20px]'>

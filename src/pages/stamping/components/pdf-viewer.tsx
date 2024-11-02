@@ -150,7 +150,7 @@ const PdfViewer: React.FC<{ pdfFile: any; pdfCurrentPage: any; state: State }> =
 
     return (
         <div className='w-fit flex flex-col gap-[10px] m-auto w-full border rounded-md py-[20px] pb-[70px] p-[20px]'>
-            <div className='flex flex-wrap items-end gap-[10px] w-fit m-auto mx-[10px]'>
+            <div className='flex flex-wrap items-end gap-[10px] w-fit m-auto px-[10px]'>
                 <div className='flex-1 flex flex-col gap-[10px] justify-start flex-1'>
                     <Label className='w-fit' htmlFor="time">Text</Label>
                     <Input
