@@ -1,10 +1,7 @@
 
 import { IconClockHour1 } from '@tabler/icons-react';
-import { IconLetterCase } from '@tabler/icons-react';
-import { IconCalendarMonth } from '@tabler/icons-react';
 import { Button } from '@/components/custom/button';
 import { State, Item } from '../util/stamps-reducer-types';
-import { receivedImg, initialMaricelImg } from '../data/images'
 import { rgb } from 'pdf-lib';
 
 export interface IAppProps {

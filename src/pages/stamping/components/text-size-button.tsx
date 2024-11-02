@@ -1,4 +1,3 @@
-import React from 'react';
 import { IconTextDecrease, IconTextIncrease, IconBold } from '@tabler/icons-react';
 import { Button } from '@/components/custom/button';
 import useColorPicker from './use-color-picker';
