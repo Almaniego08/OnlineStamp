@@ -1,7 +1,5 @@
 import { signitureMaricelImg, receivedImg } from "../data/images";
-import ModalImageView from "./modal-image-view";
 import { PositioningButton } from './positioning-button';
-import { IconCalendarMonth } from '@tabler/icons-react';
 import { Button } from "@/components/custom/button";
 import { IconTrash } from '@tabler/icons-react';
 import { IconRubberStamp } from '@tabler/icons-react';
