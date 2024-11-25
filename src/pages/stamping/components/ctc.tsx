@@ -30,7 +30,7 @@ export function CTC({ addItem, state }: CTC) {
             component: 'StampCtcForm',
             height: 70,
             width: 70,
-            x: 25,
+            x: 40,
             y: 32,
             isShown: true,
             color: rgb(190 / 255, 101 / 255, 120 / 255),
@@ -40,10 +40,10 @@ export function CTC({ addItem, state }: CTC) {
         const maricelStamp = {
             id: '1',
             component: 'StampCtcForm',
-            height: 70,
-            width: 70,
-            x: 25,
-            y: 40,
+            height: 50,
+            width: 140,
+            x: 15,
+            y: 57,
             isShown: true,
             color: rgb(190 / 255, 101 / 255, 120 / 255),
             type: 'image',
@@ -70,7 +70,7 @@ export function CTC({ addItem, state }: CTC) {
     }
     // StampCtcForm
     return (
-        <Button onClick={handleAddItems} variant='ghost' className='flex gap-[10px] border px-4 py-4 w-full'>
+        <Button onClick={handleAddItems} variant='ghost' className='flex justify-start gap-[10px] border px-4 py-4 w-full'>
             <IconRubberStamp />
             <p>ADD CTC</p>
         </Button>

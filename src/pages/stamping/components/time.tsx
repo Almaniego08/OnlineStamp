@@ -1,10 +1,7 @@
 
 import { IconClockHour1 } from '@tabler/icons-react';
-import { IconLetterCase } from '@tabler/icons-react';
-import { IconCalendarMonth } from '@tabler/icons-react';
 import { Button } from '@/components/custom/button';
 import { State, Item } from '../util/stamps-reducer-types';
-import { receivedImg, initialMaricelImg } from '../data/images'
 import { rgb } from 'pdf-lib';
 
 export interface IAppProps {
@@ -33,7 +30,7 @@ export function Time({ addItem, state }: IAppProps) {
             x: 25,
             y: 25,
             isShown: true,
-            color: rgb(190 / 255, 101 / 255, 120 / 255),
+            color: rgb(0, 0, 0),
             type: 'text',
             size: 13,
             content: '',
@@ -41,7 +38,7 @@ export function Time({ addItem, state }: IAppProps) {
         addItem(text)
     }
     return (
-        <Button onClick={handleAddItems} variant='ghost' className='flex gap-[10px] border px-4 py-4 w-full'>
+        <Button onClick={handleAddItems} variant='ghost' className='flex justify-start gap-[10px] border px-4 py-4 w-full'>
             <IconClockHour1 />
             <p>ADD TIME</p>
         </Button>

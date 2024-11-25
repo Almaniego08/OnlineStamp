@@ -78,34 +78,109 @@ export const reducer = (state: State, action: Action): State => {
                     return item;
                 })
             }
+        case 'updateTextColor':
+            return {
+                ...state,
+                items: state.items.map((item) => {
+                    if (item.id === action.payload.id) {
+                        return {
+                            ...item,
+                            color: action.payload.value
+                        };
+                    }
+                    return item;
+                })
+            }
 
-        // case 'updateReceiveStampDetails':
-        //     return {
-        //         ...state,
-        //         items: state.items.map(item => {
-        //             if (item.id === action.payload.id) {
-        //                 return {
-        //                     ...item,
-        //                     subcomponents: item.subcomponents?.map(sub => {
-        //                         if (sub.id === action.payload.subId) {
-        //                             return {
-        //                                 ...sub,
-        //                                 content: {
-        //                                     trackingNo: action.payload.trackingNo,
-        //                                     date: action.payload.date,
-        //                                     time: action.payload.time,
-        //                                 } as Content, // Explicitly cast to ensure type safety
-        //                             };
-        //                         }
-        //                         return sub;
-        //                     }) || [], // Fallback to empty array if subcomponents is undefined
-        //                 };
-        //             }
-        //             return item;
-        //         }),
-        //     };
+        case 'updatePositionTopBottomLeftRight':
+            return {
+                ...state,
+                items: state.items.map(item => {
+                    if (item.height && item.width || item.type === 'text') {
+                        if (item.id === action.payload.id) {
+                            if (action.payload.position === 'top') {
+                                return {
+                                    ...item,
+                                    y: item.y = action.payload.value
+                                }
+                            } else if (action.payload.position === 'bottom') {
+                                return {
+                                    ...item,
+                                    y: item.y = action.payload.value - (item.width ?? 0)
+                                }
+                            }
+                            else if (action.payload.position === 'left') {
+                                return {
+                                    ...item,
+                                    x: item.x = action.payload.value
+                                }
+                            }
+                            else if (action.payload.position === 'right') {
+                                return {
+                                    ...item,
+                                    x: item.x = action.payload.value - (item.width ?? 0)
+                                }
+                            }
+
+                        }
+                    }
+                    return item;
+                })
+            }
+        case 'updateImageUploadDetails':
+            return {
+                ...state,
+                items: state.items.map((item) => {
+                    if (item.id === action.payload.id) {
+                        return {
+                            ...item,
+                            width: action.payload.width,  // Set width directly on the item
+                            height: action.payload.height, // Set height directly on the item
+                            content: {
+                                title: action.payload.value.title, // Only include title
+                                src: action.payload.value.src,     // Only include src
+                            },
+                        };
+                    }
+                    return item; // Return unchanged item if id does not match
+                }),
+            };
 
 
+        case 'handleTextSizeButtonClick':
+            return {
+                ...state,
+                items: state.items.map((item) => {
+
+                    if (item.id === action.payload.id) {
+                        if (item.type === 'text' && item.size) {
+                            return {
+                                ...item,
+                                size: action.payload.operator === '+' ? item.size + 1 : item.size - 1
+                            }
+                        }
+                    }
+                    return item;
+                })
+            }
+        case 'handleImageSizeButtonClick':
+            return {
+                ...state,
+                items: state.items.map((item) => {
+
+                    if (item.id === action.payload.id) {
+                        if (item.type === 'image' && item.height && item.width) {
+                            return {
+                                ...item,
+                                width: action.payload.operator === '+' ? item.width + 5 : item.width - 5,
+                                height: action.payload.operator === '+' ? item.height + 5 : item.height - 5
+
+                            }
+                        }
+                    }
+                    return item;
+                })
+            }
 
         case 'toggleVisibility':
             return {

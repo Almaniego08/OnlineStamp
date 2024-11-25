@@ -1,11 +1,8 @@
 
 import { IconLetterCase } from '@tabler/icons-react';
-import { IconRubberStamp } from '@tabler/icons-react';
 import { Button } from '@/components/custom/button';
 import { State, Item } from '../util/stamps-reducer-types';
-import { receivedImg, initialMaricelImg } from '../data/images'
 import { rgb } from 'pdf-lib';
-import { useState } from 'react';
 
 export interface IAppProps {
     addItem: (item: Item) => void;
@@ -25,11 +22,11 @@ export function Selectfile({ addItem, state }: IAppProps) {
     const handleAddItems = () => {
         const id = String(Number(getMaxId()) + 1);
 
-        const text = {
+        const image = {
             id: id,
             component: 'SelectImageForm',
-            height: 0,
-            width: 0,
+            height: 100,
+            width: 100,
             x: 25,
             y: 25,
             isShown: true,
@@ -38,10 +35,10 @@ export function Selectfile({ addItem, state }: IAppProps) {
             size: 16,
             content: '',
         }
-        addItem(text)
+        addItem(image)
     }
     return (
-        <Button onClick={handleAddItems} variant='ghost' className=' flex gap-[10px] border px-4 py-4 w-full'>
+        <Button onClick={handleAddItems} variant='ghost' className=' justify-start flex gap-[10px] border px-4 py-4 w-full'>
             <IconLetterCase />
             <p>SELECT IMAGE</p>
         </Button>

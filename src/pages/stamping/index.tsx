@@ -9,7 +9,7 @@ import { Time } from './components/time'
 import { NoFileAddedDisplay } from './components/no-file-added-display'
 import { AddFileButton as useAddFileButton } from './components/add-file-button';
 import { PDFDocument } from 'pdf-lib';
-import { Button } from '@/components/custom/button'
+
 // USE REDUCER FOR ADD STAMPS
 import { useReducer } from 'react';
 import { initialState } from './util/stamps-reducer-initialize';
@@ -17,23 +17,19 @@ import { reducer } from './util/stamps-reducer';
 import { Item } from './util/stamps-reducer-types';
 import DynamicComponentRenderer from './components/dynamic-component-renderer'
 import PdfViewer from './components/pdf-viewer'
-import OutputButton from './components/output-button'
 import PagerButton from './components/pager-button'
 import { Selectfile } from './components/select-image'
 export default function Tasks() {
   // USE REDUCER FOR ADD STAMPS
   const [stampsState, dispatch] = useReducer(reducer, initialState);
   const addItem = (item: Item) => dispatch({ type: 'addItem', payload: item });
-  const removeItem = (id: string) => dispatch({ type: 'removeItem', payload: { id } });
-  const updateItem = (item: Item) => dispatch({ type: 'updateItem', payload: item });
-  const toggleVisibility = (id: string) => dispatch({ type: 'toggleVisibility', payload: { id } });
 
   // EXTRACT COMPONENTS WITH SAME ID AND COMPONENT NAME
   useEffect(() => {
 
   }, [stampsState])
   //  PDF
-  const { component: AddFileButton, pdfFile, setPdfFile } = useAddFileButton();
+  const { component: AddFileButton, pdfFile,  } = useAddFileButton();
   const [pdfHeight, setPdfHeight] = useState<number>(0)
   const [pdfWidth, setPdfWidth] = useState<number>(0)
   const [pdfPages, setPdfPages] = useState<number>(0)
@@ -56,6 +52,7 @@ export default function Tasks() {
     loadFile()
   }, [pdfFile])
 
+console.log(stampsState)
   return (
     <Layout>
       {/* ===== Top Heading ===== */}
@@ -72,9 +69,9 @@ export default function Tasks() {
           <div>
             {AddFileButton}
           </div>
-          <PagerButton setPage={setPdfCurrentPage} pdfPages={pdfPages} pdfCurrentPage={pdfCurrentPage} />
+
           <div className="flex flex-wrap gap-2">
-            <div className="flex flex-1 shrink-0 min-w-[150px] items-center justify-center">
+            <div className="flex flex-1 shrink-0 min-w-[150px] items-center justify-center ">
               <Received
                 addItem={addItem} state={stampsState} />
             </div>
@@ -107,18 +104,21 @@ export default function Tasks() {
             </div>
           </div>
           <div className='flex flex-col gap-[20px]'>
-            <DynamicComponentRenderer state={stampsState} dispatch={dispatch} />
+            <DynamicComponentRenderer
+              pdfHeight={pdfHeight}
+              pdfWidth={pdfWidth}
+              state={stampsState}
+              dispatch={dispatch} />
           </div>
-          <OutputButton
-            pdfFile={pdfFile} currentPage={pdfCurrentPage} rotation={0}
-            component={stampsState}
-          />
-          <div className='py-[50px]'>
-            {
-              pdfFile ? (<PdfViewer state={stampsState} pdfFile={pdfFile} pdfCurrentPage={pdfCurrentPage} />) : (<NoFileAddedDisplay />)
-            }
-            {/* <NoFileAddedDisplay /> */}
-          </div>
+          <PagerButton setPage={setPdfCurrentPage} pdfPages={pdfPages} pdfCurrentPage={pdfCurrentPage} />
+          {
+            pdfFile ? (
+              <div className='flex flex-col gap-[20px]'>
+                <PdfViewer state={stampsState} pdfFile={pdfFile} pdfCurrentPage={pdfCurrentPage} />
+              </div>
+            ) : (<NoFileAddedDisplay />)
+          }
+          {/* <NoFileAddedDisplay /> */}
         </div>
       </Layout.Body>
     </Layout>

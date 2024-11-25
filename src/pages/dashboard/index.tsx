@@ -1,19 +1,19 @@
 import { Layout } from '@/components/custom/layout'
 import { Button } from '@/components/custom/button'
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card'
+// import {
+//   Card,
+//   CardContent,
+//   CardDescription,
+//   CardHeader,
+//   CardTitle,
+// } from '@/components/ui/card'
 import { Search } from '@/components/search'
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+// import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import ThemeSwitch from '@/components/theme-switch'
 import { TopNav } from '@/components/top-nav'
 import { UserNav } from '@/components/user-nav'
-import { RecentSales } from './components/recent-sales'
-import { Overview } from './components/overview'
+// import { RecentSales } from './components/recent-sales'
+// import { Overview } from './components/overview'
 
 export default function Dashboard() {
   return (
@@ -36,7 +36,7 @@ export default function Dashboard() {
             <Button>Download</Button>
           </div>
         </div>
-        <Tabs
+        {/* <Tabs
           orientation='vertical'
           defaultValue='overview'
           className='space-y-4'
@@ -175,7 +175,7 @@ export default function Dashboard() {
               </Card>
             </div>
           </TabsContent>
-        </Tabs>
+        </Tabs> */}
       </Layout.Body>
     </Layout>
   )

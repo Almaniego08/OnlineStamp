@@ -5,17 +5,24 @@ import AddDateForm from './add-date-form';
 import AddTimeForm from './add-time-form';
 import SelectImageForm from './select-image-form';
 import { State, Item } from '../util/stamps-reducer-types'
+import { useState } from 'react';
 
 // Define the props that each component will receive
 type ComponentProps = {
   removeItem: (id: string) => void;
   id: string; // Include the id prop
   dispatch: (action: any) => void;
+  pdfHeight: number;
+  pdfWidth: number;
+  isEditing: string;
+  setIsEditingPosition: (id: string) => void;
 };
 
 type Props = {
   state: State;
   dispatch: any;
+  pdfHeight: number;
+  pdfWidth: number;
 }
 
 // Update the ComponentMap to use the new ComponentProps type
@@ -30,18 +37,26 @@ const componentMap: ComponentMap = {
   AddDateForm,
   AddTimeForm,
   SelectImageForm,
+
 };
 
-export default function DynamicComponentRenderer({ state, dispatch }: Props) {
+export default function DynamicComponentRenderer({ state, dispatch, pdfHeight, pdfWidth }: Props) {
+  const [isEditingPosition, setIsEditingPosition] = useState<string>('')
+
+
   return (
     <>
       {state.items.map((item) => {
         const Component = componentMap[item?.component];
         return Component ? (
           <Component
+            pdfHeight={pdfHeight}
+            pdfWidth={pdfWidth}
             key={item.id}
             id={item.id!}
             dispatch={dispatch}
+            isEditing={isEditingPosition}
+            setIsEditingPosition={setIsEditingPosition}
             removeItem={(id) => dispatch({ type: 'removeItem', payload: { id } })}
           />
         ) : null;
