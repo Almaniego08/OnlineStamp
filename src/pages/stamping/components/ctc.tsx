@@ -1,7 +1,7 @@
 import { IconRubberStamp } from '@tabler/icons-react';
 import { Button } from '@/components/custom/button';
 import { State, Item } from '../util/stamps-reducer-types';
-import { ctcImage, signitureMaricelImg } from '../data/images'
+import { ctcImage, signitureMaricelImg, maricelNameStampImg } from '../data/images'
 import { rgb } from 'pdf-lib';
 
 export interface CTC {
@@ -31,12 +31,25 @@ export function CTC({ addItem, state }: CTC) {
             height: 70,
             width: 70,
             x: 25,
-            y: 35,
+            y: 32,
             isShown: true,
             color: rgb(190 / 255, 101 / 255, 120 / 255),
             type: 'image',
             content: signitureMaricelImg,
         }
+        const maricelStamp = {
+            id: '1',
+            component: 'StampCtcForm',
+            height: 70,
+            width: 70,
+            x: 25,
+            y: 40,
+            isShown: true,
+            color: rgb(190 / 255, 101 / 255, 120 / 255),
+            type: 'image',
+            content: maricelNameStampImg,
+        }
+        // maricelNameStampImg
         const stamp = {
             id: id,
             component: 'StampCtcForm',
@@ -48,7 +61,8 @@ export function CTC({ addItem, state }: CTC) {
             type: 'image',
             content: ctcImage,
             subcomponents: [
-                signature
+                signature,
+                maricelStamp
             ]
         }
         addItem(stamp)
