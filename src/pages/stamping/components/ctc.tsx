@@ -43,7 +43,7 @@ export function CTC({ addItem, state }: CTC) {
             height: 50,
             width: 140,
             x: 15,
-            y: 57,
+            y: 52,
             isShown: true,
             color: rgb(190 / 255, 101 / 255, 120 / 255),
             type: 'image',

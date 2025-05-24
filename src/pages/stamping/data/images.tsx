@@ -3,6 +3,7 @@ import initialMaricel from '../assets/images/maricel-initial.png'
 import signitureMaricel from '../assets/images/maricel-signature.png'
 import ctc from '../assets/images/certify-true-copy.png'
 import maricelNameStamp from '../assets/images/maricel-malalad-head-record-gsd.png';
+import adamInitialImg from '../assets/images/adam-initial.png';
 
 
 const receivedImg = {
@@ -28,12 +29,16 @@ const maricelNameStampImg = {
     src: maricelNameStamp
 }
 
-
+const adamInitial = {
+    title: 'Adam Initial',
+    src: adamInitialImg
+}
 
 export {
     receivedImg,
     initialMaricelImg,
     signitureMaricelImg,
     ctcImage,
-    maricelNameStampImg
+    maricelNameStampImg,
+    adamInitial
 }

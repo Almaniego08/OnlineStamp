@@ -1,7 +1,7 @@
 import { IconRubberStamp } from '@tabler/icons-react';
 import { Button } from '@/components/custom/button';
 import { State, Item } from '../util/stamps-reducer-types';
-import { receivedImg, initialMaricelImg } from '../data/images'
+import { receivedImg, initialMaricelImg, adamInitial } from '../data/images'
 import { rgb } from 'pdf-lib';
 
 
@@ -72,15 +72,25 @@ export function Received({ addItem, state }: IAppProps) {
         const initial = {
             id: '4',
             component: 'StampReceivedForm',
-            height: 30,
-            width: 30,
-            x: 150,
-            y: 45,
+            height: 40,
+            width: 40,
+            x: 135,
+            y: 35,
             isShown: true,
             type: 'image',
             content: initialMaricelImg,
         }
-
+        const adamInitialPosition = {
+            id: '5',
+            component: 'StampReceivedForm',
+            height: 20,
+            width: 20,
+            x: 135,
+            y: 93,
+            isShown: true,
+            type: 'image',
+            content: adamInitial,
+        };
         const stamp = {
             id: id,
             component: 'StampReceivedForm',
@@ -95,7 +105,8 @@ export function Received({ addItem, state }: IAppProps) {
                 trackingNo,
                 date,
                 time,
-                initial
+                initial,
+                adamInitialPosition
             ]
         };
         addItem(stamp)

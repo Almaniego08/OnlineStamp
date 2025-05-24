@@ -1,5 +1,4 @@
-import { signitureMaricelImg, receivedImg } from "../data/images";
-import ModalImageView from "./modal-image-view";
+import { signitureMaricelImg, ctcImage } from "../data/images";
 import { PositioningButton } from './positioning-button';
 import { Button } from "@/components/custom/button";
 import { IconTrash } from '@tabler/icons-react';
