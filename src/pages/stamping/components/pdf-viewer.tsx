@@ -20,6 +20,7 @@ const PdfViewer: React.FC<{ pdfFile: any; pdfCurrentPage: any; state: State }> =
     const [scaleFactor, setScaleFactor] = useState(1);
     const [downloadFileName, setDownloadFileName] = useState<string>('');
     const [renderedComponents, setRenderedComponents] = useState<React.ReactNode[]>([]);
+ 
 
     useEffect(() => {
         const updateDimensions = () => {
