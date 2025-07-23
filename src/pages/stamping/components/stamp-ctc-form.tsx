@@ -4,7 +4,6 @@ import { Button } from "@/components/custom/button";
 import { IconTrash } from '@tabler/icons-react';
 import { IconRubberStamp } from '@tabler/icons-react';
 import { IconCurrentLocation, IconX } from '@tabler/icons-react';
-
 type Props = {
     removeItem: (id: string) => void;
     id: string;
@@ -16,6 +15,7 @@ type Props = {
 }
 
 export default function StampCtcForm({ removeItem, id, dispatch, pdfHeight, pdfWidth, isEditing, setIsEditingPosition }: Props) {
+
     return (
         <div className="flex flex-col gap-3 border rounded-md p-[10px] ">
             <div className="flex flex-row justify-between">
