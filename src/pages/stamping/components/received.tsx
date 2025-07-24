@@ -106,7 +106,7 @@ export function Received({ addItem, state }: IAppProps) {
                 date,
                 time,
                 initial,
-                adamInitialPosition
+                // adamInitialPosition
             ]
         };
         addItem(stamp)
