@@ -75,7 +75,7 @@ export function Received({ addItem, state }: IAppProps) {
             height: 65,
             width: 60,
             x: 135,
-            y: 80,
+            y: 75,
             isShown: true,
             type: 'image',
             content: initialMaricelImg,
