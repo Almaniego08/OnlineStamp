@@ -1,5 +1,5 @@
 import { RGB } from "pdf-lib";
-import { dispatchPosition,  } from './stamps-reducer-dispatch'
+import { dispatchPosition, } from './stamps-reducer-dispatch'
 
 
 // Define a subcomponent type to avoid duplication
@@ -98,6 +98,15 @@ export type Action =
         payload: {
             id: string;
             operator: string
+        }
+    }
+    |
+    {
+        type: 'updateSubcomponentText',
+        payload: {
+            parentId: string;
+            subcomponentIndex: number; // Index na ang gagamitin natin imbis na Y
+            value: string;
         }
     }
     |

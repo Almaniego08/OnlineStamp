@@ -29,9 +29,9 @@ export function Date({ addItem, state }: IAppProps) {
             x: 25,
             y: 25,
             isShown: true,
-            color: rgb(0, 0, 0),
+            color: rgb(0, 0, 1),
             type: 'text',
-            size: 13,
+            size: 12,
             content: '',
         }
         addItem(text)

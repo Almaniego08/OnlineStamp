@@ -189,6 +189,26 @@ export const reducer = (state: State, action: Action): State => {
                     item.id === action.payload.id ? { ...item, isShown: !item.isShown } : item
                 )
             };
+        // Add this action switch handler block case to your stamps-reducer logic:
+        case 'updateSubcomponentText':
+            return {
+                ...state,
+                items: state.items.map((item: any) => {
+                    if (item.id !== action.payload.parentId) return item;
+
+                    return {
+                        ...item,
+                        subcomponents: item.subcomponents?.map((sub: any, index: number) => {
+                            // Index na ang tinitingnan natin dito, ligtas na sa galaw ng Y!
+                            if (index !== action.payload.subcomponentIndex) return sub;
+                            return {
+                                ...sub,
+                                content: action.payload.value
+                            };
+                        })
+                    };
+                })
+            };
         case 'reset':
             return initialState; // Reset to the initial state
         default:

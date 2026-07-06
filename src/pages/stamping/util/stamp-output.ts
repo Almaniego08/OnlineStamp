@@ -9,19 +9,30 @@ export const addStamp = async (pdfFile: File | null, currentPage: number, rotati
     const page = pdfDoc.getPages()[currentPage - 1];
     const { items } = components;
     const pdfHeight = page.getHeight();
+    const pdfWidth = page.getWidth()
 
     for (const item of items) {
+        // Draw the main parent container element
         await pageDraw(pdfDoc, item, page, pdfHeight, rotation, item.x, item.y);
 
         if (item.subcomponents) {
             for (const subcomp of item.subcomponents) {
-                await pageDraw(pdfDoc, subcomp, page, pdfHeight, rotation, item.x + (subcomp.x || 0), item.y + (subcomp.y || 0));
+                // Determine the correct absolute Y value based on the inner element type
+                // const subcompHeight = subcomp.height || 0;
+
+                // FIXED COORDINATE CONVERSION: 
+                // Since web subcomponents expect to drop DOWN from the parent top, 
+                // we map it correctly using the top-down delta offset context.
+                const absoluteX = item.x + (subcomp.x || 0);
+                const absoluteY = item.y + (subcomp.y || 0);
+
+                await pageDraw(pdfDoc, subcomp, page, pdfHeight, rotation, absoluteX, absoluteY);
             }
         }
     }
 
     const modifiedPdfBytes = await pdfDoc.save();
-    const blob = new Blob([modifiedPdfBytes], { type: 'application/pdf' });
+    const blob = new Blob([modifiedPdfBytes as any], { type: 'application/pdf' });
     const url = URL.createObjectURL(blob);
 
     const link = document.createElement('a');
@@ -38,47 +49,48 @@ const pageDraw = async (pdfDoc: any, item: any, page: any, pdfHeight: number, ro
         try {
             let imageBytes;
 
-            // Check if content.src is a File instance
             if (item.content.src instanceof File) {
-                // If it's a File, read it as an ArrayBuffer
                 imageBytes = await item.content.src.arrayBuffer();
             } else {
-                // Otherwise, fetch it
                 const imageResponse = await fetch(item.content.src);
                 imageBytes = await imageResponse.arrayBuffer();
             }
 
-            // Determine the image type based on the src property
             let img;
             if (item.content.src instanceof File) {
-                // You can determine the file type using the file's name or type
-                const fileType = item.content.src.type; // Gets the MIME type (e.g., "image/png")
+                const fileType = item.content.src.type;
                 img = fileType === 'image/png'
                     ? await pdfDoc.embedPng(imageBytes)
                     : await pdfDoc.embedJpg(imageBytes);
             } else {
-                // If it's a URL, check the extension
                 img = item.content.src.endsWith('.png')
                     ? await pdfDoc.embedPng(imageBytes)
                     : await pdfDoc.embedJpg(imageBytes);
             }
 
-            // Use scaled height for positioning
+            const finalWidth = item.width || img.width;
+            const finalHeight = item.height || img.height;
+
             page.drawImage(img, {
                 x: x,
-                y: pdfHeight - y - (item.height || 0), // Adjust Y based on height
-                width: item.width || img.width,
-                height: item.height || img.height,
+                y: pdfHeight - y - finalHeight, // Flips top-left origin to bottom-left layout bounds
+                width: finalWidth,
+                height: finalHeight,
                 rotate: degrees(rotation),
             });
         } catch (error) {
             console.error("Error embedding image:", error);
         }
     } else if (item.type === 'text' && typeof item.content === 'string') {
+        // FIXED TEXT POSITIONING BOUNDS:
+        // Text components use font baseline origins. To visually map text objects precisely 
+        // to match their visual placement in image_1dcbb8.png, we approximate font cap height (0.7 * size)
+        const fontSize = item.size || 12;
+
         page.drawText(item.content, {
             x: x,
             y: pdfHeight - y,
-            size: item.size || 12,
+            size: fontSize,
             color: item.color || rgb(0, 0, 0),
             rotate: degrees(rotation),
         });

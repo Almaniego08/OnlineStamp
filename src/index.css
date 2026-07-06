@@ -3,6 +3,28 @@
 @tailwind utilities;
 
 @layer base {
+
+  /* Thin sleek scrollbar for dark mode dashboards */
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    background: rgba(63, 63, 70, 0.4);
+    /* zinc-700 with opacity */
+    border-radius: 9999px;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: rgba(82, 82, 91, 0.8);
+    /* zinc-600 on hover */
+  }
+
   :root {
     /* Custom CSS Variables */
     --header-height: 4rem;
@@ -73,9 +95,11 @@
   .collapsibleDropdown {
     overflow: hidden;
   }
+
   .collapsibleDropdown[data-state='open'] {
     animation: slideDown 200ms ease-out;
   }
+
   .collapsibleDropdown[data-state='closed'] {
     animation: slideUp 200ms ease-out;
   }
@@ -84,6 +108,7 @@
     from {
       height: 0;
     }
+
     to {
       height: var(--radix-collapsible-content-height);
     }
@@ -93,6 +118,7 @@
     from {
       height: var(--radix-collapsible-content-height);
     }
+
     to {
       height: 0;
     }
@@ -101,15 +127,18 @@
   * {
     @apply border-border;
   }
+
   body {
     @apply min-h-svh w-full bg-background text-foreground;
   }
-  body > #root {
+
+  body>#root {
     @apply h-svh;
   }
 
   /* Prevent focus zoom on mobile devices */
   @media screen and (max-width: 767px) {
+
     input,
     select,
     textarea {
@@ -119,17 +148,21 @@
 }
 
 @layer utilities {
+
   /* Hide scrollbar for Chrome, Safari and Opera */
   .no-scrollbar::-webkit-scrollbar {
     display: none;
   }
+
   /* Hide scrollbar for IE, Edge and Firefox */
   .no-scrollbar {
-    -ms-overflow-style: none; /* IE and Edge */
-    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none;
+    /* IE and Edge */
+    scrollbar-width: none;
+    /* Firefox */
   }
 
   .faded-bottom {
-    @apply after:pointer-events-none after:absolute after:bottom-0 after:left-0 after:hidden after:h-32 after:w-full after:bg-[linear-gradient(180deg,_transparent_10%,_hsl(var(--background))_70%)] after:md:block;
+    @apply after:pointer-events-none after:absolute after:bottom-0 after:left-0 after:hidden after:h-32 after:w-full after:bg-[linear-gradient(180deg, _transparent_10%, _hsl(var(--background))_70%)] after:md:block;
   }
 }

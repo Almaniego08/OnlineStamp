@@ -9,7 +9,7 @@ export interface CTC {
     state: State;
 
 }
-
+import { formatDate } from '../util/format-date-time'
 
 export function CTC({ addItem, state }: CTC) {
 
@@ -19,15 +19,15 @@ export function CTC({ addItem, state }: CTC) {
         const updateSignature = () => {
             const now = new Date();
 
-            const day = String(now.getDate()).padStart(2, '0');
-            const month = String(now.getMonth() + 1).padStart(2, '0');
-            const year = now.getFullYear();
+            // const day = String(now.getDate()).padStart(2, '0');
+            // const month = String(now.getMonth() + 1).padStart(2, '0');
+            // const year = now.getFullYear();
 
             const hours = String(now.getHours()).padStart(2, '0');
             const minutes = String(now.getMinutes()).padStart(2, '0');
             const seconds = String(now.getSeconds()).padStart(2, '0');
 
-            setDate(`Date: ${day}/${month}/${year}`)
+            setDate(`Date: ${formatDate(new Date())}`)
             setTime(`${hours}:${minutes}:${seconds} +08'00'`)
 
         };
@@ -125,7 +125,7 @@ export function CTC({ addItem, state }: CTC) {
                     color: rgb(0, 0, 0),
                     type: 'text',
                     size: 4,
-                    content: date,
+                    content: date
                 },
                 {
                     id: id,

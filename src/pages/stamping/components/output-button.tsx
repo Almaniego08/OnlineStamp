@@ -13,7 +13,7 @@ type Props = {
 export default function OutputButton({ pdfFile, currentPage, rotation, component, downloadFileName }: Props) {
 
     const handleStamp = async () => {
-        await addStamp(pdfFile, currentPage, rotation, component,downloadFileName);
+        await addStamp(pdfFile, currentPage, rotation, component, downloadFileName, );
     };
 
     return (
