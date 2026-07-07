@@ -16,6 +16,7 @@ type ComponentProps = {
   pdfWidth: number;
   isEditing: string;
   setIsEditingPosition: (id: string) => void;
+  state: State; // <-- Add this line
 };
 
 type Props = {
@@ -43,7 +44,6 @@ const componentMap: ComponentMap = {
 export default function DynamicComponentRenderer({ state, dispatch, pdfHeight, pdfWidth }: Props) {
   const [isEditingPosition, setIsEditingPosition] = useState<string>('')
 
-
   return (
     <>
       {state.items.map((item) => {
@@ -58,6 +58,7 @@ export default function DynamicComponentRenderer({ state, dispatch, pdfHeight, p
             isEditing={isEditingPosition}
             setIsEditingPosition={setIsEditingPosition}
             removeItem={(id) => dispatch({ type: 'removeItem', payload: { id } })}
+            state={state} // <-- Add this line
           />
         ) : null;
       })}
