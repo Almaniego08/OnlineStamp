@@ -1,7 +1,7 @@
 import { format } from "date-fns";
 
 export const formatDate = (date: Date) => {
-    return date ? format(date, "dd MMMM yyyy").toUpperCase() : new Date().toLocaleDateString();
+    return date ? format(date, "dd MMM yyyy").toUpperCase() : new Date().toLocaleDateString();
 }
 
 export const timeString = (time: string) => {

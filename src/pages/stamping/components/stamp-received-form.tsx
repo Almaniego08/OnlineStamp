@@ -52,7 +52,7 @@ function StampReceivedForm({ removeItem, id, dispatch, pdfHeight, pdfWidth, isEd
     };
 
     const handleDateChange = (selectedDate: any) => {
-        const dateText = selectedDate ? format(selectedDate, "MMM dd yyyy").toUpperCase() : new Date().toLocaleDateString();
+        const dateText = selectedDate ? format(selectedDate, "dd MMM yyyy").toUpperCase() : new Date().toLocaleDateString();
         setDate(selectedDate);
         dispatch(updateReceiveStampDetails(id, '2', dateText));
     };

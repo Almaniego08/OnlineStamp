@@ -27,7 +27,6 @@ type Props = {
     setIsEditingPosition: (id: string) => void;
 }
 
-
 export default function AddDateForm({ removeItem, id, dispatch, pdfHeight, pdfWidth, isEditing, setIsEditingPosition }: Props) {
     const [date, setDate] = useState<Date | undefined>(undefined);
     const handleDateChange = (selectedDate: any) => {

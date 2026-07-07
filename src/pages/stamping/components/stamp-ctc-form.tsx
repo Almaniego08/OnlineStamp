@@ -61,7 +61,7 @@ export default function StampCtcForm({
         const cleanTime = timeStr.split(" ")[0]; // Kukunin ang "14:30:15"
         const parts = cleanTime.split(":");
         return {
-            hh: parts[0] || "12",
+            hh: parts[0] || "00",
             mm: parts[1] || "00",
             ss: parts[2] || "00"
         };
