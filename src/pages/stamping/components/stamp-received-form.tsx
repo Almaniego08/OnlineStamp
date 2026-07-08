@@ -8,13 +8,12 @@ import {
 } from "@/components/ui/popover";
 import { Button } from "@/components/custom/button";
 import { cn } from "@/lib/utils";
-import { IconCalendarMonth } from '@tabler/icons-react';
+import { IconCalendarMonth, IconUpload } from '@tabler/icons-react';
 import { Calendar } from "@/components/ui/calendar";
 import { format } from "date-fns";
 import { IconRubberStamp } from '@tabler/icons-react';
 import { PositioningButton } from './positioning-button';
 import { IconTrash } from '@tabler/icons-react';
-// import { Action } from "../util/stamps-reducer-types";
 import ModalImageView from "./modal-image-view";
 import { initialMaricelImg, receivedImg } from "../data/images";
 import { timeNowConvert, timeString, formatDate } from '../util/format-date-time'
@@ -29,17 +28,18 @@ type Props = {
     isEditing: string;
     setIsEditingPosition: (id: string) => void;
 }
-interface imagePreviewDataTypes { src?: string; title?: string }
+interface imagePreviewDataTypes { src?: string | File; title?: string }
 
 function StampReceivedForm({ removeItem, id, dispatch, pdfHeight, pdfWidth, isEditing, setIsEditingPosition }: Props) {
     const [trackingNo, setTrackingNo] = useState<string>('');
     const [date, setDate] = useState<Date | undefined>(undefined);
     const [time, setTime] = useState<string>('');
+    const [initialSrc, setInitialSrc] = useState<string | null>(null);
 
     const updateReceiveStampDetails = (
         id: string,
-        subId: string, // This is the id of the subcomponent being updated
-        value: string,
+        subId: string,
+        value: any, // Ginawang any para tumanggap ng string o File object
     ) => ({
         type: 'updateReceiveStampDetails',
         payload: { id, subId, value },
@@ -64,6 +64,28 @@ function StampReceivedForm({ removeItem, id, dispatch, pdfHeight, pdfWidth, isEd
         dispatch(updateReceiveStampDetails(id, '3', timestring));
     };
 
+    // BAGONG FUNCTION: Para sa pag-upload ng dynamic Initial signature file
+    const handleInitialUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+        if (event.target.files && event.target.files[0]) {
+            const file = event.target.files[0];
+
+            const objectUrl = URL.createObjectURL(file);
+            setInitialSrc(objectUrl);
+
+            dispatch({
+                type: 'updateReceiveStampDetails',
+                payload: {
+                    id: id,
+                    subId: '5', // TARGET: ID '5' para sa nag-stamp, hindi '4'
+                    value: {
+                        title: file.name,
+                        src: file,
+                    }
+                }
+            });
+        }
+    };
+
     useEffect(() => {
         const currentDate = new Date();
         const formattedDate = formatDate(currentDate)
@@ -78,9 +100,18 @@ function StampReceivedForm({ removeItem, id, dispatch, pdfHeight, pdfWidth, isEd
         dispatch(updateReceiveStampDetails(id, '3', ante_meridiem));
     }, []);
 
-    const [imagePreviewData, setImagePreviewData] = useState<imagePreviewDataTypes>();
+    // Memory clean-up para sa nagawang Object URLs sa browser lifecycle
+    useEffect(() => {
+        return () => {
+            if (initialSrc) {
+                URL.revokeObjectURL(initialSrc);
+            }
+        };
+    }, [initialSrc]);
 
+    const [imagePreviewData, setImagePreviewData] = useState<imagePreviewDataTypes>();
     const [isModalOpen, setIsModalOpen] = useState(false);
+
     const handleOpenModal = (image: imagePreviewDataTypes) => {
         setIsModalOpen(true)
         setImagePreviewData(image)
@@ -131,7 +162,7 @@ function StampReceivedForm({ removeItem, id, dispatch, pdfHeight, pdfWidth, isEd
                             <Calendar
                                 mode="single"
                                 onSelect={(selectedDate) => {
-                                    handleDateChange(selectedDate); // Handle date selection
+                                    handleDateChange(selectedDate);
                                 }}
                                 initialFocus
                             />
@@ -148,15 +179,48 @@ function StampReceivedForm({ removeItem, id, dispatch, pdfHeight, pdfWidth, isEd
                         className="w-full"
                     />
                 </div>
+
+                {/* INYEKSIYON: Input field para sa custom signature initial file selection */}
+                <div className='flex flex-col justify-start gap-[10px] border-t pt-2 mt-1'>
+                    <Label className='w-fit flex flex-row items-center gap-1 text-xs font-semibold text-muted-foreground' htmlFor="initial-file">
+                        <IconUpload size={14} /> Change Initial Image (Optional)
+                    </Label>
+                    <Input
+                        id="initial-file"
+                        type="file"
+                        accept="image/png, image/jpeg"
+                        onChange={handleInitialUpload}
+                        className="w-full text-xs"
+                    />
+                </div>
             </div>
-            <div>
-                <Button onClick={() => handleOpenModal(receivedImg)} variant='link'>
+
+            <div className="flex flex-wrap gap-1 justify-start">
+                <Button onClick={() => handleOpenModal(receivedImg)} variant='link' className="text-xs p-0 h-auto pr-2">
                     View Received Stamp
                 </Button>
-                <Button onClick={() => handleOpenModal(initialMaricelImg)} variant='link'>
+                <Button
+                    onClick={() => handleOpenModal(initialSrc ? { src: initialSrc, title: 'Uploaded Initial' } : initialMaricelImg)}
+                    variant='link'
+                    className="text-xs p-0 h-auto"
+                >
                     View Initial
                 </Button>
             </div>
+            <div className="flex flex-wrap gap-1 justify-start">
+                <Button onClick={() => handleOpenModal(receivedImg)} variant='link' className="text-xs p-0 h-auto pr-2">
+                    View Received Stamp
+                </Button>
+                <Button onClick={() => handleOpenModal(initialMaricelImg)} variant='link' className="text-xs p-0 h-auto pr-2">
+                    View Head Initial
+                </Button>
+                {initialSrc && (
+                    <Button onClick={() => handleOpenModal({ src: initialSrc, title: 'Uploaded Receiver Initial' })} variant='link' className="text-xs p-0 h-auto">
+                        View Receiver Initial
+                    </Button>
+                )}
+            </div>
+
             <div
                 className={`bg-background bg-opacity-50 rounded-md p-[5px] flex flex-row items-center transition-all duration-300 ${isEditing === id ? 'fixed' : 'relative'
                     }`}
@@ -181,13 +245,18 @@ function StampReceivedForm({ removeItem, id, dispatch, pdfHeight, pdfWidth, isEd
                     </Button>
                 ) : null}
             </div>
+
             <ModalImageView
                 isOpen={isModalOpen}
                 onClose={handleCloseModal}
                 title={imagePreviewData?.title}
             >
                 <div className="w-full h-[150px] flex items-center justify-center overflow-hidden p-[10px]">
-                    <img className="h-full  object-cover" src={imagePreviewData?.src} alt={imagePreviewData?.title} />
+                    <img
+                        className="h-full object-contain"
+                        src={typeof imagePreviewData?.src === 'string' ? imagePreviewData.src : (imagePreviewData?.src ? URL.createObjectURL(imagePreviewData.src as File) : '')}
+                        alt={imagePreviewData?.title}
+                    />
                 </div>
             </ModalImageView>
         </div>

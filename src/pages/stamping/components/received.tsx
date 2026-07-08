@@ -1,7 +1,7 @@
 import { IconRubberStamp } from '@tabler/icons-react';
 import { Button } from '@/components/custom/button';
 import { State, Item } from '../util/stamps-reducer-types';
-import { receivedImg, initialMaricelImg,  } from '../data/images'
+import { receivedImg, initialMaricelImg, } from '../data/images'
 import { rgb } from 'pdf-lib';
 // adamInitial
 
@@ -23,7 +23,6 @@ export function Received({ addItem, state }: IAppProps) {
             return max;
         }, 0).toString();
     };
-
 
     const handleAddItems = () => {
         const id = String(Number(getMaxId()) + 1);
@@ -53,7 +52,7 @@ export function Received({ addItem, state }: IAppProps) {
             color: rgb(0.345, 0.137, 0.655),
             size: 11,
             content: '',
-        }
+        };
         const date = {
             id: '2',
             component: 'StampReceivedForm',
@@ -66,10 +65,10 @@ export function Received({ addItem, state }: IAppProps) {
             type: 'text',
             size: 13,
             content: '',
-        }
+        };
 
-
-        const initial = {
+        // FIXED: Ang initial ng inyong Head/Approver (Nananatiling static)
+        const headInitial = {
             id: '4',
             component: 'StampReceivedForm',
             height: 65,
@@ -79,18 +78,21 @@ export function Received({ addItem, state }: IAppProps) {
             isShown: true,
             type: 'image',
             content: initialMaricelImg,
-        }
-        // const adamInitialPosition = {
-        //     id: '5',
-        //     component: 'StampReceivedForm',
-        //     height: 20,
-        //     width: 20,
-        //     x: 135,
-        //     y: 85,
-        //     isShown: true,
-        //     type: 'image',
-        //     content: adamInitial,
-        // };
+        };
+
+        // BAGONG LAYER: Initial para sa nag-stamp (Ito ang babaguhin ng file upload)
+        const receiverInitial = {
+            id: '5',
+            component: 'StampReceivedForm',
+            height: 45, // Adjusted ang sukat para magkasya silang dalawa
+            width: 45,
+            x: 120,     // I-adjust ang x at y base sa visual space ng stamp niyo
+            y: 75,
+            isShown: true,
+            type: 'image',
+            content: '', // Blangko sa simula, magkakaroon kapag nag-upload
+        };
+
         const stamp = {
             id: id,
             component: 'StampReceivedForm',
@@ -105,12 +107,12 @@ export function Received({ addItem, state }: IAppProps) {
                 trackingNo,
                 date,
                 time,
-                initial,
-                // adamInitialPosition
+                headInitial,      // Id: '4' (Fixed Head)
+                receiverInitial,  // Id: '5' (Dynamic Stamped By)
             ]
         };
-        addItem(stamp)
-    }
+        addItem(stamp);
+    };
 
     return (
         <Button onClick={handleAddItems}

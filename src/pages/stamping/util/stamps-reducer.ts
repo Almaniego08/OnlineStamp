@@ -50,6 +50,16 @@ export const reducer = (state: State, action: Action): State => {
                     if (item.id === action.payload.id) {
                         const updatedSubcomponents = item.subcomponents?.map(sub => {
                             if (sub.id === action.payload.subId) {
+                                // TINGNAN: Kung ang subcomponent ay Image (ID '4') at ang payload ay ang bagong file payload object
+                                if (sub.type === 'image' && typeof action.payload.value === 'object') {
+                                    return {
+                                        ...sub,
+                                        // Kinukuha natin ang object structure na galing sa handleInitialUpload ({ title, src })
+                                        content: action.payload.value,
+                                    };
+                                }
+
+                                // Default fallback para sa mga normal text inputs (ID '1', '2', '3')
                                 return {
                                     ...sub,
                                     content: action.payload.value
@@ -65,6 +75,7 @@ export const reducer = (state: State, action: Action): State => {
                     return item;
                 })
             };
+
         case 'updateTextDetails':
             return {
                 ...state,
