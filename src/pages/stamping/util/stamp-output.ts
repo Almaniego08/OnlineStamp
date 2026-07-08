@@ -9,7 +9,6 @@ export const addStamp = async (pdfFile: File | null, currentPage: number, rotati
     const page = pdfDoc.getPages()[currentPage - 1];
     const { items } = components;
     const pdfHeight = page.getHeight();
-    const pdfWidth = page.getWidth()
 
     for (const item of items) {
         // Draw the main parent container element
