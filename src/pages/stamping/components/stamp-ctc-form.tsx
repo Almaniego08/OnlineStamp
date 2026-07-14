@@ -53,13 +53,13 @@ const SIGNERS = [
     },
     {
         id: 'aireeze',
-        name: 'Aireeze',
+        name: 'Aireeze V. Bautista',
         signature: aireezeSignImg,
         stamp: aireezeNameStampImg,
-        defaultSigWidth: 95,
-        defaultSigHeight: 40,
-        defaultStampWidth: 115,
-        defaultStampHeight: 42,
+        defaultSigWidth: 65,
+        defaultSigHeight: 65,
+        defaultStampWidth: 100,
+        defaultStampHeight: 35,
     }
 ];
 
