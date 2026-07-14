@@ -7,6 +7,7 @@ import {
   IconAutomaticGearbox,
   IconTools,
   IconRubberStamp,
+  IconPdf,
 } from '@tabler/icons-react'
 
 export interface NavLink {
@@ -71,7 +72,12 @@ export const sidelinks: SideLink[] = [
         href: '/stamping',
         icon: <IconRubberStamp size={18} />,
       },
-
+      {
+        title: 'PDF Tools',
+        label: '',
+        href: '/pdftools',
+        icon: <IconPdf size={18} />,
+      },
     ]
   },
 

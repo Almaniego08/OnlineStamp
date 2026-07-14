@@ -220,6 +220,52 @@ export const reducer = (state: State, action: Action): State => {
                     };
                 })
             };
+        case 'updateSubcomponentSize':
+            return {
+                ...state,
+                items: state.items.map((item: any) => {
+                    if (item.id !== action.payload.parentId) return item;
+
+                    return {
+                        ...item,
+                        subcomponents: item.subcomponents?.map((sub: any, index: number) => {
+                            if (index !== action.payload.subcomponentIndex) return sub;
+                            return {
+                                ...sub,
+                                width: action.payload.width,
+                                height: action.payload.height
+                            };
+                        })
+                    };
+                })
+            };
+        case 'updateSubcomponentPosition': 
+            const { parentId, subcomponentIndex, x, y } = action.payload;
+            return {
+                ...state,
+                items: state.items.map((item) => {
+                    // Kung hindi ito ang hawak nating stamp card, huwag pakialaman
+                    if (item.id !== parentId) return item;
+
+                    // Gumawa ng shallow copy ng subcomponents array
+                    const updatedSubcomponents = [...(item.subcomponents || [])];
+
+                    // I-update lang ang x at y coordinates ng specific subcomponent (Signature o Stamp)
+                    if (updatedSubcomponents[subcomponentIndex]) {
+                        updatedSubcomponents[subcomponentIndex] = {
+                            ...updatedSubcomponents[subcomponentIndex],
+                            x: x,
+                            y: y
+                        };
+                    }
+
+                    return {
+                        ...item,
+                        subcomponents: updatedSubcomponents
+                    };
+                })
+            };
+        
         case 'reset':
             return initialState; // Reset to the initial state
         default:

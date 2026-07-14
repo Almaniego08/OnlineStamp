@@ -6,17 +6,34 @@ import {
     PopoverContent,
     PopoverTrigger,
 } from "@/components/ui/popover";
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from "@/components/ui/select";
 import { Button } from "@/components/custom/button";
 import { cn } from "@/lib/utils";
-import { IconCalendarMonth, IconUpload } from '@tabler/icons-react';
+import { IconCalendarMonth, IconUpload, IconUserCheck, IconUserEdit } from '@tabler/icons-react';
 import { Calendar } from "@/components/ui/calendar";
 import { format } from "date-fns";
 import { IconRubberStamp } from '@tabler/icons-react';
 import { PositioningButton } from './positioning-button';
 import { IconTrash } from '@tabler/icons-react';
 import ModalImageView from "./modal-image-view";
-import { initialMaricelImg, receivedImg } from "../data/images";
-import { timeNowConvert, timeString, formatDate } from '../util/format-date-time'
+import { 
+    initialMaricelImg, 
+    receivedImg,
+    adamInitial,
+    adamInitial3,
+    anabelleInitialImg,
+    aireezeInitialImg,
+    janineInitialImg,
+    kateInitialImg,
+    vanInitialImg
+} from "../data/images";
+import { timeNowConvert, timeString, formatDate } from '../util/format-date-time';
 import { IconCurrentLocation, IconX } from '@tabler/icons-react';
 
 type Props = {
@@ -30,16 +47,29 @@ type Props = {
 }
 interface imagePreviewDataTypes { src?: string | File; title?: string }
 
+const AVAILABLE_HEADS = [
+    { id: "maricel", label: "Ms. Maricel (Default)", data: initialMaricelImg },
+    { id: "adam", label: "Mr. Adam Initial", data: adamInitial },
+    { id: "adam3", label: "Adam C. Marcaida Jr. 3", data: adamInitial3 },
+    { id: "anabelle", label: "Ms. Anabelle Initial", data: anabelleInitialImg },
+    { id: "aireeze", label: "Ms. Aireeze Initial", data: aireezeInitialImg },
+    { id: "janine", label: "Ja9 Initial", data: janineInitialImg },
+    { id: "kate", label: "K8 initial", data: kateInitialImg },
+    { id: "van", label: "Vanrick T. Lacson", data: vanInitialImg }
+];
+
 function StampReceivedForm({ removeItem, id, dispatch, pdfHeight, pdfWidth, isEditing, setIsEditingPosition }: Props) {
     const [trackingNo, setTrackingNo] = useState<string>('');
     const [date, setDate] = useState<Date | undefined>(undefined);
     const [time, setTime] = useState<string>('');
+    const [selectedHeadId, setSelectedHeadId] = useState<string>('maricel');
+    const [selectedReceiverId, setSelectedReceiverId] = useState<string>('maricel'); // Naka-default din kay maricel
     const [initialSrc, setInitialSrc] = useState<string | null>(null);
 
     const updateReceiveStampDetails = (
         id: string,
         subId: string,
-        value: any, // Ginawang any para tumanggap ng string o File object
+        value: any,
     ) => ({
         type: 'updateReceiveStampDetails',
         payload: { id, subId, value },
@@ -59,24 +89,50 @@ function StampReceivedForm({ removeItem, id, dispatch, pdfHeight, pdfWidth, isEd
 
     const handleTimeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const newTime = e.target.value;
-        const timestring = timeString(newTime)
+        const timestring = timeString(newTime);
         setTime(newTime);
         dispatch(updateReceiveStampDetails(id, '3', timestring));
     };
 
-    // BAGONG FUNCTION: Para sa pag-upload ng dynamic Initial signature file
+    // Handler para sa Section Head Dropdown Picker (Target: subId '4')
+    const handleHeadChange = (headId: string) => {
+        setSelectedHeadId(headId);
+        const headData = AVAILABLE_HEADS.find(h => h.id === headId)?.data;
+        if (headData) {
+            dispatch(updateReceiveStampDetails(id, '4', headData));
+        }
+    };
+
+    // Handler para sa Receiver Dropdown Picker (Target: subId '5')
+    const handleReceiverChange = (receiverId: string) => {
+        setSelectedReceiverId(receiverId);
+        
+        // Kapag pumili sa dropdown, linisin muna ang lumang custom uploaded file link structure
+        if (initialSrc) {
+            URL.revokeObjectURL(initialSrc);
+            setInitialSrc(null);
+        }
+
+        const receiverData = AVAILABLE_HEADS.find(r => r.id === receiverId)?.data;
+        if (receiverData) {
+            dispatch(updateReceiveStampDetails(id, '5', receiverData));
+        }
+    };
+
+    // Backup Manual file attachment capability handler (Gagamit pa rin ng subId '5')
     const handleInitialUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
         if (event.target.files && event.target.files[0]) {
             const file = event.target.files[0];
 
             const objectUrl = URL.createObjectURL(file);
             setInitialSrc(objectUrl);
+            setSelectedReceiverId(''); // Clear dropdown value para indicator na custom file ang gamit
 
             dispatch({
                 type: 'updateReceiveStampDetails',
                 payload: {
                     id: id,
-                    subId: '5', // TARGET: ID '5' para sa nag-stamp, hindi '4'
+                    subId: '5', 
                     value: {
                         title: file.name,
                         src: file,
@@ -88,19 +144,18 @@ function StampReceivedForm({ removeItem, id, dispatch, pdfHeight, pdfWidth, isEd
 
     useEffect(() => {
         const currentDate = new Date();
-        const formattedDate = formatDate(currentDate)
+        const formattedDate = formatDate(currentDate);
         setDate(currentDate);
         dispatch(updateReceiveStampDetails(id, '2', formattedDate));
     }, []);
 
     useEffect(() => {
-        const newDate = new Date()
-        const { military_time, ante_meridiem } = timeNowConvert(newDate)
-        setTime(military_time)
+        const newDate = new Date();
+        const { military_time, ante_meridiem } = timeNowConvert(newDate);
+        setTime(military_time);
         dispatch(updateReceiveStampDetails(id, '3', ante_meridiem));
     }, []);
 
-    // Memory clean-up para sa nagawang Object URLs sa browser lifecycle
     useEffect(() => {
         return () => {
             if (initialSrc) {
@@ -113,10 +168,14 @@ function StampReceivedForm({ removeItem, id, dispatch, pdfHeight, pdfWidth, isEd
     const [isModalOpen, setIsModalOpen] = useState(false);
 
     const handleOpenModal = (image: imagePreviewDataTypes) => {
-        setIsModalOpen(true)
-        setImagePreviewData(image)
+        setIsModalOpen(true);
+        setImagePreviewData(image);
     };
     const handleCloseModal = () => setIsModalOpen(false);
+
+    // Kuhanin ang dynamically calculated live source definitions para sa image triggers
+    const currentHeadImage = AVAILABLE_HEADS.find(h => h.id === selectedHeadId)?.data || initialMaricelImg;
+    const currentReceiverImage = AVAILABLE_HEADS.find(r => r.id === selectedReceiverId)?.data || initialMaricelImg;
 
     return (
         <div className="flex flex-col gap-3 border rounded-md p-[10px]">
@@ -143,6 +202,45 @@ function StampReceivedForm({ removeItem, id, dispatch, pdfHeight, pdfWidth, isEd
                     <Label className='w-fit' htmlFor="tracking">Tracking no.</Label>
                     <Input placeholder="X-YYYY-####" id="tracking" type="text" value={trackingNo} onChange={handleTrackingNoChange} />
                 </div>
+
+                {/* Section Head Dropdown Picker (SubId '4') */}
+                <div className='flex flex-col justify-start gap-[10px]'>
+                    <Label className='w-fit flex flex-row items-center gap-1' htmlFor="head-select">
+                        <IconUserCheck size={14} /> Section Head Initial
+                    </Label>
+                    <Select value={selectedHeadId} onValueChange={handleHeadChange}>
+                        <SelectTrigger id="head-select" className="w-full">
+                            <SelectValue placeholder="Select Section Head" />
+                        </SelectTrigger>
+                        <SelectContent>
+                            {AVAILABLE_HEADS.map((head) => (
+                                <SelectItem key={head.id} value={head.id}>
+                                    {head.label}
+                                </SelectItem>
+                            ))}
+                        </SelectContent>
+                    </Select>
+                </div>
+
+                {/* Receiver Dropdown Picker (SubId '5') */}
+                <div className='flex flex-col justify-start gap-[10px]'>
+                    <Label className='w-fit flex flex-row items-center gap-1' htmlFor="receiver-select">
+                        <IconUserEdit size={14} /> Receiver Initial
+                    </Label>
+                    <Select value={selectedReceiverId} onValueChange={handleReceiverChange}>
+                        <SelectTrigger id="receiver-select" className="w-full">
+                            <SelectValue placeholder="Select Receiver Initial" />
+                        </SelectTrigger>
+                        <SelectContent>
+                            {AVAILABLE_HEADS.map((receiver) => (
+                                <SelectItem key={receiver.id} value={receiver.id}>
+                                    {receiver.label}
+                                </SelectItem>
+                            ))}
+                        </SelectContent>
+                    </Select>
+                </div>
+
                 <div className='flex flex-col justify-start gap-[10px]'>
                     <Label className='w-fit' htmlFor="date">Date</Label>
                     <Popover>
@@ -169,6 +267,7 @@ function StampReceivedForm({ removeItem, id, dispatch, pdfHeight, pdfWidth, isEd
                         </PopoverContent>
                     </Popover>
                 </div>
+                
                 <div className='flex flex-col justify-start gap-[10px]'>
                     <Label className='w-fit' htmlFor="time">Time</Label>
                     <Input
@@ -180,10 +279,9 @@ function StampReceivedForm({ removeItem, id, dispatch, pdfHeight, pdfWidth, isEd
                     />
                 </div>
 
-                {/* INYEKSIYON: Input field para sa custom signature initial file selection */}
                 <div className='flex flex-col justify-start gap-[10px] border-t pt-2 mt-1'>
                     <Label className='w-fit flex flex-row items-center gap-1 text-xs font-semibold text-muted-foreground' htmlFor="initial-file">
-                        <IconUpload size={14} /> Change Initial Image (Optional)
+                        <IconUpload size={14} /> Or Upload Custom Initial (Optional)
                     </Label>
                     <Input
                         id="initial-file"
@@ -195,27 +293,19 @@ function StampReceivedForm({ removeItem, id, dispatch, pdfHeight, pdfWidth, isEd
                 </div>
             </div>
 
-            <div className="flex flex-wrap gap-1 justify-start">
+            <div className="flex flex-wrap gap-1 justify-start border-t pt-2 mt-1">
                 <Button onClick={() => handleOpenModal(receivedImg)} variant='link' className="text-xs p-0 h-auto pr-2">
                     View Received Stamp
                 </Button>
-                <Button
-                    onClick={() => handleOpenModal(initialSrc ? { src: initialSrc, title: 'Uploaded Initial' } : initialMaricelImg)}
-                    variant='link'
-                    className="text-xs p-0 h-auto"
-                >
-                    View Initial
-                </Button>
-            </div>
-            <div className="flex flex-wrap gap-1 justify-start">
-                <Button onClick={() => handleOpenModal(receivedImg)} variant='link' className="text-xs p-0 h-auto pr-2">
-                    View Received Stamp
-                </Button>
-                <Button onClick={() => handleOpenModal(initialMaricelImg)} variant='link' className="text-xs p-0 h-auto pr-2">
+                <Button onClick={() => handleOpenModal(currentHeadImage)} variant='link' className="text-xs p-0 h-auto pr-2">
                     View Head Initial
                 </Button>
-                {initialSrc && (
-                    <Button onClick={() => handleOpenModal({ src: initialSrc, title: 'Uploaded Receiver Initial' })} variant='link' className="text-xs p-0 h-auto">
+                {initialSrc ? (
+                    <Button onClick={() => handleOpenModal({ src: initialSrc, title: 'Uploaded Custom Initial' })} variant='link' className="text-xs p-0 h-auto">
+                        View Uploaded Initial
+                    </Button>
+                ) : (
+                    <Button onClick={() => handleOpenModal(currentReceiverImage)} variant='link' className="text-xs p-0 h-auto">
                         View Receiver Initial
                     </Button>
                 )}

@@ -1,20 +1,25 @@
 import { IconRubberStamp } from '@tabler/icons-react';
 import { Button } from '@/components/custom/button';
 import { State, Item } from '../util/stamps-reducer-types';
-import { receivedImg, initialMaricelImg, } from '../data/images'
+import { 
+    receivedImg, 
+    initialMaricelImg, 
+    adamInitial, 
+    adamInitial3, 
+    anabelleInitialImg, 
+    aireezeInitialImg, 
+    janineInitialImg, 
+    kateInitialImg, 
+    vanInitialImg 
+} from '../data/images';
 import { rgb } from 'pdf-lib';
-// adamInitial
 
 export interface IAppProps {
     addItem: (item: Item) => void;
     state: State;
 }
 
-
 export function Received({ addItem, state }: IAppProps) {
-
-
-
     const getMaxId = (): string => {
         return state.items.reduce((max, item) => {
             if (item.id) {
@@ -67,7 +72,7 @@ export function Received({ addItem, state }: IAppProps) {
             content: '',
         };
 
-        // FIXED: Ang initial ng inyong Head/Approver (Nananatiling static)
+        // Default Head Initial (Ms. Maricel) kapag bagong gawa ang stamp
         const headInitial = {
             id: '4',
             component: 'StampReceivedForm',
@@ -80,17 +85,16 @@ export function Received({ addItem, state }: IAppProps) {
             content: initialMaricelImg,
         };
 
-        // BAGONG LAYER: Initial para sa nag-stamp (Ito ang babaguhin ng file upload)
         const receiverInitial = {
             id: '5',
             component: 'StampReceivedForm',
-            height: 45, // Adjusted ang sukat para magkasya silang dalawa
+            height: 45,
             width: 45,
-            x: 120,     // I-adjust ang x at y base sa visual space ng stamp niyo
+            x: 120,
             y: 75,
             isShown: true,
             type: 'image',
-            content: '', // Blangko sa simula, magkakaroon kapag nag-upload
+            content: '', 
         };
 
         const stamp = {
@@ -107,8 +111,8 @@ export function Received({ addItem, state }: IAppProps) {
                 trackingNo,
                 date,
                 time,
-                headInitial,      // Id: '4' (Fixed Head)
-                receiverInitial,  // Id: '5' (Dynamic Stamped By)
+                headInitial,      
+                receiverInitial,  
             ]
         };
         addItem(stamp);

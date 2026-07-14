@@ -117,4 +117,14 @@ export type Action =
             value: RGB
         }
     }
-    | { type: 'reset'; };
+    | { type: 'reset'; }
+    | {
+        type: 'updateSubcomponentSize';
+        payload: {
+            parentId: string;
+            subcomponentIndex: number;
+            width: number;
+            height: number;
+        }
+    }
+    | { type: 'updateSubcomponentPosition'; payload: { parentId: string; subcomponentIndex: number; x: number; y: number } };
