@@ -22,8 +22,8 @@ import { IconRubberStamp } from '@tabler/icons-react';
 import { PositioningButton } from './positioning-button';
 import { IconTrash } from '@tabler/icons-react';
 import ModalImageView from "./modal-image-view";
-import { 
-    initialMaricelImg, 
+import {
+    abelleInitialImg,
     receivedImg,
     adamInitial,
     adamInitial3,
@@ -31,7 +31,8 @@ import {
     aireezeInitialImg,
     janineInitialImg,
     kateInitialImg,
-    vanInitialImg
+    vanInitialImg,
+    ryanllanesSign
 } from "../data/images";
 import { timeNowConvert, timeString, formatDate } from '../util/format-date-time';
 import { IconCurrentLocation, IconX } from '@tabler/icons-react';
@@ -48,14 +49,15 @@ type Props = {
 interface imagePreviewDataTypes { src?: string | File; title?: string }
 
 const AVAILABLE_HEADS = [
-    { id: "maricel", label: "Ms. Maricel (Default)", data: initialMaricelImg },
+    { id: "maricel", label: "Anabelle G. Valencia (Default)", data: abelleInitialImg },
     { id: "adam", label: "Mr. Adam Initial", data: adamInitial },
     { id: "adam3", label: "Adam C. Marcaida Jr. 3", data: adamInitial3 },
     { id: "anabelle", label: "Ms. Anabelle Initial", data: anabelleInitialImg },
     { id: "aireeze", label: "Ms. Aireeze Initial", data: aireezeInitialImg },
     { id: "janine", label: "Ja9 Initial", data: janineInitialImg },
     { id: "kate", label: "K8 initial", data: kateInitialImg },
-    { id: "van", label: "Vanrick T. Lacson", data: vanInitialImg }
+    { id: "van", label: "Vanrick T. Lacson", data: vanInitialImg },
+    { id: "ryan", label: "Ryan M. Llanes", data: ryanllanesSign }
 ];
 
 function StampReceivedForm({ removeItem, id, dispatch, pdfHeight, pdfWidth, isEditing, setIsEditingPosition }: Props) {
@@ -106,7 +108,7 @@ function StampReceivedForm({ removeItem, id, dispatch, pdfHeight, pdfWidth, isEd
     // Handler para sa Receiver Dropdown Picker (Target: subId '5')
     const handleReceiverChange = (receiverId: string) => {
         setSelectedReceiverId(receiverId);
-        
+
         // Kapag pumili sa dropdown, linisin muna ang lumang custom uploaded file link structure
         if (initialSrc) {
             URL.revokeObjectURL(initialSrc);
@@ -132,7 +134,7 @@ function StampReceivedForm({ removeItem, id, dispatch, pdfHeight, pdfWidth, isEd
                 type: 'updateReceiveStampDetails',
                 payload: {
                     id: id,
-                    subId: '5', 
+                    subId: '5',
                     value: {
                         title: file.name,
                         src: file,
@@ -174,8 +176,8 @@ function StampReceivedForm({ removeItem, id, dispatch, pdfHeight, pdfWidth, isEd
     const handleCloseModal = () => setIsModalOpen(false);
 
     // Kuhanin ang dynamically calculated live source definitions para sa image triggers
-    const currentHeadImage = AVAILABLE_HEADS.find(h => h.id === selectedHeadId)?.data || initialMaricelImg;
-    const currentReceiverImage = AVAILABLE_HEADS.find(r => r.id === selectedReceiverId)?.data || initialMaricelImg;
+    const currentHeadImage = AVAILABLE_HEADS.find(h => h.id === selectedHeadId)?.data || abelleInitialImg;
+    const currentReceiverImage = AVAILABLE_HEADS.find(r => r.id === selectedReceiverId)?.data || abelleInitialImg;
 
     return (
         <div className="flex flex-col gap-3 border rounded-md p-[10px]">
@@ -267,7 +269,7 @@ function StampReceivedForm({ removeItem, id, dispatch, pdfHeight, pdfWidth, isEd
                         </PopoverContent>
                     </Popover>
                 </div>
-                
+
                 <div className='flex flex-col justify-start gap-[10px]'>
                     <Label className='w-fit' htmlFor="time">Time</Label>
                     <Input

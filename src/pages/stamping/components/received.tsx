@@ -3,7 +3,7 @@ import { Button } from '@/components/custom/button';
 import { State, Item } from '../util/stamps-reducer-types';
 import { 
     receivedImg, 
-    initialMaricelImg, 
+    abelleInitialImg, 
     adamInitial, 
     adamInitial3, 
     anabelleInitialImg, 
@@ -82,7 +82,7 @@ export function Received({ addItem, state }: IAppProps) {
             y: 75,
             isShown: true,
             type: 'image',
-            content: initialMaricelImg,
+            content: abelleInitialImg,
         };
 
         const receiverInitial = {

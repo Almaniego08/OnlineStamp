@@ -1,5 +1,5 @@
 import receiveStamp from '../assets/images/receive-stamp.png';
-import initialMaricel from '../assets/images/maricel-initial.png'
+import initialAbelle from '../assets/images/abelle-initial.png'
 import signitureMaricel from '../assets/images/maricel-signature.png'
 import ctc from '../assets/images/certify-true-copy.png'
 import maricelNameStamp from '../assets/images/maricel-malalad-head-record-gsd.png';
@@ -12,9 +12,16 @@ import janineInitial from '../assets/images/janine-initial.png';
 import kateInitial from '../assets/images/kate-initial.png';
 import vanInitial from '../assets/images/van-initial.png';
 import aireezeNameStamp from '../assets/images/aireeze-stamp-name.png'
+import ryanllanes from '../assets/images/ryan-llanes.png'
+
 const adamInitial3 = {
     title: 'Adam C. Marcaida Jr. 3',
     src: adamInitialImg3
+}
+
+const ryanllanesSign = {
+    title: 'Ryan Llanes',
+    src: ryanllanes
 }
 
 const anabelleInitialImg = {
@@ -52,9 +59,9 @@ const receivedImg = {
     title: 'Receive Stamp',
     src: receiveStamp
 }
-const initialMaricelImg = {
+const abelleInitialImg = {
     title: 'Initial',
-    src: initialMaricel
+    src: initialAbelle
 }
 
 const signitureMaricelImg = {
@@ -82,7 +89,7 @@ const aireezeSignatureImg = {
 
 export {
     receivedImg,
-    initialMaricelImg,
+    abelleInitialImg,
     signitureMaricelImg,
     aireezeSignatureImg,
     ctcImage,
@@ -95,5 +102,6 @@ export {
     kateInitialImg,
     vanInitialImg,
     aireezeNameStampImg,
-    aireezeSignImg
+    aireezeSignImg,
+    ryanllanesSign,
 }
