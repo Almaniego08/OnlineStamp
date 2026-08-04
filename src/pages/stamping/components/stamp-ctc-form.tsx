@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import {
-    signitureMaricelImg,
+    anabelleSignatureImg,
     maricelNameStampImg, aireezeNameStampImg, aireezeSignImg, jmtumlosSignature,jmtumlosStamp,
     ctcImage
 } from "../data/images";
@@ -56,7 +56,7 @@ const SIGNERS = [
     {
         id: 'anabelle',
         name: 'Anabelle G. Valencia',
-        signature: maricelNameStampImg,
+        signature: anabelleSignatureImg,
         stamp: maricelNameStampImg,
         defaultSigWidth: 130,
         defaultSigHeight: 55,

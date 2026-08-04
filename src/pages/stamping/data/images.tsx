@@ -1,6 +1,6 @@
 import receiveStamp from '../assets/images/received-stamp.png';
 import initialAbelle from '../assets/images/abelle-initial.png'
-import signitureMaricel from '../assets/images/maricel-signature.png'
+import anabelleSignature from '../assets/images/anabelle-signature.png'
 import ctc from '../assets/images/ctc-stamp.png'
 import maricelNameStamp from '../assets/images/maricel-malalad-head-record-gsd.png';
 import adamInitialImg from '../assets/images/adam-initial.png';
@@ -87,9 +87,9 @@ const abelleInitialImg = {
     src: initialAbelle
 }
 
-const signitureMaricelImg = {
+const anabelleSignatureImg = {
     title: 'Signature',
-    src: signitureMaricel
+    src: anabelleSignature
 }
 
 const ctcImage = {
@@ -113,7 +113,7 @@ const aireezeSignatureImg = {
 export {
     receivedImg,
     abelleInitialImg,
-    signitureMaricelImg,
+    anabelleSignatureImg,
     aireezeSignatureImg,
     ctcImage,
     maricelNameStampImg,
