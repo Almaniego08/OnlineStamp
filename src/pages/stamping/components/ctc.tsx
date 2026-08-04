@@ -1,39 +1,32 @@
 import { IconRubberStamp } from '@tabler/icons-react';
 import { Button } from '@/components/custom/button';
 import { State, Item } from '../util/stamps-reducer-types';
-import { ctcImage, signitureMaricelImg, maricelNameStampImg } from '../data/images'
+import { ctcImage, jmtumlosSignature, jmtumlosStamp } from '../data/images';
 import { rgb } from 'pdf-lib';
-import * as React from 'react'
-export interface CTC {
+import * as React from 'react';
+import { formatDate } from '../util/format-date-time';
+
+export interface CTCProps {
     addItem: (item: Item) => void;
     state: State;
-
 }
-import { formatDate } from '../util/format-date-time'
 
-export function CTC({ addItem, state }: CTC) {
+export function CTC({ addItem, state }: CTCProps) {
+    const [date, setDate] = React.useState<string>('');
+    const [time, setTime] = React.useState<string>('');
 
-    const [date, setDate] = React.useState<string>('')
-    const [time, setTime] = React.useState<string>('')
     React.useEffect(() => {
         const updateSignature = () => {
             const now = new Date();
-
-            // const day = String(now.getDate()).padStart(2, '0');
-            // const month = String(now.getMonth() + 1).padStart(2, '0');
-            // const year = now.getFullYear();
-
             const hours = String(now.getHours()).padStart(2, '0');
             const minutes = String(now.getMinutes()).padStart(2, '0');
             const seconds = String(now.getSeconds()).padStart(2, '0');
 
-            setDate(`Date: ${formatDate(new Date())}`)
-            setTime(`${hours}:${minutes}:${seconds} +08'00'`)
-
+            setDate(`Date: ${formatDate(new Date())}`);
+            setTime(`${hours}:${minutes}:${seconds} +08'00'`);
         };
 
         updateSignature();
-        // Optional: auto-update every second
         const interval = setInterval(updateSignature, 1000);
         return () => clearInterval(interval);
     }, []);
@@ -48,33 +41,36 @@ export function CTC({ addItem, state }: CTC) {
     };
 
     const handleAddItems = () => {
-        const id = String(Number(getMaxId()) + 1)
+        const id = String(Number(getMaxId()) + 1);
 
+        // 💡 INAYOS: Binago ang id mula '1' patungong dynamic 'id' variable
         const signature = {
-            id: '1',
+            id: id,
             component: 'StampCtcForm',
-            height: 55,
-            width: 130,
-            x: -5,
-            y: 30,
+            height: 40,  
+            width: 100, 
+            x: 10,      
+            y: 39,      
             isShown: true,
             color: rgb(190 / 255, 101 / 255, 120 / 255),
             type: 'image',
-            content: signitureMaricelImg,
-        }
-        const maricelStamp = {
-            id: '1',
+            content: jmtumlosSignature,
+        };
+
+        // 💡 INAYOS: Binago rin dito ang id mula '1' patungong dynamic 'id' variable
+        const jmtumlosStampObj = {
+            id: id,
             component: 'StampCtcForm',
-            height: 50,
-            width: 140,
-            x: -10,
-            y: 52,
+            height: 45,  
+            width: 110,  
+            x: 5,       
+            y: 45,      
             isShown: true,
             color: rgb(190 / 255, 101 / 255, 120 / 255),
             type: 'image',
-            content: maricelNameStampImg,
-        }
-        maricelNameStampImg
+            content: jmtumlosStamp,
+        };
+
         const stamp = {
             id: id,
             component: 'StampCtcForm',
@@ -87,18 +83,18 @@ export function CTC({ addItem, state }: CTC) {
             content: ctcImage,
             subcomponents: [
                 signature,
-                maricelStamp,
+                jmtumlosStampObj,
                 {
                     id: id,
                     component: 'StampCtcForm',
                     height: 0,
                     width: 0,
-                    x: 110,
-                    y: 65,
+                    x: 112,
+                    y: 66,  
                     isShown: true,
                     color: rgb(0, 0, 0),
                     type: 'text',
-                    size: 4,
+                    size: 3,
                     content: 'Digitally signed by',
                 },
                 {
@@ -106,62 +102,48 @@ export function CTC({ addItem, state }: CTC) {
                     component: 'StampCtcForm',
                     height: 0,
                     width: 0,
-                    x: 110,
-                    y: 70,
+                    x: 112,
+                    y: 70, 
                     isShown: true,
                     color: rgb(0, 0, 0),
                     type: 'text',
-                    size: 4,
-                    content: 'Anabelle G. Valencia',
+                    size: 3,
+                    content: 'Jennifer M. Tumlos',
                 },
                 {
                     id: id,
                     component: 'StampCtcForm',
                     height: 0,
                     width: 0,
-                    x: 110,
-                    y: 75,
+                    x: 112,
+                    y: 74,  
                     isShown: true,
                     color: rgb(0, 0, 0),
                     type: 'text',
-                    size: 4,
-                    content: date
+                    size: 3,
+                    content: date,
                 },
                 {
                     id: id,
                     component: 'StampCtcForm',
                     height: 0,
                     width: 0,
-                    x: 110,
-                    y: 80,
+                    x: 112,
+                    y: 78,  
                     isShown: true,
                     color: rgb(0, 0, 0),
-                    type: 'text',
-                    size: 4,
+                    type: 'text',   
+                    size: 3,
                     content: time,
-                }
-            ]
-        }
-        addItem(stamp)
+                },
+            ],
+        };
 
-        // const digitallySignedBy = {
-        //     id: id,
-        //     component: 'StampCtcForm',
-        //     height: 0,
-        //     width: 0,
-        //     x: 25,
-        //     y: 25,
-        //     isShown: true,
-        //     color: rgb(0, 0, 0),
-        //     type: 'text',
-        //     size: 13,
-        //     content: '',
-        // }
-        // addItem(digitallySignedBy)
-    }
-    // StampCtcForm
+        addItem(stamp);
+    };
+
     return (
-        <Button onClick={handleAddItems} variant='ghost' className='flex justify-start gap-[10px] border px-4 py-4 w-full'>
+        <Button onClick={handleAddItems} variant="ghost" className="flex justify-start gap-[10px] border px-4 py-4 w-full">
             <IconRubberStamp />
             <p>ADD CTC</p>
         </Button>

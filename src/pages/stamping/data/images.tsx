@@ -1,7 +1,7 @@
-import receiveStamp from '../assets/images/receive-stamp.png';
+import receiveStamp from '../assets/images/received-stamp.png';
 import initialAbelle from '../assets/images/abelle-initial.png'
 import signitureMaricel from '../assets/images/maricel-signature.png'
-import ctc from '../assets/images/certify-true-copy.png'
+import ctc from '../assets/images/ctc-stamp.png'
 import maricelNameStamp from '../assets/images/maricel-malalad-head-record-gsd.png';
 import adamInitialImg from '../assets/images/adam-initial.png';
 import adamInitialImg3 from '../assets/images/adam-initial3.png';
@@ -13,6 +13,29 @@ import kateInitial from '../assets/images/kate-initial.png';
 import vanInitial from '../assets/images/van-initial.png';
 import aireezeNameStamp from '../assets/images/aireeze-stamp-name.png'
 import ryanllanes from '../assets/images/ryan-llanes.png'
+
+
+
+// HEAD FOR JULY 7, 2026 TO PRESENT.
+import jmtumlosInitialImg from '../assets/images/jmtumlos-initial.png'
+import jmtumlosSignatureImg from '../assets/images/jmtumlos-signature.png'
+import jmtumlosStampImg from '../assets/images/jmtumlos-stamp.png'
+
+const jmtumlosInitial = {
+    title: 'Jennifer M. Tumlos',
+    src: jmtumlosInitialImg
+}
+
+const jmtumlosSignature = {
+    title: 'Jennifer M. Tumlos',
+    src: jmtumlosSignatureImg
+}
+
+const jmtumlosStamp = {
+    title: 'Jennifer M. Tumlos',
+    src: jmtumlosStampImg
+}
+
 
 const adamInitial3 = {
     title: 'Adam C. Marcaida Jr. 3',
@@ -104,4 +127,7 @@ export {
     aireezeNameStampImg,
     aireezeSignImg,
     ryanllanesSign,
+    jmtumlosInitial,
+    jmtumlosSignature,
+    jmtumlosStamp,
 }

@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import {
     signitureMaricelImg,
-    maricelNameStampImg, aireezeNameStampImg, aireezeSignImg,
+    maricelNameStampImg, aireezeNameStampImg, aireezeSignImg, jmtumlosSignature,jmtumlosStamp,
     ctcImage
 } from "../data/images";
 import { PositioningButton } from './positioning-button';
@@ -41,6 +41,18 @@ type Props = {
 }
 
 const SIGNERS = [
+
+    {
+        id: 'jennifer',
+        name: 'Jennifer M. Tumlos',
+        signature: jmtumlosSignature,
+        stamp: jmtumlosStamp,
+        defaultSigWidth: 65,
+        defaultSigHeight: 65,
+        defaultStampWidth: 100,
+        defaultStampHeight: 50,
+    },
+
     {
         id: 'anabelle',
         name: 'Anabelle G. Valencia',
@@ -84,7 +96,7 @@ export default function StampCtcForm({
     const dateStringValue = dateSubcomponent?.content || '';
     const timeStringValue = typeof timeSubcomponent?.content === 'string' ? timeSubcomponent.content : '';
 
-    const activeSignerName = nameTextSubcomponent?.content || 'Anabelle G. Valencia';
+    const activeSignerName = nameTextSubcomponent?.content || 'Jennifer M. Tumlos';
     const activeSigner = SIGNERS.find(s => s.name === activeSignerName) || SIGNERS[0];
 
     const currentSigWidth = signatureSubcomponent?.width || activeSigner.defaultSigWidth;
@@ -298,7 +310,7 @@ export default function StampCtcForm({
                     {/* Signature Position */}
                     <div className="flex flex-col gap-2 border-b pb-3 mb-1">
                         <span className="text-[11px] font-bold uppercase tracking-wider text-primary">Signature Positioning</span>
-                        
+
                         {/* Signature X */}
                         <div className="flex flex-col gap-1">
                             <div className="flex justify-between text-[11px] font-medium">
@@ -313,9 +325,9 @@ export default function StampCtcForm({
                                 onChange={(e) => {
                                     dispatch({
                                         type: 'updateSubcomponentPosition',
-                                        payload: { 
-                                            parentId: id, 
-                                            subcomponentIndex: 0, 
+                                        payload: {
+                                            parentId: id,
+                                            subcomponentIndex: 0,
                                             x: Number(e.target.value),
                                             y: signatureSubcomponent?.y || 0
                                         }
@@ -339,9 +351,9 @@ export default function StampCtcForm({
                                 onChange={(e) => {
                                     dispatch({
                                         type: 'updateSubcomponentPosition',
-                                        payload: { 
-                                            parentId: id, 
-                                            subcomponentIndex: 0, 
+                                        payload: {
+                                            parentId: id,
+                                            subcomponentIndex: 0,
                                             x: signatureSubcomponent?.x || 0,
                                             y: Number(e.target.value)
                                         }
@@ -355,7 +367,7 @@ export default function StampCtcForm({
                     {/* Name Stamp Position */}
                     <div className="flex flex-col gap-2">
                         <span className="text-[11px] font-bold uppercase tracking-wider text-primary">Name Stamp Positioning</span>
-                        
+
                         {/* Name Stamp X */}
                         <div className="flex flex-col gap-1">
                             <div className="flex justify-between text-[11px] font-medium">
@@ -370,9 +382,9 @@ export default function StampCtcForm({
                                 onChange={(e) => {
                                     dispatch({
                                         type: 'updateSubcomponentPosition',
-                                        payload: { 
-                                            parentId: id, 
-                                            subcomponentIndex: 1, 
+                                        payload: {
+                                            parentId: id,
+                                            subcomponentIndex: 1,
                                             x: Number(e.target.value),
                                             y: stampSubcomponent?.y || 0
                                         }
@@ -396,9 +408,9 @@ export default function StampCtcForm({
                                 onChange={(e) => {
                                     dispatch({
                                         type: 'updateSubcomponentPosition',
-                                        payload: { 
-                                            parentId: id, 
-                                            subcomponentIndex: 1, 
+                                        payload: {
+                                            parentId: id,
+                                            subcomponentIndex: 1,
                                             x: stampSubcomponent?.x || 0,
                                             y: Number(e.target.value)
                                         }

@@ -3,7 +3,7 @@ import { Button } from '@/components/custom/button';
 import { State, Item } from '../util/stamps-reducer-types';
 import { 
     receivedImg, 
-    abelleInitialImg, 
+    jmtumlosInitial, 
     adamInitial, 
     adamInitial3, 
     anabelleInitialImg, 
@@ -38,11 +38,11 @@ export function Received({ addItem, state }: IAppProps) {
             height: 0,
             width: 0,
             x: 50,
-            y: 103,
+            y: 100,
             isShown: true,
             type: 'text',
             color: rgb(0.345, 0.137, 0.655),
-            size: 11,
+            size: 10,
             content: '',
         };
         const time = {
@@ -51,11 +51,11 @@ export function Received({ addItem, state }: IAppProps) {
             height: 0,
             width: 0,
             x: 50,
-            y: 93,
+            y: 90,
             isShown: true,
             type: 'text',
             color: rgb(0.345, 0.137, 0.655),
-            size: 11,
+            size: 10,
             content: '',
         };
         const date = {
@@ -63,8 +63,8 @@ export function Received({ addItem, state }: IAppProps) {
             component: 'StampReceivedForm',
             height: 0,
             width: 0,
-            x: 43,
-            y: 55,
+            x: 48,
+            y: 58,
             isShown: true,
             color: rgb(190 / 255, 101 / 255, 120 / 255),
             type: 'text',
@@ -72,7 +72,6 @@ export function Received({ addItem, state }: IAppProps) {
             content: '',
         };
 
-        // Default Head Initial (Ms. Maricel) kapag bagong gawa ang stamp
         const headInitial = {
             id: '4',
             component: 'StampReceivedForm',
@@ -82,7 +81,7 @@ export function Received({ addItem, state }: IAppProps) {
             y: 75,
             isShown: true,
             type: 'image',
-            content: abelleInitialImg,
+            content: jmtumlosInitial,
         };
 
         const receiverInitial = {

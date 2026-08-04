@@ -24,6 +24,7 @@ import { IconTrash } from '@tabler/icons-react';
 import ModalImageView from "./modal-image-view";
 import {
     abelleInitialImg,
+    jmtumlosInitial,
     receivedImg,
     adamInitial,
     adamInitial3,
@@ -49,7 +50,8 @@ type Props = {
 interface imagePreviewDataTypes { src?: string | File; title?: string }
 
 const AVAILABLE_HEADS = [
-    { id: "maricel", label: "Anabelle G. Valencia (Default)", data: abelleInitialImg },
+    { id: "jennifer", label: "Jennifer M. Tumlos", data: jmtumlosInitial },
+    { id: "maricel", label: "Anabelle G. Valencia ", data: abelleInitialImg },
     { id: "adam", label: "Mr. Adam Initial", data: adamInitial },
     { id: "adam3", label: "Adam C. Marcaida Jr. 3", data: adamInitial3 },
     { id: "anabelle", label: "Ms. Anabelle Initial", data: anabelleInitialImg },
@@ -64,8 +66,8 @@ function StampReceivedForm({ removeItem, id, dispatch, pdfHeight, pdfWidth, isEd
     const [trackingNo, setTrackingNo] = useState<string>('');
     const [date, setDate] = useState<Date | undefined>(undefined);
     const [time, setTime] = useState<string>('');
-    const [selectedHeadId, setSelectedHeadId] = useState<string>('maricel');
-    const [selectedReceiverId, setSelectedReceiverId] = useState<string>('maricel'); // Naka-default din kay maricel
+    const [selectedHeadId, setSelectedHeadId] = useState<string>('jennifer');
+    const [selectedReceiverId, setSelectedReceiverId] = useState<string>('jennifer'); // Naka-default din kay jennifer
     const [initialSrc, setInitialSrc] = useState<string | null>(null);
 
     const updateReceiveStampDetails = (
