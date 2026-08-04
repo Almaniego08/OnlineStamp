@@ -47,7 +47,7 @@ const SIGNERS = [
         name: 'Jennifer M. Tumlos',
         signature: jmtumlosSignature,
         stamp: jmtumlosStamp,
-        defaultSigWidth: 65,
+        defaultSigWidth: 120,
         defaultSigHeight: 65,
         defaultStampWidth: 100,
         defaultStampHeight: 50,
