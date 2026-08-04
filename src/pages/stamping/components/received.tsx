@@ -75,9 +75,9 @@ export function Received({ addItem, state }: IAppProps) {
         const headInitial = {
             id: '4',
             component: 'StampReceivedForm',
-            height: 65,
-            width: 60,
-            x: 135,
+            height: 45,
+            width: 42,
+            x: 147,
             y: 75,
             isShown: true,
             type: 'image',
