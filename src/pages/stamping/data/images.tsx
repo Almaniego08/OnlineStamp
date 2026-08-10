@@ -1,133 +1,53 @@
-import receiveStamp from '../assets/images/received-stamp.png';
-import initialAbelle from '../assets/images/abelle-initial.png'
-import anabelleSignature from '../assets/images/anabelle-signature.png'
-import ctc from '../assets/images/ctc-stamp.png'
-import maricelNameStamp from '../assets/images/maricel-malalad-head-record-gsd.png';
-import adamInitialImg from '../assets/images/adam-initial.png';
-import adamInitialImg3 from '../assets/images/adam-initial3.png';
-import anabelleInitial from '../assets/images/anabelle-initial.png';
-import aireezeInitial from '../assets/images/aireeze-initial.png';
-import aireezeSignature from '../assets/images/aireeze-initial.png';
-import janineInitial from '../assets/images/janine-initial.png';
-import kateInitial from '../assets/images/kate-initial.png';
-import vanInitial from '../assets/images/van-initial.png';
-import aireezeNameStamp from '../assets/images/aireeze-stamp-name.png'
-import ryanllanes from '../assets/images/ryan-llanes.png'
 
+import received_stamp_img from '../assets/images/ReceivedStamp.png'
+import released_stamp_img from '../assets/images/ReleasedStamp.png'
+import signatureAMS_img from '../assets/images/SignatureAMS.png'
+import signatureMLC_img from '../assets/images/SignatureMLC.png'
+import initialMLC_img from '../assets/images/InitialMLC.png'
+import initialJEF_img from '../assets/images/InitialJEF.png'
+import signatureJEF_img from '../assets/images/SignatureJEF.png'
+import signatureSSG_img from '../assets/images/SignatureSSG.jpg'
 
-
-// HEAD FOR JULY 7, 2026 TO PRESENT.
-import jmtumlosInitialImg from '../assets/images/jmtumlos-initial.png'
-import jmtumlosSignatureImg from '../assets/images/jmtumlos-signature.png'
-import jmtumlosStampImg from '../assets/images/jmtumlos-stamp.png'
-
-const jmtumlosInitial = {
-    title: 'Jennifer M. Tumlos',
-    src: jmtumlosInitialImg
+const received_stamp = {
+    title: 'Received Stamp',
+    src: received_stamp_img
 }
-
-const jmtumlosSignature = {
-    title: 'Jennifer M. Tumlos',
-    src: jmtumlosSignatureImg
+const released_stamp = {
+    title: 'Released Stamp',
+    src: released_stamp_img
+}
+const signatureAMS = {
+    title: 'Alex Luis M. Santos',
+    src: signatureAMS_img
+}
+const signatureMLC = {
+    title: 'Maricel L. Caballero',
+    src: signatureMLC_img
+}
+const initialMLC = {
+    title: 'Maricel L. Caballero',
+    src: initialMLC_img
 }
 
-const jmtumlosStamp = {
-    title: 'Jennifer M. Tumlos',
-    src: jmtumlosStampImg
+const InitialJEF = {
+    title: '',
+    src: initialJEF_img,
 }
-
-
-const adamInitial3 = {
-    title: 'Adam C. Marcaida Jr. 3',
-    src: adamInitialImg3
+const signatureJEF = {
+    title: '',
+    src: signatureJEF_img,
 }
-
-const ryanllanesSign = {
-    title: 'Ryan Llanes',
-    src: ryanllanes
+const signatureSSG = {
+    title: '',
+    src: signatureSSG_img,
 }
-
-const anabelleInitialImg = {
-    title: 'Anabelle Initial',
-    src: anabelleInitial
-}
-
-const aireezeInitialImg = {
-    title: 'Aireeze Initial',
-    src: aireezeInitial
-}
-const aireezeSignImg = {
-    title: 'Aireeze Initial',
-    src: aireezeInitial
-}
-const aireezeNameStampImg = {
-    title: 'Aireeze Signature',
-    src: aireezeNameStamp
-}
-
-const janineInitialImg = {
-    title: 'Ja9 Initial',
-    src: janineInitial
-}
-const kateInitialImg = {
-    title: 'K8 initial',
-    src: kateInitial
-}
-const vanInitialImg = {
-    title: 'Vanrick T. Lacson',
-    src: vanInitial
-}
-
-const receivedImg = {
-    title: 'Receive Stamp',
-    src: receiveStamp
-}
-const abelleInitialImg = {
-    title: 'Initial',
-    src: initialAbelle
-}
-
-const anabelleSignatureImg = {
-    title: 'Signature',
-    src: anabelleSignature
-}
-
-const ctcImage = {
-    title: 'CTC Image',
-    src: ctc
-}
-const maricelNameStampImg = {
-    title: 'Maricel HEAD RCS Stamp',
-    src: maricelNameStamp
-}
-
-const adamInitial = {
-    title: 'Adam Initial',
-    src: adamInitialImg
-}
-const aireezeSignatureImg = {
-    title: 'Aireeze Signature',
-    src: aireezeInitial
-}
-
 export {
-    receivedImg,
-    abelleInitialImg,
-    anabelleSignatureImg,
-    aireezeSignatureImg,
-    ctcImage,
-    maricelNameStampImg,
-    adamInitial,
-    adamInitial3,
-    anabelleInitialImg,
-    aireezeInitialImg,
-    janineInitialImg,
-    kateInitialImg,
-    vanInitialImg,
-    aireezeNameStampImg,
-    aireezeSignImg,
-    ryanllanesSign,
-    jmtumlosInitial,
-    jmtumlosSignature,
-    jmtumlosStamp,
+    received_stamp,
+    released_stamp,
+    signatureAMS,
+    signatureMLC,
+    initialMLC,
+    InitialJEF,
+    signatureJEF,
+    signatureSSG,
 }

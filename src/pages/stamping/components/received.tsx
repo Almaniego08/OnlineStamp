@@ -1,16 +1,15 @@
 import { IconRubberStamp } from '@tabler/icons-react';
 import { Button } from '@/components/custom/button';
 import { State, Item } from '../util/stamps-reducer-types';
-import { 
-    receivedImg, 
-    jmtumlosInitial, 
-    adamInitial, 
-    adamInitial3, 
-    anabelleInitialImg, 
-    aireezeInitialImg, 
-    janineInitialImg, 
-    kateInitialImg, 
-    vanInitialImg 
+import {
+    received_stamp,
+    released_stamp,
+    signatureAMS,
+    signatureMLC,
+    initialMLC,
+    InitialJEF,
+    signatureJEF,
+    signatureSSG,
 } from '../data/images';
 import { rgb } from 'pdf-lib';
 
@@ -81,7 +80,7 @@ export function Received({ addItem, state }: IAppProps) {
             y: 75,
             isShown: true,
             type: 'image',
-            content: jmtumlosInitial,
+            content: InitialJEF,
         };
 
         const receiverInitial = {
@@ -93,7 +92,7 @@ export function Received({ addItem, state }: IAppProps) {
             y: 75,
             isShown: true,
             type: 'image',
-            content: '', 
+            content: '',
         };
 
         const stamp = {
@@ -110,8 +109,8 @@ export function Received({ addItem, state }: IAppProps) {
                 trackingNo,
                 date,
                 time,
-                headInitial,      
-                receiverInitial,  
+                headInitial,
+                receiverInitial,
             ]
         };
         addItem(stamp);
