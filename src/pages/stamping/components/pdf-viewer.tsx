@@ -228,6 +228,22 @@ const PdfViewer: React.FC<Props> = ({ pdfFile, pdfCurrentPage, pdfPages, setPage
         return () => el.removeEventListener('wheel', onWheel);
     }, []);
 
+    // Mobile: kapag hinawakan ang stamp/text/image, huwag mag-scroll ang browser para hindi ma-cancel ang drag.
+    // (Hindi sapat ang touch-action sa SVG elements sa ilang browser.) Sa ibang bahagi ng PDF, normal na scroll pa rin.
+    useEffect(() => {
+        const el = scrollRef.current;
+        if (!el) return;
+        const onTouch = (e: TouchEvent) => {
+            if (e.target instanceof Element && e.target.closest('[data-draggable]')) e.preventDefault();
+        };
+        el.addEventListener('touchstart', onTouch, { passive: false });
+        el.addEventListener('touchmove', onTouch, { passive: false });
+        return () => {
+            el.removeEventListener('touchstart', onTouch);
+            el.removeEventListener('touchmove', onTouch);
+        };
+    }, []);
+
     // Sukat ng naka-select na item para sa dashed outline (wala sa loob ng group para hindi lumaki ang bbox)
     const [selectionBox, setSelectionBox] = useState<{ x: number; y: number; width: number; height: number } | null>(null);
     // Walang deps sinasadya: nagbabago ang bbox kahit hindi nagbago ang state (hal. nag-load ang image);
