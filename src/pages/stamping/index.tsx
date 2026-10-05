@@ -1,5 +1,5 @@
 import { useState, useEffect, useReducer } from 'react'
-import { IconRubberStamp } from '@tabler/icons-react'
+import { IconLock, IconRubberStamp } from '@tabler/icons-react'
 import { PDFDocument } from 'pdf-lib';
 import { Layout } from '@/components/custom/layout'
 import ThemeSwitch from '@/components/theme-switch'
@@ -128,8 +128,17 @@ export default function Tasks() {
             Lagyan ng RECEIVED o RELEASED stamp, pirma, text, date at time ang PDF. Sa device mo lang ito; walang ina-upload.
           </p>
         </div>
-        <div className='ml-auto flex items-center space-x-4'>
+        <div className='ml-auto flex items-center gap-2'>
           <ThemeSwitch />
+          {/* Sign out sa password gate (netlify/edge-functions/password.ts) */}
+          <a
+            href='/__logout'
+            className='inline-flex h-9 items-center gap-1.5 rounded-md px-3 text-sm text-muted-foreground transition-colors hover:bg-accent hover:text-foreground'
+            title='Sign out'
+          >
+            <IconLock size={16} />
+            <span className='hidden sm:inline'>Lock</span>
+          </a>
         </div>
       </Layout.Header>
       <Layout.Body className='py-4'>

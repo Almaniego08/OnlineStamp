@@ -45,6 +45,16 @@ Then open the address Vite prints (usually http://localhost:5173).
 | `npm run preview` | Serve the production build locally |
 | `npm run lint` | Run ESLint |
 
+## Password
+
+The deployed site is protected by a password. It is checked on Netlify's servers before any file is sent, so the app and the signature images can't be opened without it.
+
+- **Set or change it:** in Netlify, go to **Site configuration → Environment variables**, add `APP_PASSWORD`, then redeploy. If it isn't set, the site stays locked.
+- **Signing in:** the browser stays signed in for 7 days. The **Lock** button in the header signs out.
+- **Changing the password** signs everyone out.
+
+The check is in `netlify/edge-functions/password.ts`. It only runs on Netlify, so `npm run dev` doesn't ask for the password.
+
 ## Updating the stamps and signatures
 
 The stamp, signature and initial images live in `src/pages/stamping/assets/images/` and are registered in `src/pages/stamping/data/images.tsx`. Use **transparent PNGs** so the images don't cover the document underneath.
