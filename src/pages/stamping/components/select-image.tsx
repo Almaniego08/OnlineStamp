@@ -1,16 +1,17 @@
 
-import { IconLetterCase } from '@tabler/icons-react';
-import { Button } from '@/components/custom/button';
+import { IconPhoto } from '@tabler/icons-react';
+import AddTileButton from './add-tile-button';
 import { State, Item } from '../util/stamps-reducer-types';
 import { rgb } from 'pdf-lib';
 
 export interface IAppProps {
     addItem: (item: Item) => void;
     state: State;
+    disabled?: boolean;
 }
 
 
-export function Selectfile({ addItem, state }: IAppProps) {
+export function Selectfile({ addItem, state, disabled }: IAppProps) {
     const getMaxId = (): string => {
         return state.items.reduce((max, item) => {
             if (item.id) {
@@ -38,9 +39,6 @@ export function Selectfile({ addItem, state }: IAppProps) {
         addItem(image)
     }
     return (
-        <Button onClick={handleAddItems} variant='ghost' className=' justify-start flex gap-[10px] border px-4 py-4 w-full'>
-            <IconLetterCase />
-            <p>SELECT IMAGE</p>
-        </Button>
+        <AddTileButton icon={<IconPhoto size={18} />} label="Image" hint="PNG or JPG" onClick={handleAddItems} disabled={disabled} />
     );
 }

@@ -14,7 +14,7 @@ export interface Subcomponent {
     color?: RGB;
     type?: string;
     size?: number;
-    content: string | HTMLImageElement | { title: string; src: string };
+    content: string | HTMLImageElement | { title: string; src: string | File };
 }
 
 // Update the main Item interface to use the Subcomponent type
@@ -29,8 +29,9 @@ export interface Item {
     color?: RGB;
     type?: string;
     size?: number;
-    content: string | HTMLImageElement | { title: string; src: string };
+    content: string | HTMLImageElement | { title: string; src: string | File };
     subcomponents?: Subcomponent[];
+    page?: number; // 1-based page ng PDF kung saan nakalagay
 }
 
 export interface State {
@@ -46,7 +47,7 @@ export type Action =
         type: 'updateReceiveStampDetails'; payload: {
             id: string,
             subId: string,
-            value: string,
+            value: string | { title: string; src: string },
         }
     }
     |
@@ -81,7 +82,7 @@ export type Action =
         type: 'updateImageUploadDetails',
         payload: {
             id: string;
-            value: { title: string; src: string },
+            value: { title: string; src: string | File },
             width: number,
             height: number,
         }
@@ -127,4 +128,7 @@ export type Action =
             height: number;
         }
     }
-    | { type: 'updateSubcomponentPosition'; payload: { parentId: string; subcomponentIndex: number; x: number; y: number } };
+    | { type: 'updateSubcomponentPosition'; payload: { parentId: string; subcomponentIndex: number; x: number; y: number } }
+    | { type: 'updateItemPosition'; payload: { id: string; x: number; y: number } };
+
+export type StampDispatch = React.Dispatch<Action>;

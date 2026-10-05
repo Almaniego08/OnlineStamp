@@ -6,11 +6,17 @@ export const addStamp = async (pdfFile: File | null, currentPage: number, rotati
 
     const pdfBytes = await pdfFile.arrayBuffer();
     const pdfDoc = await PDFDocument.load(pdfBytes);
-    const page = pdfDoc.getPages()[currentPage - 1];
+    const pages = pdfDoc.getPages();
     const { items } = components;
-    const pdfHeight = page.getHeight();
 
     for (const item of items) {
+        if (item.isShown === false) continue;
+
+        // Bawat item ay nasa sariling page; fallback sa current page para sa lumang items
+        const page = pages[(item.page ?? currentPage) - 1];
+        if (!page) continue;
+        const pdfHeight = page.getHeight();
+
         // Draw the main parent container element
         await pageDraw(pdfDoc, item, page, pdfHeight, rotation, item.x, item.y);
 
@@ -36,7 +42,8 @@ export const addStamp = async (pdfFile: File | null, currentPage: number, rotati
 
     const link = document.createElement('a');
     link.href = url;
-    link.download = downloadFileName ?? 'PROCESSED DOCUMENT';
+    const baseName = downloadFileName.trim() || 'PROCESSED DOCUMENT';
+    link.download = /\.pdf$/i.test(baseName) ? baseName : `${baseName}.pdf`;
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);

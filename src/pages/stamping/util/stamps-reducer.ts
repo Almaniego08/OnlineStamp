@@ -167,7 +167,7 @@ export const reducer = (state: State, action: Action): State => {
                         if (item.type === 'text' && item.size) {
                             return {
                                 ...item,
-                                size: action.payload.operator === '+' ? item.size + 1 : item.size - 1
+                                size: Math.max(4, action.payload.operator === '+' ? item.size + 1 : item.size - 1)
                             }
                         }
                     }
@@ -181,11 +181,12 @@ export const reducer = (state: State, action: Action): State => {
 
                     if (item.id === action.payload.id) {
                         if (item.type === 'image' && item.height && item.width) {
+                            // Proportional para hindi ma-stretch ang image
+                            const width = Math.max(10, item.width + (action.payload.operator === '+' ? 5 : -5));
                             return {
                                 ...item,
-                                width: action.payload.operator === '+' ? item.width + 5 : item.width - 5,
-                                height: action.payload.operator === '+' ? item.height + 5 : item.height - 5
-
+                                width,
+                                height: item.height * (width / item.width),
                             }
                         }
                     }
@@ -265,7 +266,17 @@ export const reducer = (state: State, action: Action): State => {
                     };
                 })
             };
-        
+        // Galing sa drag sa PDF preview: absolute x/y (PDF units, top-left origin)
+        case 'updateItemPosition':
+            return {
+                ...state,
+                items: state.items.map(item =>
+                    item.id === action.payload.id
+                        ? { ...item, x: action.payload.x, y: action.payload.y }
+                        : item
+                )
+            };
+
         case 'reset':
             return initialState; // Reset to the initial state
         default:

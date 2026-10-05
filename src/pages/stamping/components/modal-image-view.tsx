@@ -1,5 +1,6 @@
 import React from 'react';
 import * as Dialog from '@radix-ui/react-dialog';
+import { IconX } from '@tabler/icons-react';
 import { Button } from '@/components/custom/button';
 
 type Props = {
@@ -11,19 +12,23 @@ type Props = {
 
 export default function ModalImageView({ isOpen, onClose, title, children }: Props) {
     return (
-        <Dialog.Root open={isOpen} onOpenChange={onClose}>
-            <Dialog.Overlay className="fixed inset-0 bg-black/30" />
-            <Dialog.Content className="fixed top-1/2 left-1/2 w-full max-w-md md:w-1/3 bg-background p-6 rounded-lg transform -translate-x-1/2 -translate-y-1/2">
-                <Dialog.Title className="text-xl font-bold text-foreground text-nowrap">{title}</Dialog.Title>
-                <Dialog.Description className="mt-2">{children}</Dialog.Description>
-                <div className="mt-4 flex justify-end">
-                    <Dialog.Close>
-                        <Button className="bg-background text-foreground" variant='outline'>
-                            Confirm
-                        </Button>
-                    </Dialog.Close>
-                </div>
-            </Dialog.Content>
+        <Dialog.Root open={isOpen} onOpenChange={(open) => !open && onClose()}>
+            <Dialog.Portal>
+                <Dialog.Overlay className="fixed inset-0 z-50 bg-black/50" />
+                <Dialog.Content className="fixed left-1/2 top-1/2 z-50 w-[calc(100%-2rem)] max-w-md -translate-x-1/2 -translate-y-1/2 rounded-lg border bg-background p-5 shadow-lg">
+                    <div className="flex items-center justify-between gap-4">
+                        <Dialog.Title className="truncate text-base font-semibold text-foreground">{title}</Dialog.Title>
+                        <Dialog.Close asChild>
+                            <Button variant="ghost" size="icon" className="size-8" aria-label="Close">
+                                <IconX size={16} />
+                            </Button>
+                        </Dialog.Close>
+                    </div>
+                    <Dialog.Description asChild>
+                        <div className="mt-3">{children}</div>
+                    </Dialog.Description>
+                </Dialog.Content>
+            </Dialog.Portal>
         </Dialog.Root>
     );
 }

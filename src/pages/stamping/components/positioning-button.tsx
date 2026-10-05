@@ -1,91 +1,81 @@
 import { Button } from '@/components/custom/button';
+import type { StampDispatch } from '../util/stamps-reducer-types';
 import {
-    IconChevronUp,
-    IconChevronDown,
-    IconChevronLeft,
-    IconChevronRight,
+    IconArrowUp,
+    IconArrowDown,
+    IconArrowLeft,
+    IconArrowRight,
     IconLayoutAlignTop,
     IconLayoutAlignBottom,
     IconLayoutAlignRight,
-    IconLayoutAlignLeft
+    IconLayoutAlignLeft,
+    IconLayoutAlignCenter,
+    IconLayoutAlignMiddle,
 } from '@tabler/icons-react';
-
-
+import { Item } from '../util/stamps-reducer-types';
 
 type Props = {
-    dispatch: (action: any) => void;
-    id: string;
-    pdfHeight: number;
-    pdfWidth: number;
-}
+    dispatch: StampDispatch;
+    item: Item;
+    pageWidth: number;
+    pageHeight: number;
+};
 
+type Align = 'top' | 'bottom' | 'left' | 'right' | 'center' | 'middle';
 
+const NUDGE = 5;
 
-export function PositioningButton({ dispatch, id, pdfHeight, pdfWidth }: Props) {
+/*
+ * Ilipat nang paunti-unti, o i-align sa gilid ng page.
+ * Ang align ay gumagamit ng totoong sukat ng item sa preview (stamp + laman nito, o text),
+ * kaya tama kahit anong klase ng item.
+ */
+export function PositioningButton({ dispatch, item, pageWidth, pageHeight }: Props) {
+    const id = item.id!;
 
+    const nudge = (axis: 'X' | 'Y', operator: '+' | '-') =>
+        dispatch({ type: `updatePosition${axis}`, payload: { id, operator, value: NUDGE } });
 
-    const updatePositionY = (operator: string, value: number) =>
-        dispatch({
-            type: 'updatePositionY',
-            payload: { id, operator, value },
-        });
+    const align = (where: Align) => {
+        const group = document.querySelector<SVGGraphicsElement>(`[data-item-id="${CSS.escape(id)}"]`);
+        if (!group || !pageWidth || !pageHeight) return;
+        const box = group.getBBox();
 
-    const updatePositionX = (operator: string, value: number) =>
-        dispatch({
-            type: 'updatePositionX',
-            payload: { id, operator, value },
-        });
+        let { x, y } = item;
+        if (where === 'left') x += -box.x;
+        if (where === 'right') x += pageWidth - (box.x + box.width);
+        if (where === 'center') x += (pageWidth - box.width) / 2 - box.x;
+        if (where === 'top') y += -box.y;
+        if (where === 'bottom') y += pageHeight - (box.y + box.height);
+        if (where === 'middle') y += (pageHeight - box.height) / 2 - box.y;
 
-    const updatePositionTopBottomLeftRight = (position: string,) => {
-        const x = 0;
-        const y = 0;
-        let value = 0;
-        if (position === 'top') {
-            value = y
-        } else if (position === 'bottom') {
-            value = pdfHeight + y
-        } else if (position === 'left') {
-            value = x;
-        } else if (position === 'right') {
-            value = pdfWidth - x;
-        }
-        dispatch({
-            type: 'updatePositionTopBottomLeftRight',
-            payload: { id, position, value },
-        });
-    }
+        dispatch({ type: 'updateItemPosition', payload: { id, x: Math.round(x), y: Math.round(y) } });
+    };
+
+    const iconButton = (label: string, onClick: () => void, icon: JSX.Element) => (
+        <Button variant="ghost" size="icon" className="size-8" onClick={onClick} title={label} aria-label={label}>
+            {icon}
+        </Button>
+    );
 
     return (
-        <div className='flex flex-wrap gap-2 w-full'>
-            <div className='flex-1 flex flex-nowrap gap-2'>
-                <Button onClick={() => updatePositionY('-', 5)} className='flex-1' variant='ghost'>
-                    <IconChevronUp />
-                </Button>
-                <Button onClick={() => updatePositionY('+', 5)} className='flex-1' variant='ghost'>
-                    <IconChevronDown />
-                </Button>
-                <Button onClick={() => updatePositionX('-', 5)} className='flex-1' variant='ghost'>
-                    <IconChevronLeft />
-                </Button>
-                <Button onClick={() => updatePositionX('+', 5)} className='flex-1' variant='ghost'>
-                    <IconChevronRight />
-                </Button>
+        <div className="flex flex-wrap items-center justify-between gap-2">
+            <div className="flex items-center gap-0.5">
+                <span className="mr-1 text-xs text-muted-foreground">Move</span>
+                {iconButton('Move left', () => nudge('X', '-'), <IconArrowLeft size={16} />)}
+                {iconButton('Move up', () => nudge('Y', '-'), <IconArrowUp size={16} />)}
+                {iconButton('Move down', () => nudge('Y', '+'), <IconArrowDown size={16} />)}
+                {iconButton('Move right', () => nudge('X', '+'), <IconArrowRight size={16} />)}
             </div>
-            <div className='flex-1 flex flex-nowrap gap-2'>
-                <Button onClick={() => updatePositionTopBottomLeftRight('top')} className='flex-1' variant='ghost'>
-                    <IconLayoutAlignTop />
-                </Button>
-                <Button onClick={() => updatePositionTopBottomLeftRight('bottom')} className='flex-1' variant='ghost'>
-                    <IconLayoutAlignBottom />
-                </Button>
-                <Button onClick={() => updatePositionTopBottomLeftRight('left')} className='flex-1' variant='ghost'>
-                    <IconLayoutAlignLeft />
-                </Button>
-                <Button onClick={() => updatePositionTopBottomLeftRight('right')} className='flex-1' variant='ghost'>
-                    <IconLayoutAlignRight />
-                </Button>
+            <div className="flex items-center gap-0.5">
+                <span className="mr-1 text-xs text-muted-foreground">Align</span>
+                {iconButton('Align left', () => align('left'), <IconLayoutAlignLeft size={16} />)}
+                {iconButton('Center horizontally', () => align('center'), <IconLayoutAlignCenter size={16} />)}
+                {iconButton('Align right', () => align('right'), <IconLayoutAlignRight size={16} />)}
+                {iconButton('Align top', () => align('top'), <IconLayoutAlignTop size={16} />)}
+                {iconButton('Center vertically', () => align('middle'), <IconLayoutAlignMiddle size={16} />)}
+                {iconButton('Align bottom', () => align('bottom'), <IconLayoutAlignBottom size={16} />)}
             </div>
-
         </div>
-    )
+    );
 }

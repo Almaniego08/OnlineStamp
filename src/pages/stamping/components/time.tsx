@@ -1,16 +1,17 @@
 
 import { IconClockHour1 } from '@tabler/icons-react';
-import { Button } from '@/components/custom/button';
+import AddTileButton from './add-tile-button';
 import { State, Item } from '../util/stamps-reducer-types';
 import { rgb } from 'pdf-lib';
 
 export interface IAppProps {
     addItem: (item: Item) => void;
     state: State;
+    disabled?: boolean;
 }
 
 
-export function Time({ addItem, state }: IAppProps) {
+export function Time({ addItem, state, disabled }: IAppProps) {
     const getMaxId = (): string => {
         return state.items.reduce((max, item) => {
             if (item.id) {
@@ -38,9 +39,6 @@ export function Time({ addItem, state }: IAppProps) {
         addItem(text)
     }
     return (
-        <Button onClick={handleAddItems} variant='ghost' className='flex justify-start gap-[10px] border px-4 py-4 w-full'>
-            <IconClockHour1 />
-            <p>ADD TIME</p>
-        </Button>
+        <AddTileButton icon={<IconClockHour1 size={18} />} label="Time" hint="e.g. 9:03 PM" onClick={handleAddItems} disabled={disabled} />
     );
 }

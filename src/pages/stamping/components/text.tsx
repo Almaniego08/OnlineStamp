@@ -1,16 +1,17 @@
 
 import { IconLetterCase } from '@tabler/icons-react';
-import { Button } from '@/components/custom/button';
+import AddTileButton from './add-tile-button';
 import { State, Item } from '../util/stamps-reducer-types';
 import { rgb } from 'pdf-lib';
 
 export interface IAppProps {
     addItem: (item: Item) => void;
     state: State;
+    disabled?: boolean;
 }
 
 
-export function Text({ addItem, state }: IAppProps) {
+export function Text({ addItem, state, disabled }: IAppProps) {
     const getMaxId = (): string => {
         return state.items.reduce((max, item) => {
             if (item.id) {
@@ -38,9 +39,6 @@ export function Text({ addItem, state }: IAppProps) {
         addItem(text)
     }
     return (
-        <Button onClick={handleAddItems} variant='ghost' className=' flex justify-start gap-[10px] border px-4 py-4 w-full'>
-            <IconLetterCase />
-            <p>ADD TEXT</p>
-        </Button>
+        <AddTileButton icon={<IconLetterCase size={18} />} label="Text" hint="Any text" onClick={handleAddItems} disabled={disabled} />
     );
 }

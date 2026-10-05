@@ -1,29 +1,29 @@
 import StampFormBase, { StampFormConfig } from "./stamp-form-base";
 import type { ItemFormProps } from "./dynamic-component-renderer";
 import {
-    received_stamp,
-    initialJEF,
+    released_stamp,
+    initialMLC,
     signatureSSG,
     signatureAMS,
 } from "../data/images";
 
 /*
- * RECEIVED STAMP
+ * RELEASED STAMP
  *
  * Approver: Maricel L. Caballero (fixed)
- * Receivers: Silva Ganados (default) o Alexander Luis M. Santos
+ * Released by: Silva Ganados (default) o Alexander Luis M. Santos
  */
 const CONFIG: StampFormConfig = {
-    stampImage: received_stamp,
-    approver: { label: "Maricel L. Caballero", data: initialJEF },
+    stampImage: released_stamp,
+    approver: { label: "Maricel L. Caballero", data: initialMLC },
     people: [
         { id: "silva", label: "Silva Ganados", fullName: "Silva Ganados", data: signatureSSG },
         { id: "alexander", label: "Alexander Luis M. Santos", fullName: "Alexander Luis M. Santos", data: signatureAMS },
     ],
     defaultPersonId: "silva",
-    personLabel: "Receiver",
+    personLabel: "Released by",
 };
 
-export default function StampReceivedForm({ id, dispatch }: ItemFormProps) {
+export default function StampReleasedForm({ id, dispatch }: ItemFormProps) {
     return <StampFormBase id={id} dispatch={dispatch} {...CONFIG} />;
 }

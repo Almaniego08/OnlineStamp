@@ -1,10 +1,7 @@
 import { IconRubberStamp } from '@tabler/icons-react';
 import AddTileButton from './add-tile-button';
 import { State, Item } from '../util/stamps-reducer-types';
-import {
-    received_stamp,
-    initialJEF,
-} from '../data/images';
+import { released_stamp, initialMLC } from '../data/images';
 import { rgb } from 'pdf-lib';
 
 export interface IAppProps {
@@ -13,7 +10,7 @@ export interface IAppProps {
     disabled?: boolean;
 }
 
-export function Received({ addItem, state, disabled }: IAppProps) {
+export function Released({ addItem, state, disabled }: IAppProps) {
     const getMaxId = (): string => {
         return state.items
             .reduce((max, item) => {
@@ -40,20 +37,17 @@ export function Received({ addItem, state, disabled }: IAppProps) {
          * 2 = Date
          * 3 = Time
          * 4 = Approver Initial
-         * 5 = Receiver Signature
+         * 5 = Released By Signature
          * 6 = Receiver Name
          */
 
-        /*
-         * TRACKING NUMBER
-         */
         const trackingNo: Item = {
             id: '1',
-            component: 'StampReceivedForm',
+            component: 'StampReleasedForm',
             height: 0,
             width: 0,
             x: 78,
-            y: 84,
+            y: 81,
             isShown: true,
             type: 'text',
             color: rgb(0.345, 0.137, 0.655),
@@ -61,33 +55,27 @@ export function Received({ addItem, state, disabled }: IAppProps) {
             content: '',
         };
 
-        /*
-         * DATE
-         */
         const date: Item = {
             id: '2',
-            component: 'StampReceivedForm',
+            component: 'StampReleasedForm',
             height: 0,
             width: 0,
             x: 65,
-            y: 65,
+            y: 63,
             isShown: true,
             type: 'text',
             color: rgb(0.345, 0.137, 0.655),
-            size: 8,
+            size: 7,
             content: '',
         };
 
-        /*
-         * TIME
-         */
         const time: Item = {
             id: '3',
-            component: 'StampReceivedForm',
+            component: 'StampReleasedForm',
             height: 0,
             width: 0,
             x: 65,
-            y: 74,
+            y: 71,
             isShown: true,
             type: 'text',
             color: rgb(0.345, 0.137, 0.655),
@@ -96,60 +84,53 @@ export function Received({ addItem, state, disabled }: IAppProps) {
         };
 
         /*
-         * APPROVER INITIAL
+         * Approver Initial
          *
-         * Default:
          * Maricel L. Caballero
          */
         const approverInitial: Item = {
             id: '4',
-            component: 'StampReceivedForm',
+            component: 'StampReleasedForm',
             height: 30,
             width: 25,
             x: 155,
-            y: 45,
+            y: 40,
             isShown: true,
             type: 'image',
-            content: initialJEF,
+            content: initialMLC,
         };
 
         /*
-         * RECEIVER SIGNATURE
+         * Released By Signature
          *
-         * The actual signature is selected
-         * inside StampReceivedForm.
-         *
-         * Default receiver:
-         * Silva Ganados
+         * This will be updated by StampReleasedForm
+         * when the released-by person is selected.
          */
-        const receiverSignature: Item = {
+        const releasedBy: Item = {
             id: '5',
-            component: 'StampReceivedForm',
+            component: 'StampReleasedForm',
             height: 38,
             width: 50,
             x: 65,
-            y: 35,
+            y: 28,
             isShown: true,
             type: 'image',
             content: '',
         };
 
         /*
-         * RECEIVER NAME
+         * Receiver Name
          *
-         * This is the text that will appear
-         * underneath the receiver's signature.
-         *
-         * It will be updated automatically when
-         * the receiver is changed in StampReceivedForm.
+         * This will be updated by StampReleasedForm
+         * when the receiver is selected.
          */
         const receiverName: Item = {
             id: '6',
-            component: 'StampReceivedForm',
+            component: 'StampReleasedForm',
             height: 0,
             width: 0,
             x: 65,
-            y: 57,
+            y: 55,
             isShown: true,
             type: 'text',
             color: rgb(0.345, 0.137, 0.655),
@@ -158,24 +139,24 @@ export function Received({ addItem, state, disabled }: IAppProps) {
         };
 
         /*
-         * RECEIVED STAMP
+         * RELEASED STAMP
          */
         const stamp: Item = {
             id,
-            component: 'StampReceivedForm',
+            component: 'StampReleasedForm',
             height: 110,
             width: 170,
             x: 25,
             y: 25,
             isShown: true,
             type: 'image',
-            content: received_stamp,
+            content: released_stamp,
             subcomponents: [
                 trackingNo,
                 date,
                 time,
                 approverInitial,
-                receiverSignature,
+                releasedBy,
                 receiverName,
             ],
         };
@@ -184,6 +165,6 @@ export function Received({ addItem, state, disabled }: IAppProps) {
     };
 
     return (
-        <AddTileButton icon={<IconRubberStamp size={18} />} label="RECEIVED" hint="Stamp + signature" onClick={handleAddItems} disabled={disabled} />
+        <AddTileButton icon={<IconRubberStamp size={18} />} label="RELEASED" hint="Stamp + signature" onClick={handleAddItems} disabled={disabled} />
     );
 }

@@ -1,15 +1,16 @@
 
 import { IconCalendarMonth } from '@tabler/icons-react';
-import { Button } from '@/components/custom/button';
+import AddTileButton from './add-tile-button';
 import { State, Item } from '../util/stamps-reducer-types';
 import { rgb } from 'pdf-lib';
 
 export interface IAppProps {
     addItem: (item: Item) => void;
     state: State;
+    disabled?: boolean;
 }
 
-export function Date({ addItem, state }: IAppProps) {
+export function Date({ addItem, state, disabled }: IAppProps) {
     const getMaxId = (): string => {
         return state.items.reduce((max, item) => {
             if (item.id) {
@@ -37,9 +38,6 @@ export function Date({ addItem, state }: IAppProps) {
         addItem(text)
     }
     return (
-        <Button onClick={handleAddItems} variant='ghost' className='flex justify-start gap-[10px] border px-4 py-4 w-full'>
-            <IconCalendarMonth />
-            <p>ADD DATE</p>
-        </Button>
+        <AddTileButton icon={<IconCalendarMonth size={18} />} label="Date" hint="e.g. 05 OCT 2026" onClick={handleAddItems} disabled={disabled} />
     );
 }

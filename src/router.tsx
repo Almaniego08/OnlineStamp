@@ -1,8 +1,6 @@
 import { createBrowserRouter } from 'react-router-dom'
 
 const router = createBrowserRouter([
-
-  // Main routes
   {
     path: '/',
     lazy: async () => {
@@ -11,17 +9,14 @@ const router = createBrowserRouter([
     },
 
     children: [
-
       {
-        path: 'stamping',
+        index: true,
         lazy: async () => ({
           Component: (await import('@/pages/stamping')).default,
         }),
       },
-     
     ],
   },
-
 ])
 
 export default router

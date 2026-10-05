@@ -1,124 +1,193 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useReducer } from 'react'
+import { IconRubberStamp } from '@tabler/icons-react'
+import { PDFDocument } from 'pdf-lib';
 import { Layout } from '@/components/custom/layout'
 import ThemeSwitch from '@/components/theme-switch'
+import { toast } from '@/components/ui/use-toast'
 import { Received } from './components/received'
-import { CTC } from './components/ctc'
+import { Released } from './components/released';
 import { Text } from './components/text'
 import { Date } from './components/date'
 import { Time } from './components/time'
-import { NoFileAddedDisplay } from './components/no-file-added-display'
-import { AddFileButton as useAddFileButton } from './components/add-file-button';
-import { PDFDocument } from 'pdf-lib';
-
+import { Selectfile } from './components/select-image'
+import { PdfFileCard, PdfDropzone } from './components/pdf-file-input'
+import DynamicComponentRenderer from './components/dynamic-component-renderer'
+import PdfViewer from './components/pdf-viewer'
 // USE REDUCER FOR ADD STAMPS
-import { useReducer } from 'react';
 import { initialState } from './util/stamps-reducer-initialize';
 import { reducer } from './util/stamps-reducer';
 import { Item } from './util/stamps-reducer-types';
-import DynamicComponentRenderer from './components/dynamic-component-renderer'
-import PdfViewer from './components/pdf-viewer'
-import PagerButton from './components/pager-button'
-import { Selectfile } from './components/select-image'
+
+const isTyping = (target: EventTarget | null) =>
+  target instanceof HTMLElement &&
+  !!target.closest('input, textarea, select, [contenteditable="true"], [role="dialog"], [role="listbox"], [role="menu"], [role="combobox"]');
 
 export default function Tasks() {
   // USE REDUCER FOR ADD STAMPS
   const [stampsState, dispatch] = useReducer(reducer, initialState);
-  const addItem = (item: Item) => dispatch({ type: 'addItem', payload: item });
-
-  // EXTRACT COMPONENTS WITH SAME ID AND COMPONENT NAME
-  useEffect(() => {
-
-  }, [stampsState])
+  const [selectedId, setSelectedId] = useState<string | null>(null);
 
   //  PDF
-  const { component: AddFileButton, pdfFile, } = useAddFileButton();
-  const [pdfHeight, setPdfHeight] = useState<number>(0)
-  const [pdfWidth, setPdfWidth] = useState<number>(0)
+  const [pdfFile, setPdfFile] = useState<File | null>(null);
   const [pdfPages, setPdfPages] = useState<number>(0)
   const [pdfCurrentPage, setPdfCurrentPage] = useState<number>(1)
+  const [pageSize, setPageSize] = useState({ width: 0, height: 0 })
+  const [pdfDoc, setPdfDoc] = useState<PDFDocument | null>(null)
+
+  const handlePdfFile = (file: File) => {
+    setPdfFile(file);
+    setPdfCurrentPage(1);
+    setSelectedId(null);
+  };
 
   useEffect(() => {
+    let cancelled = false;
     async function loadFile() {
-      if (pdfFile) {
-        const pdfBytes = await pdfFile.arrayBuffer();
-        const pdfDoc = await PDFDocument.load(pdfBytes);
-
-        const page = pdfDoc.getPages()[pdfCurrentPage - 1];
-        setPdfPages(pdfDoc.getPageCount())
-
-        setPdfHeight(page.getHeight())
-        setPdfWidth(page.getWidth())
+      if (!pdfFile) return;
+      try {
+        const doc = await PDFDocument.load(await pdfFile.arrayBuffer());
+        if (cancelled) return;
+        const count = doc.getPageCount();
+        setPdfDoc(doc);
+        setPdfPages(count);
+        // Kung mas kaunti ang pages ng bagong PDF, ilipat sa huling page ang mga lampas
+        stampsState.items.forEach((item) => {
+          if (item.page && item.page > count) dispatch({ type: 'updateItem', payload: { ...item, page: count } });
+        });
+      } catch (error) {
+        console.error(error);
+        toast({ variant: 'destructive', title: 'Hindi mabuksan ang PDF', description: 'Baka sira o naka-password ang file.' });
+        setPdfFile(null);
       }
     }
     loadFile()
+    return () => { cancelled = true; };
   }, [pdfFile])
+
+  // Sukat ng kasalukuyang page (para sa align buttons)
+  useEffect(() => {
+    const page = pdfDoc?.getPages()[pdfCurrentPage - 1];
+    if (page) setPageSize({ width: page.getWidth(), height: page.getHeight() });
+  }, [pdfDoc, pdfCurrentPage])
+
+  // Bagong item: sa kasalukuyang page, bahagyang naka-offset para hindi magpatong-patong, at naka-select agad
+  const addItem = (item: Item) => {
+    const onThisPage = stampsState.items.filter((i) => i.page === pdfCurrentPage).length;
+    const offset = (onThisPage % 6) * 12;
+    dispatch({ type: 'addItem', payload: { ...item, page: pdfCurrentPage, x: item.x + offset, y: item.y + offset } });
+    if (item.id) setSelectedId(item.id);
+  };
+
+  // Kapag pinili ang card ng item na nasa ibang page, pumunta sa page na iyon
+  const handleSelect = (id: string | null) => {
+    setSelectedId(id);
+    const item = stampsState.items.find((i) => i.id === id);
+    if (item?.page && item.page !== pdfCurrentPage) setPdfCurrentPage(item.page);
+  };
+
+  // Keyboard: arrows = ilipat (Shift = 10), Delete = tanggalin, Esc = alisin ang selection
+  useEffect(() => {
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (!selectedId || isTyping(e.target)) return;
+      const step = e.shiftKey ? 10 : 1;
+      const move = (axis: 'X' | 'Y', operator: '+' | '-') =>
+        dispatch({ type: `updatePosition${axis}`, payload: { id: selectedId, operator, value: step } });
+
+      switch (e.key) {
+        case 'ArrowLeft': move('X', '-'); break;
+        case 'ArrowRight': move('X', '+'); break;
+        case 'ArrowUp': move('Y', '-'); break;
+        case 'ArrowDown': move('Y', '+'); break;
+        case 'Delete':
+        case 'Backspace':
+          dispatch({ type: 'removeItem', payload: { id: selectedId } });
+          setSelectedId(null);
+          break;
+        case 'Escape': setSelectedId(null); break;
+        default: return;
+      }
+      e.preventDefault();
+    };
+    window.addEventListener('keydown', onKeyDown);
+    return () => window.removeEventListener('keydown', onKeyDown);
+  }, [selectedId]);
+
+  const addProps = { addItem, state: stampsState, disabled: !pdfFile };
+  const itemCount = stampsState.items.length;
 
   return (
     <Layout>
       {/* ===== Top Heading ===== */}
-      <Layout.Header sticky>
-        <h1 className='text-2xl font-bold tracking-tight'>STAMPING</h1>
+      <Layout.Header sticky className='border-b'>
+        <div className='flex size-9 shrink-0 items-center justify-center rounded-md bg-primary/10 text-primary'>
+          <IconRubberStamp size={20} />
+        </div>
+        <div className='min-w-0'>
+          <h1 className='text-lg font-semibold leading-tight'>Stamping</h1>
+          <p className='hidden truncate text-xs text-muted-foreground sm:block'>
+            Lagyan ng RECEIVED o RELEASED stamp, pirma, text, date at time ang PDF. Sa device mo lang ito; walang ina-upload.
+          </p>
+        </div>
         <div className='ml-auto flex items-center space-x-4'>
           <ThemeSwitch />
         </div>
       </Layout.Header>
-      <Layout.Body>
-        <div className='flex flex-col lg:flex-row items-start gap-[20px] w-full lg:h-[calc(100vh-140px)] lg:overflow-hidden'>
+      <Layout.Body className='py-4'>
+        <div className='flex w-full flex-col gap-4 lg:h-[calc(100vh-var(--header-height)-2rem)] lg:flex-row'>
 
           {/* Left Column: Independent Scrollable Panel on Desktop */}
-          <div className='flex flex-col gap-2 w-full lg:w-1/2 lg:h-full lg:overflow-y-auto pr-0 lg:pr-2
-            [&::-webkit-scrollbar]:w-2
-            [&::-webkit-scrollbar-track]:bg-transparent
-            [&::-webkit-scrollbar-thumb]:bg-zinc-800
-            [&::-webkit-scrollbar-thumb]:rounded-full
-            hover:[&::-webkit-scrollbar-thumb]:bg-zinc-700'>
-            {AddFileButton}
-            <div className="flex flex-wrap gap-2">
-              <div className="flex flex-1 shrink-0 min-w-[150px] items-center justify-center ">
-                <Received addItem={addItem} state={stampsState} />
-              </div>
-              <div className="flex flex-1 shrink-0 min-w-[150px] items-center justify-center">
-                <CTC addItem={addItem} state={stampsState} />
-              </div>
-              <div className="flex flex-1 shrink-0 min-w-[150px] items-center justify-center">
-                <Text addItem={addItem} state={stampsState} />
-              </div>
-              <div className="flex flex-1 shrink-0 min-w-[150px] items-center justify-center">
-                <Date addItem={addItem} state={stampsState} />
-              </div>
-              <div className="flex flex-1 shrink-0 min-w-[150px] items-center justify-center">
-                <Time addItem={addItem} state={stampsState} />
-              </div>
-              <div className="flex flex-1 shrink-0 min-w-[150px] items-center justify-center">
-                <Selectfile addItem={addItem} state={stampsState} />
-              </div>
-            </div>
+          <aside className='custom-scrollbar flex w-full flex-col gap-4 lg:h-full lg:w-[400px] lg:shrink-0 lg:overflow-y-auto lg:pr-1'>
+            <PdfFileCard file={pdfFile} pages={pdfPages} onFile={handlePdfFile} />
 
-            <div className='flex flex-col gap-[20px] mt-2'>
+            <section className='rounded-lg border bg-card p-4'>
+              <h2 className='mb-1 text-sm font-semibold'>
+                Add to {pdfFile ? `page ${pdfCurrentPage}` : 'the PDF'}
+              </h2>
+              <p className='mb-3 text-xs text-muted-foreground'>
+                {pdfFile ? 'Lalabas sa PDF; i-drag para ilipat.' : 'Pumili muna ng PDF.'}
+              </p>
+              <div className='grid grid-cols-2 gap-2'>
+                <Received {...addProps} />
+                <Released {...addProps} />
+                <Text {...addProps} />
+                <Date {...addProps} />
+                <Time {...addProps} />
+                <Selectfile {...addProps} />
+              </div>
+            </section>
+
+            <div className='flex flex-col gap-3'>
+              <h2 className='px-1 text-sm font-semibold'>
+                On this PDF {itemCount > 0 && <span className='font-normal text-muted-foreground'>({itemCount})</span>}
+              </h2>
               <DynamicComponentRenderer
-                pdfHeight={pdfHeight}
-                pdfWidth={pdfWidth}
+                pageWidth={pageSize.width}
+                pageHeight={pageSize.height}
                 state={stampsState}
                 dispatch={dispatch}
+                selectedId={selectedId}
+                onSelect={handleSelect}
               />
             </div>
-          </div>
+          </aside>
 
           {/* Right Column: Sticky / Fixed Viewport Panel on Desktop */}
-          {pdfFile ? (
-            <div className='flex flex-col gap-2 w-full lg:w-1/2 lg:h-full lg:sticky lg:top-0 lg:overflow-y-auto bg-background/50 p-1 rounded-lg [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:bg-zinc-800 [&::-webkit-scrollbar-thumb]:rounded-full hover:[&::-webkit-scrollbar-thumb]:bg-zinc-700'>
-              <PagerButton
-                setPage={setPdfCurrentPage}
-                pdfPages={pdfPages}
+          <div className='flex min-w-0 flex-1 lg:h-full'>
+            {pdfFile ? (
+              <PdfViewer
+                state={stampsState}
+                dispatch={dispatch}
+                pdfFile={pdfFile}
                 pdfCurrentPage={pdfCurrentPage}
+                pdfPages={pdfPages}
+                setPage={setPdfCurrentPage}
+                selectedId={selectedId}
+                onSelect={handleSelect}
               />
-              <div className="w-full overflow-x-auto flex justify-center">
-                <PdfViewer state={stampsState} pdfFile={pdfFile} pdfCurrentPage={pdfCurrentPage} />
-              </div>
-            </div>
-          ) : (
-            <NoFileAddedDisplay />
-          )}
+            ) : (
+              <PdfDropzone onFile={handlePdfFile} />
+            )}
+          </div>
 
         </div>
       </Layout.Body>
