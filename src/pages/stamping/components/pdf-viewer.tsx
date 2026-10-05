@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useLayoutEffect, useRef } from 'react';
 import { Document, Page, pdfjs } from 'react-pdf';
+import pdfjsWorkerUrl from 'pdfjs-worker?url';
 import { RGB } from 'pdf-lib';
 import {
     IconChevronLeft,
@@ -14,7 +15,8 @@ import { Button } from '@/components/custom/button';
 import { cn } from '@/lib/utils';
 import OutputButton from './output-button';
 
-pdfjs.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.4.168/pdf.worker.min.mjs';
+// Kasama na sa app ang worker (hindi na galing sa CDN na puwedeng ma-block ng network o extension)
+pdfjs.GlobalWorkerOptions.workerSrc = pdfjsWorkerUrl;
 
 type Props = {
     pdfFile: File;
@@ -429,7 +431,15 @@ const PdfViewer: React.FC<Props> = ({ pdfFile, pdfCurrentPage, pdfPages, setPage
                     className="relative m-auto overflow-hidden bg-white shadow-md"
                     style={{ width: displayWidth, height: displayHeight }}
                 >
-                    <Document file={pdfFile}>
+                    <Document
+                        file={pdfFile}
+                        onLoadError={(error) => console.error('PDF preview failed:', error)}
+                        error={
+                            <p className="p-6 text-center text-sm text-destructive">
+                                Hindi ma-display ang PDF. I-reload ang page; kung ganoon pa rin, buksan ang Console (F12) para sa detalye.
+                            </p>
+                        }
+                    >
                         <Page
                             pageNumber={pdfCurrentPage}
                             width={displayWidth}
