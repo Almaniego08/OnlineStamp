@@ -1,66 +1,72 @@
-# Shadcn Admin Dashboard
+# OnlineStamp
 
-Admin Dashboard UI crafted with Shadcn and Vite. Built with responsiveness and accessibility in mind.
+A browser tool for stamping PDFs. Open a PDF, add a **RECEIVED** or **RELEASED** stamp (with tracking number, date, time, approver initial and signature), text, a date, a time or an image, drag everything into place, then download the stamped PDF.
 
-![alt text](public/images/shadcn-admin.png)
-
-I've been creating dashboard UIs at work and for my personal projects. I always wanted to make a reusable collection of dashboard UI for future projects; and here it is now. While I've created a few custom components, some of the code is directly adapted from ShadcnUI examples.
-
-> This is not a starter project (template) though. I'll probably make one in the future.
+Everything happens on your device. The PDF is never uploaded.
 
 ## Features
 
-- Light/dark mode
-- Responsive
-- Accessible
-- Sidebar and header layouts
-- 10+ pages
-- Extra custom components
+- **Stamps:** RECEIVED and RELEASED stamps with tracking number, date, time, a fixed approver initial, and a selectable signature and name
+- **Text, date, time and images:** with font size and color controls; images keep their proportions when resized
+- **What you see is what you get:** the preview uses the PDF's own coordinates, so items land exactly where they appear
+- **Move items your way:** drag on the page, nudge with the arrow keys (Shift for bigger steps), or align to the page edges and center
+- **Multi-page PDFs:** each item stays on the page it was added to, and the download stamps every page
+- **Zoom and pan:** zoom buttons, Fit width, Ctrl + scroll, and drag the page to pan when zoomed in
+- **Light and dark mode**
 
-## Tech Stack
+## Using it
 
-**UI:** [ShadcnUI](https://ui.shadcn.com) (TailwindCSS + RadixUI)
+1. Click **Choose a PDF** or drop a PDF onto the page.
+2. Go to the page you want to stamp and pick an item under **Add to page**.
+3. Fill in its card on the left (tracking number, receiver, date, and so on).
+4. Drag it into place on the PDF. Click an item to select it, then:
+   - **Arrow keys** move it (hold **Shift** to move further)
+   - **Delete** removes it
+   - **Esc** clears the selection
+5. Click **Download stamped PDF**. The file name defaults to `<your file>-stamped.pdf`.
 
-**Build Tool:** [Vite](https://vitejs.dev/)
+## Run locally
 
-**Routing:** [React Router](https://reactrouter.com/en/main)
-
-**Type Checking:** [TypeScript](https://www.typescriptlang.org/)
-
-**Linting/Formatting:** [Eslint](https://eslint.org/) & [Prettier](https://prettier.io/)
-
-**Icons:** [Tabler Icons](https://tabler.io/icons)
-
-## Run Locally
-
-Clone the project
+Requires [Node.js](https://nodejs.org/) 18 or newer.
 
 ```bash
-  git clone https://github.com/satnaing/shadcn-admin.git
+git clone https://github.com/Almaniego08/OnlineStamp.git
+cd OnlineStamp
+npm install
+npm run dev
 ```
 
-Go to the project directory
+Then open the address Vite prints (usually http://localhost:5173).
 
-```bash
-  cd shadcn-admin
-```
+| Command | What it does |
+| --- | --- |
+| `npm run dev` | Start the development server |
+| `npm run build` | Type-check and build to `dist/` |
+| `npm run preview` | Serve the production build locally |
+| `npm run lint` | Run ESLint |
 
-Install dependencies
+## Updating the stamps and signatures
 
-```bash
-  pnpm install
-```
+The stamp, signature and initial images live in `src/pages/stamping/assets/images/` and are registered in `src/pages/stamping/data/images.tsx`. Use **transparent PNGs** so the images don't cover the document underneath.
 
-Start the server
+Who can be picked as receiver or "released by", and who the approver is, are set at the top of:
 
-```bash
-  pnpm run dev
-```
+- `src/pages/stamping/components/stamp-received-form.tsx`
+- `src/pages/stamping/components/stamp-released-form.tsx`
 
-## Author
+The positions of the fields inside each stamp are set in `src/pages/stamping/components/received.tsx` and `released.tsx`.
 
-Crafted with 🤍 by [@satnaing](https://github.com/satnaing)
+## Tech stack
 
-## License
+- [React](https://react.dev/) + [TypeScript](https://www.typescriptlang.org/), built with [Vite](https://vitejs.dev/)
+- [pdf-lib](https://pdf-lib.js.org/) to write the stamped PDF, [react-pdf](https://github.com/wojtekmaj/react-pdf) to preview it
+- [shadcn/ui](https://ui.shadcn.com/) (Tailwind CSS + Radix UI) and [Tabler Icons](https://tabler.io/icons)
 
-Licensed under the [MIT License](https://choosealicense.com/licenses/mit/)
+## Authors
+
+- **Alexander Luis Maniego** ([@Almaniego08](https://github.com/Almaniego08)) — owner
+- **Adam C. Marcaida Jr.** ([@AdamJr-26](https://github.com/AdamJr-26))
+
+## Credits and license
+
+The UI started from [shadcn-admin](https://github.com/satnaing/shadcn-admin) by Sat Naing, used under the MIT License. See [LICENSE](LICENSE).
